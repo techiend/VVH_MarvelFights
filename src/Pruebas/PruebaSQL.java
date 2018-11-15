@@ -28,12 +28,11 @@ public class PruebaSQL {
         
         try(
             Connection conn = DBClass.getConn();
-                
             // En caso de necesitar llenar algun campo con informacion especifica colocamos '?'
             PreparedStatement pst = conn.prepareStatement("SELECT * FROM usuario WHERE apellido = ? or nombre = ?;");
         ){
             
-            // Al colocar '?' leugo simplemente especificamos que va en cada uno de ellos
+            // Al colocar '?' luego simplemente especificamos que va en cada uno de ellos
             pst.setString(1, "Varisco");
             pst.setString(2, "Carlos");
             // Pedimos ejecutar el query..
