@@ -18,7 +18,9 @@ public class PruebaSQL {
     
         /*
         *
-        *   Prueba de como hacer la conexion con la DB y como realizar una consulta simple
+        *   Prueba de como hacer la conexion con la DB y como realizar una consulta simple 
+        *
+        *   Branch - Developer
         *
         */
     
