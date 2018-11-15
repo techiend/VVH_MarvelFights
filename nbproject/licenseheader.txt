@@ -1,0 +1,12 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Contenido creado por los integrantes
+${licensePrefix}del Grupo #2, prohibida su reutilización.
+${licensePrefix}
+${licensePrefix} - Alessandra Varisco
+${licensePrefix} - Carlos Hurtado
+${licensePrefix} - Carlos Verde
+<#if licenseLast??>
+${licenseLast}
+</#if>
