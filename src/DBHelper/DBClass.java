@@ -25,9 +25,9 @@ public class DBClass {
         
         Properties props = new Properties();
         props.setProperty("dataSourceClassName", "org.postgresql.ds.PGSimpleDataSource");
-        props.setProperty("dataSource.user", ""); // Usuario de la DB
-        props.setProperty("dataSource.password", ""); // Contrasena de la DB
-        props.setProperty("dataSource.databaseName", ""); // Nombre de la DB creada
+        props.setProperty("dataSource.user", "grupo2"); // Usuario de la DB
+        props.setProperty("dataSource.password", "123456"); // Contrasena de la DB
+        props.setProperty("dataSource.databaseName", "grupo2"); // Nombre de la DB creada
         props.setProperty("maximumPoolSize", "2");
         props.put("dataSource.logWriter", new PrintWriter(System.out));
         
