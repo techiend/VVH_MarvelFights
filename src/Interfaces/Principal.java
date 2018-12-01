@@ -8,6 +8,8 @@
  */
 package Interfaces;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 /**
  *
  * @author cverd
@@ -21,8 +23,15 @@ public class Principal extends javax.swing.JFrame {
         this.setResizable(false);
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        setTitle("MARVEL");
     }
+    
+    @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Images/Logo3.png"));
+        return retValue;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,6 +55,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
+        setIconImages(getIconImages());
 
         jPanel1.setBackground(new java.awt.Color(34, 38, 42));
 
@@ -62,10 +73,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1)
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -155,7 +163,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnPersonajes, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnVerEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(179, Short.MAX_VALUE))
+                .addContainerGap(223, Short.MAX_VALUE))
         );
 
         btnVerEvento.getAccessibleContext().setAccessibleName("VerEvento");
@@ -171,8 +179,9 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -181,6 +190,7 @@ public class Principal extends javax.swing.JFrame {
     private void btnEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEventoActionPerformed
         Evento abrir = new Evento();
         abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnEventoActionPerformed
 
     private void btnVerEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEventoActionPerformed
@@ -189,6 +199,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnPersonajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonajesActionPerformed
         // TODO add your handling code here:
+        Personajes abrir = new Personajes();
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnPersonajesActionPerformed
 
     /**

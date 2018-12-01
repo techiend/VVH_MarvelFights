@@ -8,6 +8,9 @@
  */
 package Interfaces;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 /**
  *
  * @author cverd
@@ -18,9 +21,17 @@ public class PersonajeEvento extends javax.swing.JFrame {
      * Creates new form Personaje
      */
     public PersonajeEvento() {
+        this.setResizable(false);
         initComponents();
+        this.setLocationRelativeTo(null);
+        setTitle("Inscribe personajes");
     }
 
+     @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Images/Battle1.png"));
+        return retValue;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,6 +54,7 @@ public class PersonajeEvento extends javax.swing.JFrame {
         btnAtrasPE = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
 
         jPanel1.setBackground(new java.awt.Color(34, 38, 42));
 
@@ -92,7 +104,6 @@ public class PersonajeEvento extends javax.swing.JFrame {
         );
 
         btnMasPE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MasN.png"))); // NOI18N
-        btnMasPE.setActionCommand("");
         btnMasPE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMasPEActionPerformed(evt);
@@ -141,6 +152,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
         btnCancelarPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelarPE.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelarPE.setText("CANCELAR");
+        btnCancelarPE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarPEActionPerformed(evt);
+            }
+        });
 
         btnContinuarPE.setBackground(new java.awt.Color(0, 153, 51));
         btnContinuarPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -216,7 +232,14 @@ public class PersonajeEvento extends javax.swing.JFrame {
         // TODO add your handling code here:
         Evento abrir = new Evento();
         abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnAtrasPEActionPerformed
+
+    private void btnCancelarPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPEActionPerformed
+       Principal abrir = new Principal();
+       abrir.setVisible(true);
+       dispose();
+    }//GEN-LAST:event_btnCancelarPEActionPerformed
 
     /**
      * @param args the command line arguments

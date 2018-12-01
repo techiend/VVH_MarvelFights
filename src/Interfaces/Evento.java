@@ -8,6 +8,8 @@
  */
 package Interfaces;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 /**
  *
  * @author cverd
@@ -21,8 +23,13 @@ public class Evento extends javax.swing.JFrame {
         this.setResizable(false);
         initComponents();
         this.setLocationRelativeTo(null);
+        setTitle("Evento");
     }
-
+ @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Images/Battle1.png"));
+        return retValue;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,10 +52,11 @@ public class Evento extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        eCancelarE = new javax.swing.JButton();
+        btnCancelarE = new javax.swing.JButton();
         btnContinuarE = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(34, 38, 42));
@@ -66,10 +74,7 @@ public class Evento extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1)
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -151,13 +156,13 @@ public class Evento extends javax.swing.JFrame {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        eCancelarE.setBackground(new java.awt.Color(153, 0, 0));
-        eCancelarE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        eCancelarE.setForeground(new java.awt.Color(255, 255, 255));
-        eCancelarE.setText("CANCELAR");
-        eCancelarE.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelarE.setBackground(new java.awt.Color(153, 0, 0));
+        btnCancelarE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCancelarE.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelarE.setText("CANCELAR");
+        btnCancelarE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eCancelarEActionPerformed(evt);
+                btnCancelarEActionPerformed(evt);
             }
         });
 
@@ -180,7 +185,7 @@ public class Evento extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(eCancelarE)
+                        .addComponent(btnCancelarE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnContinuarE)))
                 .addContainerGap())
@@ -192,7 +197,7 @@ public class Evento extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(eCancelarE)
+                    .addComponent(btnCancelarE)
                     .addComponent(btnContinuarE))
                 .addContainerGap())
         );
@@ -215,15 +220,16 @@ public class Evento extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void eCancelarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eCancelarEActionPerformed
-        // TODO add your handling code here:
+    private void btnCancelarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEActionPerformed
         Principal abrir = new Principal();
         abrir.setVisible(true);
-    }//GEN-LAST:event_eCancelarEActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarEActionPerformed
 
     private void btnContinuarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarEActionPerformed
         PersonajeEvento abrir = new PersonajeEvento();
         abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnContinuarEActionPerformed
 
     /**
@@ -262,10 +268,10 @@ public class Evento extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelarE;
     private javax.swing.JButton btnContinuarE;
     private com.toedter.calendar.JDateChooser dpFechaInicio;
     private com.toedter.calendar.JDateChooser dtFechaFin;
-    private javax.swing.JButton eCancelarE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
