@@ -8,8 +8,14 @@
  */
 package Interfaces;
 
+import Controlador.DBController;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -17,6 +23,11 @@ import java.awt.Toolkit;
  */
 public class PersonajeEvento extends javax.swing.JFrame {
 
+    private int personajeIDexist = -1;
+    private int personajeIDinscri = -1;
+    private JSONArray listaPersonajeExist;
+    private JSONArray listaPersonajeInscri;
+    
     /**
      * Creates new form Personaje
      */
@@ -25,6 +36,95 @@ public class PersonajeEvento extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         setTitle("Inscribe un personaje");
+        listaPersonajeInscri = new JSONArray();
+        
+        listaPersonajeExist = DBController.getPersonajes();
+        fillTableExist();
+        
+        
+        tablePJexist.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tablePJexist.getModel();    
+        
+              int fila = tablePJexist.rowAtPoint(e.getPoint());
+              int columna = tablePJexist.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  personajeIDexist = id;
+                
+              }
+           }
+        });
+        
+        tablePJinscri.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();    
+        
+              int fila = tablePJinscri.rowAtPoint(e.getPoint());
+              int columna = tablePJinscri.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  personajeIDinscri = id;
+                
+              }
+           }
+        });
+    }
+    
+    public void emptyTableExist(){
+        DefaultTableModel model = (DefaultTableModel) tablePJexist.getModel();
+        
+        int filas = tablePJexist.getRowCount();
+        for (int i = 1; i <= filas; i++){
+            model.removeRow(0);
+        }
+    }
+   
+    public void fillTableExist(){
+        emptyTableExist();
+        
+        DefaultTableModel model = (DefaultTableModel) tablePJexist.getModel();        
+        
+        for (int i = 0; i<listaPersonajeExist.length(); i++){
+            JSONObject personaje = listaPersonajeExist.getJSONObject(i);
+            
+            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
+        }
+        
+    }
+    
+    public void emptyTableInscri(){
+        DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();
+        
+        int filas = tablePJinscri.getRowCount();
+        for (int i = 1; i <= filas; i++){
+            model.removeRow(0);
+        }
+    }
+   
+    public void fillTableInscri(){
+        emptyTableInscri();
+        
+        DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();        
+        
+        for (int i = 0; i<listaPersonajeInscri.length(); i++){
+            JSONObject personaje = listaPersonajeInscri.getJSONObject(i);
+            
+            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
+        }
+        
     }
 
      @Override
@@ -46,7 +146,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablePJexist = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePJinscri = new javax.swing.JTable();
         btnMasPE = new javax.swing.JButton();
         btnMenosPE = new javax.swing.JButton();
         btnCancelarPE = new javax.swing.JButton();
@@ -81,26 +185,100 @@ public class PersonajeEvento extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
 
+        tablePJexist.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Grupo Afiliacion"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablePJexist);
+        if (tablePJexist.getColumnModel().getColumnCount() > 0) {
+            tablePJexist.getColumnModel().getColumn(0).setResizable(false);
+            tablePJexist.getColumnModel().getColumn(0).setPreferredWidth(1);
+            tablePJexist.getColumnModel().getColumn(1).setResizable(false);
+            tablePJexist.getColumnModel().getColumn(2).setResizable(false);
+        }
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 293, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        tablePJinscri.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Grupo Afiliacion"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablePJinscri);
+        if (tablePJinscri.getColumnModel().getColumnCount() > 0) {
+            tablePJinscri.getColumnModel().getColumn(0).setResizable(false);
+            tablePJinscri.getColumnModel().getColumn(0).setPreferredWidth(1);
+            tablePJinscri.getColumnModel().getColumn(1).setResizable(false);
+            tablePJinscri.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 293, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         btnMasPE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/MasN.png"))); // NOI18N
@@ -124,13 +302,13 @@ public class PersonajeEvento extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnMasPE, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMenosPE, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -145,7 +323,7 @@ public class PersonajeEvento extends javax.swing.JFrame {
                 .addComponent(btnMasPE, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnMenosPE, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         btnCancelarPE.setBackground(new java.awt.Color(153, 0, 0));
@@ -222,10 +400,37 @@ public class PersonajeEvento extends javax.swing.JFrame {
 
     private void btnMasPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasPEActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();  
+        
+        if (personajeIDexist > 0){
+            for (int i = 0; i<listaPersonajeExist.length(); i++){
+                JSONObject personaje = listaPersonajeExist.getJSONObject(i);
+
+                if(personaje.getInt("id") == personajeIDexist){
+//                    model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
+                    listaPersonajeInscri.put(personaje);
+                    listaPersonajeExist.remove(i);
+                    fillTableExist();
+                    fillTableInscri();
+                }
+            }
+        }
     }//GEN-LAST:event_btnMasPEActionPerformed
 
     private void btnMenosPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenosPEActionPerformed
         // TODO add your handling code here:
+        if (personajeIDinscri > 0){
+            for (int i = 0; i<listaPersonajeInscri.length(); i++){
+                JSONObject personaje = listaPersonajeInscri.getJSONObject(i);
+
+                if(personaje.getInt("id") == personajeIDinscri){
+                    listaPersonajeExist.put(personaje);
+                    listaPersonajeInscri.remove(i);
+                    fillTableInscri();
+                    fillTableExist();
+                }
+            }
+        }
     }//GEN-LAST:event_btnMenosPEActionPerformed
 
     private void btnAtrasPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPEActionPerformed
@@ -291,5 +496,9 @@ public class PersonajeEvento extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablePJexist;
+    private javax.swing.JTable tablePJinscri;
     // End of variables declaration//GEN-END:variables
 }
