@@ -24,7 +24,36 @@ import org.json.JSONObject;
  */
 public class Agregado {
     
-    public static void AddPersonaje(JSONObject personaje){
+    public static void AddLugar(JSONObject lugar){
+       
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO lugar VALUES (?,?,?,?,?);")
+        ){
+            pstInsertar.setString(1, lugar.getString("nombre"));
+            pstInsertar.setString(2, lugar.getString("tipo"));
+            pstInsertar.setString(3, lugar.getString("tipoGreografia"));
+            pstInsertar.setString(4, lugar.getString("descripcion"));
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("Lugar: "+lugar.getString("nombre")+" ha sido agregado a la DB\n");
+                
+            }else{
+                
+                System.out.println("Lugar: "+lugar.getString("nombre")+" no ha sido agregado a la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+        
+     public static void AddPersonaje(JSONObject personaje){
         
         try(
             Connection conn = DBClass.getConn();
@@ -59,6 +88,7 @@ public class Agregado {
         } catch (SQLException ex) {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
     
 }
+
+} 
