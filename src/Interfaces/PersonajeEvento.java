@@ -24,7 +24,7 @@ public class PersonajeEvento extends javax.swing.JFrame {
         this.setResizable(false);
         initComponents();
         this.setLocationRelativeTo(null);
-        setTitle("Inscribe personajes");
+        setTitle("Inscribe un personaje");
     }
 
      @Override
