@@ -125,7 +125,6 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("APELLIDO REAL:");
 
-        txtApellidoAdd.setEditable(false);
         txtApellidoAdd.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -135,12 +134,12 @@ public class AddPersonaje extends javax.swing.JFrame {
         rbSecretaAdd.setBackground(new java.awt.Color(153, 153, 153));
         rbSecretaAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rbSecretaAdd.setForeground(new java.awt.Color(153, 0, 0));
-        rbSecretaAdd.setText("SECRETA");
+        rbSecretaAdd.setText("Secreta");
 
         rbPublicaAdd.setBackground(new java.awt.Color(153, 153, 153));
         rbPublicaAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rbPublicaAdd.setForeground(new java.awt.Color(0, 153, 0));
-        rbPublicaAdd.setText("PUBLICA");
+        rbPublicaAdd.setText("Publica");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -199,7 +198,7 @@ public class AddPersonaje extends javax.swing.JFrame {
 
         cbSolteriaAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casado", "Soltero", "Divorciado", "Viudo", "Otro" }));
 
-        cbTipoAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Heroe", "Villano", "Otro" }));
+        cbTipoAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Heroe", "Villano", "Neutral", "Ambos" }));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
@@ -477,12 +476,13 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         personaje.put("peso", txtPesoAdd.getText());
                                                                         personaje.put("colorOjos", txtColorOjosAdd.getText());
                                                                         personaje.put("colorCabello", txtColorCabelloAdd.getText());
+                                                                        
                                                                         personaje.put("ciudad", txtCiudadAdd.getText());
                                                                         personaje.put("estado", txtEstadoAdd.getText());
                                                                         personaje.put("pais", txtPaisAdd.getText());
 
-                                                                    System.out.println("ALUMNO: "+personaje.toString(1));
-                                                                    Agregado.AddLugar(personaje);
+                                                                    System.out.println("PERSONAJE: "+personaje.toString(1));
+//                                                                    Agregado.AddLugar(personaje);
                                                                     Agregado.AddPersonaje(personaje);
 
                                                   //  fillTable();

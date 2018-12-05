@@ -370,7 +370,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtApellidoAdd">
               <Properties>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="cc" red="cc" type="rgb"/>
                 </Property>
@@ -398,7 +397,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="99" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="SECRETA"/>
+                <Property name="text" type="java.lang.String" value="Secreta"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JRadioButton" name="rbPublicaAdd">
@@ -412,7 +411,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="99" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="PUBLICA"/>
+                <Property name="text" type="java.lang.String" value="Publica"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
@@ -592,10 +591,11 @@
             <Component class="javax.swing.JComboBox" name="cbTipoAdd">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
+                  <StringArray count="4">
                     <StringItem index="0" value="Heroe"/>
                     <StringItem index="1" value="Villano"/>
-                    <StringItem index="2" value="Otro"/>
+                    <StringItem index="2" value="Neutral"/>
+                    <StringItem index="3" value="Ambos"/>
                   </StringArray>
                 </Property>
               </Properties>

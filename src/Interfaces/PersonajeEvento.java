@@ -415,6 +415,8 @@ public class PersonajeEvento extends javax.swing.JFrame {
                 }
             }
         }
+        
+        personajeIDexist = -1;
     }//GEN-LAST:event_btnMasPEActionPerformed
 
     private void btnMenosPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenosPEActionPerformed
@@ -431,6 +433,8 @@ public class PersonajeEvento extends javax.swing.JFrame {
                 }
             }
         }
+        
+        personajeIDinscri = -1;
     }//GEN-LAST:event_btnMenosPEActionPerformed
 
     private void btnAtrasPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPEActionPerformed
