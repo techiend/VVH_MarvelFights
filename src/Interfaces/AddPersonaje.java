@@ -113,19 +113,15 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("NOMBRE:");
 
-        txtNombreAdd.setBackground(new java.awt.Color(204, 204, 204));
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("NOMBRE REAL:");
-
-        txtNombreRAdd.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("APELLIDO REAL:");
 
-        txtApellidoAdd.setBackground(new java.awt.Color(204, 204, 204));
+        txtApellidoAdd.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -161,8 +157,6 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("ALTURA:");
 
-        txtAlturaAdd.setBackground(new java.awt.Color(204, 204, 204));
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("PESO:");
@@ -171,9 +165,6 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("COLOR OJOS:");
 
-        txtPesoAdd.setBackground(new java.awt.Color(204, 204, 204));
-
-        txtColorOjosAdd.setBackground(new java.awt.Color(204, 204, 204));
         txtColorOjosAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtColorOjosAddActionPerformed(evt);
@@ -188,14 +179,14 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("COLOR CABELLO:");
 
-        txtColorCabelloAdd.setBackground(new java.awt.Color(204, 204, 204));
-
+        cbSexoAdd.setBackground(new java.awt.Color(153, 153, 153));
         cbSexoAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mujer", "Hombre", "Otro" }));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("TIPO PERSONAJE:");
 
+        cbSolteriaAdd.setBackground(new java.awt.Color(153, 153, 153));
         cbSolteriaAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casado", "Soltero", "Divorciado", "Viudo", "Otro" }));
 
         cbTipoAdd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Heroe", "Villano", "Neutral", "Ambos" }));
@@ -484,6 +475,10 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                     System.out.println("PERSONAJE: "+personaje.toString(1));
 //                                                                    Agregado.AddLugar(personaje);
                                                                     Agregado.AddPersonaje(personaje);
+                                                                    System.out.println("PERSONAJE: "+personaje.toString(1));
+                                                                    
+                                                                    
+                                                                    
 
                                                   //  fillTable();
                                                                 }
@@ -501,6 +496,9 @@ public class AddPersonaje extends javax.swing.JFrame {
             }
         }
     }
+        AddParafernalia abrir = new AddParafernalia();
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void txtColorOjosAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColorOjosAddActionPerformed

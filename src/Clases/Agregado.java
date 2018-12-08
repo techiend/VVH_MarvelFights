@@ -171,5 +171,72 @@ public class Agregado {
         }
     
 }
+     public static void AddParafernalia(JSONObject personaje) throws SQLException{
+         
+        int parafernalia = -1;
+        int pa_pa = -1;
+        int personajeID = -1;
+         
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertarPersonaje
+                    = conn.prepareStatement("INSERT INTO personaje(nombreoriginal_personaje, nombrereal_personaje, apellidoreal_personaje, identidad_personaje, biografia_personaje, estadocivil_personaje, genero_personaje, altura_personaje, peso_personaje, colorojos_personaje, colorpelo_personaje, lugarNacimiento_fk, tipo_personaje) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            
+            PreparedStatement pstInsertarParafernalia = conn.prepareStatement("INSERT INTO parafernalia (nombre_parafernalia, tipo_parafernalia)"
+                    + "VALUES (?,?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstInsertarPA_PA = conn.prepareStatement("INSERT INTO pa_pa(parafernalia_fk,personaje_fk,alturametros_pp, pesokg_pp) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS)
+        ){
+            
+                ResultSet PA_PA_PERST = pstInsertarPersonaje.getGeneratedKeys();
+                ResultSet PA_PA_PARST = pstInsertarParafernalia.getGeneratedKeys();
+                ResultSet PA_PARST = pstInsertarPA_PA.getGeneratedKeys();
+                
+            if (pstInsertarPersonaje.executeUpdate() > 0 && pstInsertarParafernalia.executeUpdate() > 0){
+                if (PA_PA_PERST.next() && PA_PA_PARST.next()){
+               
+                
+                    
+                            pstInsertarPA_PA.setInt(1, PA_PARST.getInt(1));
+                            pstInsertarPA_PA.setInt(2, PA_PARST.getInt(2));
+                            pstInsertarPA_PA.setDouble(3, Double.parseDouble(PA_PARST.getString("altirametrosPP")));
+                            pstInsertarPA_PA.setDouble(4, Double.parseDouble(PA_PARST.getString("pesokgPP")));
+                            }else{
 
+                                System.out.println("ERROR INSDRT NAN");
+
+                            }
+                            
+                        }
+                }
+            if (pa_pa > 0){
+              
+                pstInsertarParafernalia.setString(1, personaje.getString("nombre"));
+                pstInsertarParafernalia.setString(2, personaje.getString("tipo"));
+
+
+                if (pstInsertarParafernalia.executeUpdate() > 0){
+
+                    ResultSet PA_PA_PERST = pstInsertarParafernalia.getGeneratedKeys();
+                    if (PA_PA_PERST.next()){
+                        //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
+
+                        // INSERTAR PERSONAJE
+                        personajeID = PA_PA_PERST.getInt(1);
+                        System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB con el numero de parafernalis=a: "+parafernalia+"\n");
+                    }
+
+                }else{
+
+                    System.out.println("PERSONAJE: "+personaje.getString("nombre")+" no ha sido agregado a la DB\n");
+
+                }
+            
+            }else{
+                System.out.println("ERROR, lugar de nacimiento no insertado\n");
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
 } 
