@@ -238,7 +238,7 @@ public class Agregado {
                     + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
                     + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
                     + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
-                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje")
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje WHERE id_personaje = ?")
                 ){
             
             JSONObject personaje = new JSONObject();
@@ -258,10 +258,10 @@ public class Agregado {
                 personaje.put("biografia", rsGetPersonaje.getString(7));
                 personaje.put("estadocivil", rsGetPersonaje.getString(8));
                 personaje.put("genero", rsGetPersonaje.getString(9));
-                personaje.put("altura", rsGetPersonaje.getInt(10));
-                personaje.put("peso", rsGetPersonaje.getInt(11));
-                personaje.put("colorojos", rsGetPersonaje.getString(12));
-                personaje.put("colorpelo", rsGetPersonaje.getString(13));
+                personaje.put("altura", rsGetPersonaje.getDouble(10));
+                personaje.put("peso", rsGetPersonaje.getDouble(11));
+                personaje.put("colorOjos", rsGetPersonaje.getString(12));
+                personaje.put("colorCabello", rsGetPersonaje.getString(13));
                 
 //                System.out.println("ALUMNO: "+alumno.toString());
 
@@ -348,8 +348,52 @@ public class Agregado {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
      
+     
+
+public static void ModPersonaje(JSONObject personaje){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE personaje SET"
+                    + " tipo_personaje = ?, nombreoriginal_personaje = ?, nombrereal_personaje = ?,"
+                    + " apellidoreal_personaje = ?, identidad_personaje = ?, biografia_personaje = ?,"
+                    + " estadocivil_personaje = ?, genero_personaje = ?, altura_personaje = ?, peso_personaje = ?,"
+                    + " colorojos_personaje = ?, colorpelo_personaje = ? WHERE id_personaje = ?")
+        ){
+            
+            pstInsertar.setString(1, personaje.getString("tipo"));
+            pstInsertar.setString(2, personaje.getString("nameo"));
+            pstInsertar.setString(3, personaje.getString("namer"));
+            pstInsertar.setString(4, personaje.getString("lname"));
+            pstInsertar.setString(5, personaje.getString("identidad"));
+            pstInsertar.setString(6, personaje.getString("biografia"));
+            pstInsertar.setString(7, personaje.getString("estadocivil"));
+            pstInsertar.setString(8, personaje.getString("genero"));
+            pstInsertar.setDouble(9, Double.parseDouble(personaje.getString("altura")));
+            pstInsertar.setDouble(10, Double.parseDouble(personaje.getString("peso")));
+            pstInsertar.setString(11, personaje.getString("colorojos"));
+            pstInsertar.setString(12, personaje.getString("colorpelo"));
+            pstInsertar.setInt(13, Integer.parseInt(personaje.getString("id")));
+            
+            System.out.println(pstInsertar.toString());
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nALUMNO: "+personaje.getString("id")+" ha sido actualizado en la DB\n");
+                
+            }else{
+                
+                System.out.println("\nALUMNO: "+personaje.getString("id")+" no ha sido actualizado en la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }     
     
      public static void AddParafernalia(JSONObject parafernalia, int idPersonaje, boolean isPart){
          

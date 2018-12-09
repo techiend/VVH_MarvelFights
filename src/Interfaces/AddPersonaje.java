@@ -11,6 +11,7 @@ package Interfaces;
 import Clases.Agregado;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -134,6 +135,11 @@ public class AddPersonaje extends javax.swing.JFrame {
         rbSecretaAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rbSecretaAdd.setForeground(new java.awt.Color(153, 0, 0));
         rbSecretaAdd.setText("Secreta");
+        rbSecretaAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbSecretaAddActionPerformed(evt);
+            }
+        });
 
         rbPublicaAdd.setBackground(new java.awt.Color(153, 153, 153));
         rbPublicaAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -517,20 +523,36 @@ public class AddPersonaje extends javax.swing.JFrame {
 
                                                   //  fillTable();
                                                                 }
+                                                                else
+                                                                    JOptionPane.showMessageDialog(this, "Pais no insertado", "Error", JOptionPane.ERROR_MESSAGE);
                                                             }
+                                                            else
+                                                            JOptionPane.showMessageDialog(this, "Estado no insertado", "Error", JOptionPane.ERROR_MESSAGE);
 //                                                
                                                         }
-                                            }
-                                        }
-                                    }
-                                }
+                                                        else
+                                                        JOptionPane.showMessageDialog(this, "Ciudad no insertada", "Error", JOptionPane.ERROR_MESSAGE);
+                                            }else 
+                                                    JOptionPane.showMessageDialog(this, "Color de cabello no insetado", "Error", JOptionPane.ERROR_MESSAGE);
+                                            } else 
+                                                JOptionPane.showMessageDialog(this, "Color de ojos no insertado", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }else
+                                            JOptionPane.showMessageDialog(this, "Peso no insetado", "Error", JOptionPane.ERROR_MESSAGE);
+                                }else
+                                        JOptionPane.showMessageDialog(this, "Altura no insertada", "Error", JOptionPane.ERROR_MESSAGE);
 //                            }
 //                        }
-                    }
-                }
-            }
-        }
-    }
+                    }else
+                            JOptionPane.showMessageDialog(this, "Biografia vacia", "Error", JOptionPane.ERROR_MESSAGE);
+                }else 
+                        JOptionPane.showMessageDialog(this, "Selecciona una identidad", "Error", JOptionPane.ERROR_MESSAGE);
+            }else 
+                    JOptionPane.showMessageDialog(this, "Apellido no insertado", "Error", JOptionPane.ERROR_MESSAGE);
+               
+        }else 
+                JOptionPane.showMessageDialog(this, "Nombre Real no insetado", "Error", JOptionPane.ERROR_MESSAGE);
+    }else
+            JOptionPane.showMessageDialog(this, "Nombre Original no insertado", "Error", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void txtColorOjosAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColorOjosAddActionPerformed
@@ -544,6 +566,10 @@ public class AddPersonaje extends javax.swing.JFrame {
     private void txtEstadoAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoAddActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEstadoAddActionPerformed
+
+    private void rbSecretaAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSecretaAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSecretaAddActionPerformed
 
     /**
      * @param args the command line arguments
