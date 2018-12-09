@@ -8,8 +8,14 @@
  */
 package Interfaces;
 
+import Clases.Agregado;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -23,14 +29,61 @@ public class Personajes extends javax.swing.JFrame {
     public Personajes() {
         this.setResizable(false);
         initComponents();
+        fillTable();
         this.setLocationRelativeTo(null);
         setTitle("Personajes");
+        
+                tablePersonaje.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tablePersonaje.getModel();    
+        
+              int fila = tablePersonaje.rowAtPoint(e.getPoint());
+              int columna = tablePersonaje.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  txtIDPersonaje.setText(Integer.toString(id));
+                
+              }
+           }
+        });
+        
     }
  @Override
     public Image getIconImage(){
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Images/People2.png"));
         return retValue;
     }
+    
+     
+    public void emptyTable(){
+        DefaultTableModel model = (DefaultTableModel) tablePersonaje.getModel();
+        
+        int filas = tablePersonaje.getRowCount();
+        for (int i = 1; i <= filas; i++){
+            model.removeRow(0);
+        }
+    }
+   
+    public void fillTable(){
+        emptyTable();
+        
+        JSONArray listaPersonaje = Agregado.getPersonaje();
+        DefaultTableModel model = (DefaultTableModel) tablePersonaje.getModel();        
+        
+        for (int i = 0; i<listaPersonaje.length(); i++){
+            JSONObject personaje = listaPersonaje.getJSONObject(i);
+            
+            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("tipo"), personaje.getString("nameo"), personaje.getString("namer"), personaje.getString("lname"), personaje.getString("identidad"), personaje.getString("biografia"), personaje.getString("estadocivil"), personaje.getString("genero"), personaje.getInt("altura"), personaje.getInt("peso"), personaje.getString("colorojos"), personaje.getString("colorpelo")});
+        }
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,8 +100,12 @@ public class Personajes extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablePersonaje = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        txtIDPersonaje = new javax.swing.JTextField();
+        btnDelPersonaje = new javax.swing.JButton();
+        btnModAlumno = new javax.swing.JButton();
         btnAgregarPersonaje = new javax.swing.JButton();
         btnCancelarP = new javax.swing.JButton();
 
@@ -90,28 +147,71 @@ public class Personajes extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(153, 153, 153));
 
-        jTable2.setBackground(new java.awt.Color(153, 153, 153));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablePersonaje.setBackground(new java.awt.Color(153, 153, 153));
+        tablePersonaje.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NOMBRE", "NOMBRE REAL", "APELLIDO REAL", "IDENTIDAD", "ESTADO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO"
+                "ID", "TIPO", "NOMBRE O", "NOMBRE R", "APELLIDO REAL", "IDENTIDAD", "BIOGRAFIA", "EDO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablePersonaje);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("PERSONAJES:");
+
+        jPanel5.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        btnDelPersonaje.setText("Eliminar");
+        btnDelPersonaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelPersonajeActionPerformed(evt);
+            }
+        });
+
+        btnModAlumno.setText("Modificar");
+        btnModAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModAlumnoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnDelPersonaje)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModAlumno)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelPersonaje)
+                    .addComponent(btnModAlumno))
+                .addContainerGap())
+        );
 
         btnAgregarPersonaje.setBackground(new java.awt.Color(0, 153, 153));
         btnAgregarPersonaje.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -130,23 +230,27 @@ public class Personajes extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAgregarPersonaje)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAgregarPersonaje)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAgregarPersonaje)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -234,6 +338,19 @@ public class Personajes extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCancelarPActionPerformed
 
+    private void btnDelPersonajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelPersonajeActionPerformed
+        // TODO add your handling code here:
+        Agregado.DelPersonaje(txtIDPersonaje.getText());
+        fillTable();
+    }//GEN-LAST:event_btnDelPersonajeActionPerformed
+
+    private void btnModAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModAlumnoActionPerformed
+        // TODO add your handling code here:
+      //  fillPanelMod(txtIDPersonaje.getText());
+      //  panelMod.setVisible(true);
+
+    }//GEN-LAST:event_btnModAlumnoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -273,14 +390,18 @@ public class Personajes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarPersonaje;
     private javax.swing.JButton btnCancelarP;
+    private javax.swing.JButton btnDelPersonaje;
+    private javax.swing.JButton btnModAlumno;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tablePersonaje;
+    private javax.swing.JTextField txtIDPersonaje;
     // End of variables declaration//GEN-END:variables
 }

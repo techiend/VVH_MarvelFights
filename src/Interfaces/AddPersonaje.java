@@ -11,6 +11,8 @@ package Interfaces;
 import Clases.Agregado;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -123,8 +125,6 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("APELLIDO REAL:");
-
-        txtApellidoAdd.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -372,7 +372,7 @@ public class AddPersonaje extends javax.swing.JFrame {
         btnCancelarAP.setBackground(new java.awt.Color(153, 0, 0));
         btnCancelarAP.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelarAP.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelarAP.setText("CANCELAR");
+        btnCancelarAP.setText("ATRAS");
         btnCancelarAP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarAPActionPerformed(evt);
@@ -439,6 +439,29 @@ public class AddPersonaje extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnCancelarAPActionPerformed
 
+    /* public void emptyTable(){
+        DefaultTableModel model = (DefaultTableModel) tablePersonaje.getModel();
+        
+        int filas = tablePersonaje.getRowCount();
+        for (int i = 1; i <= filas; i++){
+            model.removeRow(0);
+        }
+    }
+   
+    public void fillTable(){
+        emptyTable();
+        
+        JSONArray listaAlumno = AlumnosC.getAlumno();
+        DefaultTableModel model = (DefaultTableModel) tableAlumnos.getModel();        
+        
+        for (int i = 0; i<listaAlumno.length(); i++){
+            JSONObject alumno = listaAlumno.getJSONObject(i);
+            
+            model.addRow(new Object[]{alumno.getInt("ci"),alumno.getString("name"), alumno.getString("tel"), alumno.getString("mail"), alumno.getString("dir")});
+        }
+        
+    } */
+    
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
         JSONObject personaje = new JSONObject();
         
@@ -474,6 +497,8 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         personaje.put("ciudad", txtCiudadAdd.getText());
                                                                         personaje.put("estado", txtEstadoAdd.getText());
                                                                         personaje.put("pais", txtPaisAdd.getText());
+                                                                        
+                                                                       // fillTable();
 
                                                                     System.out.println("PERSONAJE: "+personaje.toString(1));
 //                                                                    Agregado.AddLugar(personaje);

@@ -226,8 +226,131 @@ public class Agregado {
         }
         
         return listaParafernalia;
+        
+    }
+    
+     public static JSONObject getPersonaje(String id){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetPersonaje = conn.prepareStatement("SELECT id_personaje \"ID\", tipo_personaje \"Tipo Personaje\", "
+                    + "nombreoriginal_personaje \"Nombre Original\", nombrereal_personaje \"Nombre Real]\", "
+                    + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
+                    + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
+                    + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje")
+                ){
+            
+            JSONObject personaje = new JSONObject();
+            
+            pstGetPersonaje.setInt(1, Integer.valueOf(id));
+            
+            ResultSet rsGetPersonaje = pstGetPersonaje.executeQuery();
+            
+            if (rsGetPersonaje.next()){
+                
+                personaje.put("id", rsGetPersonaje.getInt(1));
+                personaje.put("tipo", rsGetPersonaje.getString(2));
+                personaje.put("nameo", rsGetPersonaje.getString(3));
+                personaje.put("namer", rsGetPersonaje.getString(4));
+                personaje.put("lname", rsGetPersonaje.getString(5));
+                personaje.put("identidad", rsGetPersonaje.getString(6));
+                personaje.put("biografia", rsGetPersonaje.getString(7));
+                personaje.put("estadocivil", rsGetPersonaje.getString(8));
+                personaje.put("genero", rsGetPersonaje.getString(9));
+                personaje.put("altura", rsGetPersonaje.getInt(10));
+                personaje.put("peso", rsGetPersonaje.getInt(11));
+                personaje.put("colorojos", rsGetPersonaje.getString(12));
+                personaje.put("colorpelo", rsGetPersonaje.getString(13));
+                
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+            }
+            
+            return personaje;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
     }
      
+     public static JSONArray getPersonaje(){
+        JSONArray listaPersonaje = new JSONArray();
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetAlumnos = conn.prepareStatement("SELECT id_personaje \"ID\", tipo_personaje \"Tipo Personaje\", "
+                    + "nombreoriginal_personaje \"Nombre Original\", nombrereal_personaje \"Nombre Real]\", "
+                    + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
+                    + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
+                    + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje")
+        ){
+            
+            ResultSet rsGetPersonaje = pstGetAlumnos.executeQuery();
+            
+            while (rsGetPersonaje.next()){
+                JSONObject personaje = new JSONObject();
+                
+                personaje.put("id", rsGetPersonaje.getInt(1));
+                personaje.put("tipo", rsGetPersonaje.getString(2));
+                personaje.put("nameo", rsGetPersonaje.getString(3));
+                personaje.put("namer", rsGetPersonaje.getString(4));
+                personaje.put("lname", rsGetPersonaje.getString(5));
+                personaje.put("identidad", rsGetPersonaje.getString(6));
+                personaje.put("biografia", rsGetPersonaje.getString(7));
+                personaje.put("estadocivil", rsGetPersonaje.getString(8));
+                personaje.put("genero", rsGetPersonaje.getString(9));
+                personaje.put("altura", rsGetPersonaje.getInt(10));
+                personaje.put("peso", rsGetPersonaje.getInt(11));
+                personaje.put("colorojos", rsGetPersonaje.getString(12));
+                personaje.put("colorpelo", rsGetPersonaje.getString(13));
+                
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+                listaPersonaje.put(personaje);
+            }
+            
+            return listaPersonaje;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listaPersonaje;
+    }
+     
+     public static void DelPersonaje(String id){
+    
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("DELETE FROM personaje WHERE id_personaje = ?")
+        ){
+            
+            pstInsertar.setInt(1, Integer.parseInt(id));
+            
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nPersonaje: "+id+" ha sido borrado de la DB\n");
+                
+            }else{
+                
+                System.out.println("\nPERSONAJE: "+id+" no ha sido borrado de la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+     
+    
      public static void AddParafernalia(JSONObject parafernalia, int idPersonaje, boolean isPart){
          
         try(
