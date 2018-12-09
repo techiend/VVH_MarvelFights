@@ -104,7 +104,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
         txtAltura = new javax.swing.JTextField();
         txtPeso = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnAtrasPL = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -282,10 +282,15 @@ public class ParafernaliaList extends javax.swing.JFrame {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("SIGUIENTE");
 
-        jButton1.setBackground(new java.awt.Color(153, 0, 0));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("ATRAS");
+        btnAtrasPL.setBackground(new java.awt.Color(153, 0, 0));
+        btnAtrasPL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAtrasPL.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtrasPL.setText("ATRAS");
+        btnAtrasPL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasPLActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -299,7 +304,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnAtrasPL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
@@ -312,7 +317,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnAtrasPL)
                     .addComponent(jButton2))
                 .addGap(0, 15, Short.MAX_VALUE))
         );
@@ -394,6 +399,13 @@ public class ParafernaliaList extends javax.swing.JFrame {
             System.out.println("MOSTRAR ERROR");
         }
     }//GEN-LAST:event_btnAddParafernaliaActionPerformed
+
+    private void btnAtrasPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPLActionPerformed
+        // TODO add your handling code here:
+        AddPersonaje abrir = new AddPersonaje();
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnAtrasPLActionPerformed
   /**
      * @param args the command line arguments
      */
@@ -431,10 +443,10 @@ public class ParafernaliaList extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddParafernalia;
+    private javax.swing.JButton btnAtrasPL;
     private javax.swing.JComboBox<String> cbParafernalia;
     private javax.swing.JComboBox<String> cbTipoP;
     private javax.swing.JCheckBox checkIsParte;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
