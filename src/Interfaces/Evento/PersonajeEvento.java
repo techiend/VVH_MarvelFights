@@ -6,13 +6,16 @@
  *  - Carlos Hurtado
  *  - Carlos Verde
  */
-package Interfaces;
+package Interfaces.Evento;
 
+import Clases.EventoC;
 import Controlador.DBController;
+import Interfaces.Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +26,7 @@ import org.json.JSONObject;
  */
 public class PersonajeEvento extends javax.swing.JFrame {
 
+    private EventoC evento;
     private int personajeIDexist = -1;
     private int personajeIDinscri = -1;
     private JSONArray listaPersonajeExist;
@@ -31,9 +35,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
     /**
      * Creates new form Personaje
      */
-    public PersonajeEvento() {
-        this.setResizable(false);
+    public PersonajeEvento(EventoC evento) {
+        this.evento = evento;
         initComponents();
+        
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         setTitle("Inscribe un personaje");
         listaPersonajeInscri = new JSONArray();
@@ -55,7 +61,7 @@ public class PersonajeEvento extends javax.swing.JFrame {
                   
                   int id = (int) model.getValueAt(fila, 0);
                   
-                  System.out.println(id);
+//                  System.out.println(id);
                   personajeIDexist = id;
                 
               }
@@ -340,6 +346,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
         btnContinuarPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnContinuarPE.setForeground(new java.awt.Color(255, 255, 255));
         btnContinuarPE.setText("CONTINUAR");
+        btnContinuarPE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarPEActionPerformed(evt);
+            }
+        });
 
         btnAtrasPE.setBackground(new java.awt.Color(0, 153, 204));
         btnAtrasPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -372,12 +383,12 @@ public class PersonajeEvento extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelarPE)
-                    .addComponent(btnContinuarPE)
-                    .addComponent(btnAtrasPE))
-                .addContainerGap())
+                    .addComponent(btnAtrasPE)
+                    .addComponent(btnContinuarPE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -403,16 +414,26 @@ public class PersonajeEvento extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();  
         
         if (personajeIDexist > 0){
-            for (int i = 0; i<listaPersonajeExist.length(); i++){
-                JSONObject personaje = listaPersonajeExist.getJSONObject(i);
+            
+            if(!DBController.estaRelacionado(listaPersonajeInscri, personajeIDexist)){
+                if(!DBController.difPowerIndicator(listaPersonajeInscri, personajeIDexist)){
+                    for (int i = 0; i<listaPersonajeExist.length(); i++){
+                        JSONObject personaje = listaPersonajeExist.getJSONObject(i);
 
-                if(personaje.getInt("id") == personajeIDexist){
-//                    model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
-                    listaPersonajeInscri.put(personaje);
-                    listaPersonajeExist.remove(i);
-                    fillTableExist();
-                    fillTableInscri();
+                        if(personaje.getInt("id") == personajeIDexist){
+        //                    model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
+
+                            listaPersonajeInscri.put(personaje);
+                            listaPersonajeExist.remove(i);
+                            fillTableExist();
+                            fillTableInscri();
+                        }
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Indicador de poder tiene diferencia mayor a 1.5 ptos", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "Personaje relacionado con los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         
@@ -450,43 +471,27 @@ public class PersonajeEvento extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_btnCancelarPEActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void btnContinuarPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarPEActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Lista: "+listaPersonajeInscri.length());
+        System.out.println("Division: "+listaPersonajeInscri.length() % 6);
+        
+        if(((listaPersonajeInscri.length() % 6) == 0) && (listaPersonajeInscri.length() > 5)){
+            evento.setInscritos(listaPersonajeInscri);
+            
+            GruposEvento abrir = new GruposEvento(evento);
+            abrir.setVisible(true);
+            dispose();
+            
+        }else{
+            if (listaPersonajeInscri.length() > 6){
+                JOptionPane.showMessageDialog(null, "Se necesitan grupos pares", "Error", JOptionPane.ERROR_MESSAGE);
+            }else{        
+                JOptionPane.showMessageDialog(null, "Minimo 6 personajes inscritos", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_btnContinuarPEActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PersonajeEvento().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtrasPE;

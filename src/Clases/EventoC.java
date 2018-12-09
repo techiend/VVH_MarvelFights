@@ -9,22 +9,26 @@
 package Clases;
 
 import java.util.ArrayList;
+import java.util.Date;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class Evento {
+public class EventoC{
     public String nombre;
-    public String fechaInicio;
+    public Date fechaInicio;
     public String fechaFin;
     public String descripccion = "";
-    public ArrayList<Inscrito> inscritos;
+    public JSONArray inscritos;
+    public int numGroups = 0;
 
-    public Evento() {
-        this.inscritos = new ArrayList();
+    public EventoC() {
+        this.inscritos = new JSONArray();
     }
 
-    public Evento(String nombre, String fechaInicio) {
+    public EventoC(String nombre, Date fechaInicio) {
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
-        this.inscritos = new ArrayList();
+        this.inscritos = new JSONArray();
     }
 
     public String getNombre() {
@@ -35,11 +39,11 @@ public class Evento {
         this.nombre = nombre;
     }
 
-    public String getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
@@ -59,17 +63,14 @@ public class Evento {
         this.fechaFin = fechaFin;
     }
 
-    public ArrayList<Inscrito> getInscritos() {
+    public JSONArray getInscritos() {
         return inscritos;
     }
 
-    public Inscrito getInscrito(int i) {
-        return inscritos.get(i);
+    public void setInscritos(JSONArray inscritos){
+        this.inscritos = inscritos;
+        this.numGroups = this.inscritos.length() / 3;
+        System.out.println("Numero total de grupos posibles: "+this.numGroups);
     }
-
-    public void setInscritos(Inscrito inscrito) {
-        this.inscritos.add(inscrito);
-    }
-    
     
 }

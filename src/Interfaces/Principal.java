@@ -8,6 +8,7 @@
  */
 package Interfaces;
 
+import Interfaces.Evento.Evento;
 import java.awt.Image;
 import java.awt.Toolkit;
 /**
