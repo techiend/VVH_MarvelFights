@@ -30,10 +30,14 @@ public class DBController {
         
         try(
             Connection conn = DBClass.getConn();
+//            PreparedStatement pstGetPersonajes = conn.prepareStatement(
+//                    "SELECT p.id_personaje, p.nombreoriginal_personaje, g.nombre_grupoafiliacion "
+//                    + "FROM grupo_afiliacion g, hist_per_ga h, personaje p "
+//                    + "WHERE g.id_grupoafiliacion = h.grupoafiliacion_fk AND h.estatus_hpg = 'Activo' AND p.id_personaje = h.personaje_fk;")
             PreparedStatement pstGetPersonajes = conn.prepareStatement(
                     "SELECT p.id_personaje, p.nombreoriginal_personaje, g.nombre_grupoafiliacion "
                     + "FROM grupo_afiliacion g, hist_per_ga h, personaje p "
-                    + "WHERE g.id_grupoafiliacion = h.grupoafiliacion_fk AND h.estatus_hpg = 'Activo' AND p.id_personaje = h.personaje_fk;")
+                    + "WHERE g.id_grupoafiliacion = h.grupoafiliacion_fk AND p.id_personaje = h.personaje_fk;")
         ){
             
             ResultSet rsGetPersonajes = pstGetPersonajes.executeQuery();

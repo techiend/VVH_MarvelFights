@@ -8,8 +8,11 @@
  */
 package Interfaces;
 
+import Clases.EventoC;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 /**
  *
  * @author cverd
@@ -51,7 +54,7 @@ public class Evento extends javax.swing.JFrame {
         dtFechaFin = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescripcion = new javax.swing.JTextArea();
         btnCancelarE = new javax.swing.JButton();
         btnContinuarE = new javax.swing.JButton();
 
@@ -98,16 +101,18 @@ public class Evento extends javax.swing.JFrame {
         jLabel4.setText("FECHA FINAL:");
 
         dpFechaInicio.setBackground(new java.awt.Color(204, 204, 204));
+        dpFechaInicio.setDateFormatString("dd-MM-yyyy");
 
         dtFechaFin.setForeground(new java.awt.Color(204, 204, 204));
+        dtFechaFin.setDateFormatString("dd-MM-yyyy");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("DESCRIPCION:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtDescripcion);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -227,9 +232,29 @@ public class Evento extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarEActionPerformed
 
     private void btnContinuarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarEActionPerformed
-        PersonajeEvento abrir = new PersonajeEvento();
-        abrir.setVisible(true);
-        dispose();
+        
+        
+        if(!nombreEvento.getText().isEmpty()){
+            if (dpFechaInicio.getDate()!= null){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String fechaI = sdf.format(dpFechaInicio.getDate());
+                
+                EventoC evento = new EventoC();
+                
+                evento.setNombre(nombreEvento.getText());
+                evento.setFechaInicio(dpFechaInicio.getDate());
+                evento.setDescripccion(txtDescripcion.getText());
+                
+                PersonajeEvento abrir = new PersonajeEvento(evento);
+                abrir.setVisible(true);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Fecha inicio de evento no puede estar vacia", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Nombre de evento no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnContinuarEActionPerformed
 
     /**
@@ -281,7 +306,7 @@ public class Evento extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField nombreEvento;
+    private javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }

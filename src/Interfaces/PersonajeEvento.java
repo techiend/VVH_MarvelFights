@@ -8,11 +8,13 @@
  */
 package Interfaces;
 
+import Clases.EventoC;
 import Controlador.DBController;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +25,7 @@ import org.json.JSONObject;
  */
 public class PersonajeEvento extends javax.swing.JFrame {
 
+    private EventoC evento;
     private int personajeIDexist = -1;
     private int personajeIDinscri = -1;
     private JSONArray listaPersonajeExist;
@@ -31,9 +34,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
     /**
      * Creates new form Personaje
      */
-    public PersonajeEvento() {
-        this.setResizable(false);
+    public PersonajeEvento(EventoC evento) {
+        this.evento = evento;
         initComponents();
+        
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         setTitle("Inscribe un personaje");
         listaPersonajeInscri = new JSONArray();
@@ -55,7 +60,7 @@ public class PersonajeEvento extends javax.swing.JFrame {
                   
                   int id = (int) model.getValueAt(fila, 0);
                   
-                  System.out.println(id);
+//                  System.out.println(id);
                   personajeIDexist = id;
                 
               }
@@ -340,6 +345,11 @@ public class PersonajeEvento extends javax.swing.JFrame {
         btnContinuarPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnContinuarPE.setForeground(new java.awt.Color(255, 255, 255));
         btnContinuarPE.setText("CONTINUAR");
+        btnContinuarPE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarPEActionPerformed(evt);
+            }
+        });
 
         btnAtrasPE.setBackground(new java.awt.Color(0, 153, 204));
         btnAtrasPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -450,43 +460,18 @@ public class PersonajeEvento extends javax.swing.JFrame {
        dispose();
     }//GEN-LAST:event_btnCancelarPEActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PersonajeEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnContinuarPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarPEActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Lista: "+listaPersonajeInscri.length());
+        System.out.println("Division: "+listaPersonajeInscri.length() % 6);
+        
+        if(((listaPersonajeInscri.length() % 6) == 0) && (listaPersonajeInscri.length() > 5)){
+            System.out.println("Paso");
+        }else{
+            JOptionPane.showMessageDialog(null, "Minimo 6 personajes inscritos ", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_btnContinuarPEActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PersonajeEvento().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtrasPE;
