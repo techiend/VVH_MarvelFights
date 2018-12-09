@@ -13,12 +13,13 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class EventoC {
+public class EventoC{
     public String nombre;
     public Date fechaInicio;
     public String fechaFin;
     public String descripccion = "";
     public JSONArray inscritos;
+    public int numGroups = 0;
 
     public EventoC() {
         this.inscritos = new JSONArray();
@@ -68,6 +69,8 @@ public class EventoC {
 
     public void setInscritos(JSONArray inscritos){
         this.inscritos = inscritos;
+        this.numGroups = this.inscritos.length() / 3;
+        System.out.println("Numero total de grupos posibles: "+this.numGroups);
     }
     
 }

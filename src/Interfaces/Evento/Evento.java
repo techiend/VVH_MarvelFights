@@ -6,9 +6,11 @@
  *  - Carlos Hurtado
  *  - Carlos Verde
  */
-package Interfaces;
+package Interfaces.Evento;
 
 import Clases.EventoC;
+import Controlador.DBController;
+import Interfaces.Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.text.SimpleDateFormat;

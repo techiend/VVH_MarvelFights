@@ -6,10 +6,11 @@
  *  - Carlos Hurtado
  *  - Carlos Verde
  */
-package Interfaces;
+package Interfaces.Evento;
 
 import Clases.EventoC;
 import Controlador.DBController;
+import Interfaces.Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -382,12 +383,12 @@ public class PersonajeEvento extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelarPE)
-                    .addComponent(btnContinuarPE)
-                    .addComponent(btnAtrasPE))
-                .addContainerGap())
+                    .addComponent(btnAtrasPE)
+                    .addComponent(btnContinuarPE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -413,16 +414,26 @@ public class PersonajeEvento extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tablePJinscri.getModel();  
         
         if (personajeIDexist > 0){
-            for (int i = 0; i<listaPersonajeExist.length(); i++){
-                JSONObject personaje = listaPersonajeExist.getJSONObject(i);
+            
+            if(!DBController.estaRelacionado(listaPersonajeInscri, personajeIDexist)){
+                if(!DBController.difPowerIndicator(listaPersonajeInscri, personajeIDexist)){
+                    for (int i = 0; i<listaPersonajeExist.length(); i++){
+                        JSONObject personaje = listaPersonajeExist.getJSONObject(i);
 
-                if(personaje.getInt("id") == personajeIDexist){
-//                    model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
-                    listaPersonajeInscri.put(personaje);
-                    listaPersonajeExist.remove(i);
-                    fillTableExist();
-                    fillTableInscri();
+                        if(personaje.getInt("id") == personajeIDexist){
+        //                    model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga")});
+
+                            listaPersonajeInscri.put(personaje);
+                            listaPersonajeExist.remove(i);
+                            fillTableExist();
+                            fillTableInscri();
+                        }
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Indicador de poder tiene diferencia mayor a 1.5 ptos", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "Personaje relacionado con los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         
@@ -466,9 +477,18 @@ public class PersonajeEvento extends javax.swing.JFrame {
         System.out.println("Division: "+listaPersonajeInscri.length() % 6);
         
         if(((listaPersonajeInscri.length() % 6) == 0) && (listaPersonajeInscri.length() > 5)){
-            System.out.println("Paso");
+            evento.setInscritos(listaPersonajeInscri);
+            
+            GruposEvento abrir = new GruposEvento(evento);
+            abrir.setVisible(true);
+            dispose();
+            
         }else{
-            JOptionPane.showMessageDialog(null, "Minimo 6 personajes inscritos ", "Error", JOptionPane.ERROR_MESSAGE);
+            if (listaPersonajeInscri.length() > 6){
+                JOptionPane.showMessageDialog(null, "Se necesitan grupos pares", "Error", JOptionPane.ERROR_MESSAGE);
+            }else{        
+                JOptionPane.showMessageDialog(null, "Minimo 6 personajes inscritos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnContinuarPEActionPerformed
 
