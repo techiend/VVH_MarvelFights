@@ -19,6 +19,9 @@ import org.json.JSONObject;
  */
 public class AddPersonaje extends javax.swing.JFrame {
 
+    private int personajeID;
+    
+    
     /**
      * Creates new form AddPersonaje
      */
@@ -474,10 +477,17 @@ public class AddPersonaje extends javax.swing.JFrame {
 
                                                                     System.out.println("PERSONAJE: "+personaje.toString(1));
 //                                                                    Agregado.AddLugar(personaje);
-                                                                    Agregado.AddPersonaje(personaje);
+                                                                        personajeID = Agregado.AddPersonaje(personaje);
                                                                     System.out.println("PERSONAJE: "+personaje.toString(1));
                                                                     
-                                                                    
+                                                                    if (personajeID > 0){
+                                                                        ParafernaliaList abrir = new ParafernaliaList(personajeID);
+                                                                        abrir.setVisible(true);
+                                                                        dispose();
+                                                                    }
+                                                                    else{
+                                                                        System.out.println("MOSTRAR ERROR");
+                                                                    }
                                                                     
 
                                                   //  fillTable();
@@ -496,9 +506,6 @@ public class AddPersonaje extends javax.swing.JFrame {
             }
         }
     }
-        AddParafernalia abrir = new AddParafernalia();
-        abrir.setVisible(true);
-        dispose();
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void txtColorOjosAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColorOjosAddActionPerformed
