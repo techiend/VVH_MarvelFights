@@ -160,6 +160,7 @@ public class Agregado {
      
      public static ArrayList listParafernalia(int personajeID){
      
+         System.out.println(personajeID);
          ArrayList<String> listaP = new ArrayList();
          
          try(
@@ -186,6 +187,7 @@ public class Agregado {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
          
+         System.out.println(listaP.toString());
          return listaP;
          
      }

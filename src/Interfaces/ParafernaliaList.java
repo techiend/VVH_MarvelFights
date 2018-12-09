@@ -28,10 +28,12 @@ public class ParafernaliaList extends javax.swing.JFrame {
      * Creates new form ParafernaliaList
      */
     public ParafernaliaList(int id_pj) {
-        initComponents();
-        
-        fillcbParafernalia();
         this.personajeID = id_pj;
+        
+        initComponents();
+       
+       
+        fillcbParafernalia();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         setTitle("Agregar parafernalia");
