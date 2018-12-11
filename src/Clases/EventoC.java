@@ -19,6 +19,7 @@ public class EventoC{
     public String fechaFin;
     public String descripccion = "";
     public JSONArray inscritos;
+    public JSONArray grupos;
     public int numGroups = 0;
 
     public EventoC() {
@@ -71,6 +72,14 @@ public class EventoC{
         this.inscritos = inscritos;
         this.numGroups = this.inscritos.length() / 3;
         System.out.println("Numero total de grupos posibles: "+this.numGroups);
+    }
+
+    public JSONArray getGrupos() {
+        return grupos;
+    }
+
+    public void setGrupos(JSONArray grupos){
+        this.grupos = grupos;
     }
     
 }

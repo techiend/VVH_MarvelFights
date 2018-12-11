@@ -62,7 +62,7 @@ public class DBController {
         return listaPersonajes;
     }
     
-    public static boolean estaRelacionado(JSONArray inscritos, int personajeID){
+    public static boolean estaRelacionado(JSONArray inscritos, int personajeID, int numGroup){
         
         try(
             Connection conn = DBClass.getConn();
@@ -70,16 +70,17 @@ public class DBController {
         ){
             
             for (int o = 0; o<inscritos.length();o++){
-            
-                pstGetPersonajes.setInt(1, personajeID);
-                pstGetPersonajes.setInt(2, inscritos.getJSONObject(o).getInt("id"));
                 
-                ResultSet rsGetPersonajes = pstGetPersonajes.executeQuery();
+                if (inscritos.getJSONObject(o).getInt("gc") == numGroup){
+                    pstGetPersonajes.setInt(1, personajeID);
+                    pstGetPersonajes.setInt(2, inscritos.getJSONObject(o).getInt("id"));
 
-                if (rsGetPersonajes.next()){
-                    return true;
+                    ResultSet rsGetPersonajes = pstGetPersonajes.executeQuery();
+
+                    if (rsGetPersonajes.next()){
+                        return true;
+                    }
                 }
-            
             }
             
             return false;
@@ -91,17 +92,19 @@ public class DBController {
         return true;
     }
     
-    public static boolean difPowerIndicator(JSONArray inscritos, int personajeID){
+    public static boolean difPowerIndicator(JSONArray inscritos, int personajeID, int numGroup){
         
         for (int o = 0; o<inscritos.length();o++){
             
-            double diferencia = getPowerIndicator(inscritos.getJSONObject(o).getInt("id")) - getPowerIndicator(personajeID);
-            
-            if (diferencia < 0)
-                diferencia = diferencia * (-1);
-            
-            if (diferencia > 1.50){
-                return true;
+            if (inscritos.getJSONObject(o).getInt("gc") == numGroup){
+                double diferencia = getPowerIndicator(inscritos.getJSONObject(o).getInt("id")) - getPowerIndicator(personajeID);
+
+                if (diferencia < 0)
+                    diferencia = diferencia * (-1);
+
+                if (diferencia > 1.50){
+                    return true;
+                }   
             }
 
         }

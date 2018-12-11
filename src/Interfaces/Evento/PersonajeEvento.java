@@ -415,8 +415,8 @@ public class PersonajeEvento extends javax.swing.JFrame {
         
         if (personajeIDexist > 0){
             
-            if(!DBController.estaRelacionado(listaPersonajeInscri, personajeIDexist)){
-                if(!DBController.difPowerIndicator(listaPersonajeInscri, personajeIDexist)){
+//            if(!DBController.estaRelacionado(listaPersonajeInscri, personajeIDexist)){
+//                if(!DBController.difPowerIndicator(listaPersonajeInscri, personajeIDexist)){
                     for (int i = 0; i<listaPersonajeExist.length(); i++){
                         JSONObject personaje = listaPersonajeExist.getJSONObject(i);
 
@@ -429,12 +429,12 @@ public class PersonajeEvento extends javax.swing.JFrame {
                             fillTableInscri();
                         }
                     }
-                }else{
-                    JOptionPane.showMessageDialog(null, "Indicador de poder tiene diferencia mayor a 1.5 ptos", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }else{
-                JOptionPane.showMessageDialog(null, "Personaje relacionado con los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+//                }else{
+//                    JOptionPane.showMessageDialog(null, "Indicador de poder tiene diferencia mayor a 1.5 ptos", "Error", JOptionPane.ERROR_MESSAGE);
+//                }
+//            }else{
+//                JOptionPane.showMessageDialog(null, "Personaje relacionado con los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
         }
         
         personajeIDexist = -1;

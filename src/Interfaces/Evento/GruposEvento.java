@@ -9,12 +9,15 @@
 package Interfaces.Evento;
 
 import Clases.EventoC;
+import Controlador.DBController;
 import Interfaces.Principal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -24,6 +27,9 @@ public class GruposEvento extends javax.swing.JFrame {
 
     private EventoC evento;
     private int personajeInscriID = -1;
+    private JSONArray grupos = new JSONArray();
+    private JSONArray listaPersonajeInscri;
+    
     
     /**
      * Creates new form GruposEvento
@@ -35,6 +41,8 @@ public class GruposEvento extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         setTitle("Agrupar Inscritos");
+        
+        listaPersonajeInscri = evento.getInscritos();
         
         fillCbPjInscri();
         fillCbNumGroup();
@@ -60,14 +68,35 @@ public class GruposEvento extends javax.swing.JFrame {
         });
     }
     
+    public void emptyTableExist(){
+        DefaultTableModel model = (DefaultTableModel) tableInscriAgrupados.getModel();
+        
+        int filas = tableInscriAgrupados.getRowCount();
+        for (int i = 1; i <= filas; i++){
+            model.removeRow(0);
+        }
+    }
+   
+    public void fillTableExist(){
+        emptyTableExist();
+        
+        DefaultTableModel model = (DefaultTableModel) tableInscriAgrupados.getModel();        
+        
+        for (int i = 0; i<grupos.length(); i++){
+            JSONObject personaje = grupos.getJSONObject(i);
+            
+            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("name"), personaje.getString("ga"), personaje.getInt("gc")});
+        }
+        
+    }
+    
     
     private void fillCbPjInscri(){
         cbPjInscri.removeAllItems();
-        JSONArray lista = evento.getInscritos();
         
         cbPjInscri.addItem("------------------------------");
-        for (int i = 0; i < lista.length(); i++){
-            cbPjInscri.addItem(Integer.toString(lista.getJSONObject(i).getInt("id"))+"."+lista.getJSONObject(i).getString("name"));
+        for (int i = 0; i < listaPersonajeInscri.length(); i++){
+            cbPjInscri.addItem(Integer.toString(listaPersonajeInscri.getJSONObject(i).getInt("id"))+"."+listaPersonajeInscri.getJSONObject(i).getString("name"));
         }
     
     }
@@ -78,6 +107,21 @@ public class GruposEvento extends javax.swing.JFrame {
         for (int i = 1; i <= evento.numGroups; i++){
             cbNumGroup.addItem(Integer.toString(i));
         }
+    }
+    
+    private boolean grupoLleno(int numGroup){
+        int count = 0;
+        for (int i = 0; i < grupos.length(); i++){
+            if (grupos.getJSONObject(i).getInt("gc") == numGroup){
+                count++;
+            }
+        }
+        
+        if (count == 3){
+            return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -229,6 +273,11 @@ public class GruposEvento extends javax.swing.JFrame {
         btnQuitar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnQuitar.setForeground(new java.awt.Color(255, 255, 255));
         btnQuitar.setText("QUITAR");
+        btnQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelContainerLayout = new javax.swing.GroupLayout(panelContainer);
         panelContainer.setLayout(panelContainerLayout);
@@ -270,6 +319,11 @@ public class GruposEvento extends javax.swing.JFrame {
         btnContinuarPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnContinuarPE.setForeground(new java.awt.Color(255, 255, 255));
         btnContinuarPE.setText("CONTINUAR");
+        btnContinuarPE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarPEActionPerformed(evt);
+            }
+        });
 
         btnAtrasPE.setBackground(new java.awt.Color(0, 153, 204));
         btnAtrasPE.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -303,11 +357,11 @@ public class GruposEvento extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelarPE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAtrasPE)
-                        .addComponent(btnContinuarPE)))
+                        .addComponent(btnContinuarPE))
+                    .addComponent(btnCancelarPE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -344,9 +398,77 @@ public class GruposEvento extends javax.swing.JFrame {
 
     private void btnAgruparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgruparActionPerformed
         // TODO add your handling code here:
-        
+        if (cbPjInscri.getSelectedIndex() > 0){
+            
+            if (!grupoLleno(Integer.parseInt(cbNumGroup.getSelectedItem().toString()))){
+                
+                String[] infoPj = cbPjInscri.getSelectedItem().toString().split("\\.");
+                
+                
+                for (int i = 0; i < listaPersonajeInscri.length(); i++){
+                    if (listaPersonajeInscri.getJSONObject(i).getInt("id") == Integer.parseInt(infoPj[0])){
+                        JSONObject personaje = listaPersonajeInscri.getJSONObject(i);
+                        int numeroGrupo = Integer.parseInt(cbNumGroup.getSelectedItem().toString());
+                        
+                        if(!DBController.estaRelacionado(grupos, personaje.getInt("id"), numeroGrupo)){
+//                            if(!DBController.difPowerIndicator(grupos, personaje.getInt("id"), numeroGrupo)){
+                                personaje.put("gc", numeroGrupo);
+                        
+                                grupos.put(personaje);
+                                listaPersonajeInscri.remove(i);
+
+                                fillTableExist();
+                                fillCbPjInscri();
+                            
+//                            }else{
+//                                JOptionPane.showMessageDialog(null, "Indicador de poder tiene diferencia mayor a 1.5 ptos", "Error", JOptionPane.ERROR_MESSAGE);
+//                            }
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Personaje relacionado con los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "El grupo que seleccionaste se encuentra lleno", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un personaje", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_btnAgruparActionPerformed
+
+    private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        // TODO add your handling code here:
+        if (personajeInscriID > 0){
+            for (int i = 0; i<grupos.length(); i++){
+                JSONObject personaje = grupos.getJSONObject(i);
+
+                if(personaje.getInt("id") == personajeInscriID){
+                    listaPersonajeInscri.put(personaje);
+                    grupos.remove(i);
+                    
+                    fillCbPjInscri();
+                    fillTableExist();
+                }
+            }
+        }
+        
+        personajeInscriID = -1;
+    }//GEN-LAST:event_btnQuitarActionPerformed
+
+    private void btnContinuarPEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarPEActionPerformed
+        // TODO add your handling code here:
+        
+        if (listaPersonajeInscri.length() == 0){
+            System.out.println("PERMITIR INSERT DE EVENTO e INSCRITOS");
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes armar grupos con TODOS los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnContinuarPEActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
