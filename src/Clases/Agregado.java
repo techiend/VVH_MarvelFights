@@ -31,13 +31,16 @@ public class Agregado {
         
         int lugarNac = -1;
         int personajeID = -1;
+        int profesionID = -1;
          
         try(
             Connection conn = DBClass.getConn();
             PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO personaje(id_personaje, nombreoriginal_personaje, nombrereal_personaje, apellidoreal_personaje, identidad_personaje, biografia_personaje, estadocivil_personaje, genero_personaje, altura_personaje, peso_personaje, colorojos_personaje, colorpelo_personaje, lugarNacimiento_fk, tipo_personaje) "
                     + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement pstInsertarLugar = conn.prepareStatement("INSERT INTO lugar(id_lugar, nombre_lugar, tipo, tipo_greografia, id_lugar_fk) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)
-        ){
+            PreparedStatement pstInsertarLugar = conn.prepareStatement("INSERT INTO lugar(id_lugar, nombre_lugar, tipo, tipo_greografia, id_lugar_fk) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstInsertarProfesion = conn.prepareStatement("INSERT INTO profesion (id_profesion, nombre_profesion, descripcion_profesion) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement psInsertarPJPR = conn.prepareStatement("INSERT INTO pj_pr VALUES (?,?)")
+                ){
             // INSERTAR PAIS
             pstInsertarLugar.setInt(1, DBClass.getLastValue("lugar"));
             pstInsertarLugar.setString(2, personaje.getString("pais"));
@@ -125,21 +128,42 @@ public class Agregado {
                 pstInsertar.setString(12, personaje.getString("colorCabello"));
                 pstInsertar.setInt (13, lugarNac);
                 pstInsertar.setString(14, personaje.getString("tipo"));
+                
+                
+                //Insertar profesion 
+                pstInsertarProfesion.setInt(1, DBClass.getLastValue("profesion"));
+                pstInsertarProfesion.setString(2, personaje.getString("profesion"));
+                pstInsertarProfesion.setString(3, personaje.getString("descripcionprofesion"));
 
 
                 if (pstInsertar.executeUpdate() > 0){
+                    if (pstInsertarProfesion.executeUpdate() > 0){
 
-                    ResultSet personajeRST = pstInsertar.getGeneratedKeys();
-                    if (personajeRST.next()){
-                        //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
-
-                        // INSERTAR PERSONAJE
-                        personajeID = personajeRST.getInt(1);
-                        
-                        System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB con el numero: "+personajeID+"\n");
-                        return personajeID;
-                    }
-
+                        ResultSet personajeRST = pstInsertar.getGeneratedKeys();
+                        if (personajeRST.next()){
+                            //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
+                            
+                            // INSERTAR PERSONAJE
+                            personajeID = personajeRST.getInt(1);
+                            
+                            
+                            ResultSet profesionFKRST = pstInsertarProfesion.getGeneratedKeys();
+                            if (profesionFKRST.next()){
+                                
+                                profesionID = profesionFKRST.getInt(1);
+                                psInsertarPJPR.setInt(1,profesionID);
+                                psInsertarPJPR.setInt(2, personajeID);
+                                
+                                psInsertarPJPR.executeUpdate();
+                                
+                                
+                                
+                            }
+                            System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB con el numero: "+personajeID+"\n");
+                            return personajeID;
+                        }
+                    }else 
+                         System.out.println("PROFESION, no ha sido insertada\n");   
                 }else{
 
                     System.out.println("PERSONAJE: "+personaje.getString("nombre")+" no ha sido agregado a la DB\n");
@@ -238,7 +262,8 @@ public class Agregado {
                     + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
                     + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
                     + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
-                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje WHERE id_personaje = ?")
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\" "
+                    + "FROM personaje WHERE id_personaje = ?;")
                 ){
             
             JSONObject personaje = new JSONObject();
@@ -262,6 +287,8 @@ public class Agregado {
                 personaje.put("peso", rsGetPersonaje.getDouble(11));
                 personaje.put("colorOjos", rsGetPersonaje.getString(12));
                 personaje.put("colorCabello", rsGetPersonaje.getString(13));
+                personaje.put("profesion", rsGetPersonaje.getString(14));
+                personaje.put("descripcionprofesion", rsGetPersonaje.getString(15));
                 
 //                System.out.println("ALUMNO: "+alumno.toString());
 
@@ -286,7 +313,8 @@ public class Agregado {
                     + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
                     + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
                     + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
-                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\"  FROM personaje")
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\""
+                    + " FROM personaje;")
         ){
             
             ResultSet rsGetPersonaje = pstGetAlumnos.executeQuery();
@@ -308,6 +336,7 @@ public class Agregado {
                 personaje.put("colorojos", rsGetPersonaje.getString(12));
                 personaje.put("colorpelo", rsGetPersonaje.getString(13));
                 
+                
 //                System.out.println("ALUMNO: "+alumno.toString());
 
                 listaPersonaje.put(personaje);
@@ -326,21 +355,35 @@ public class Agregado {
     
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("DELETE FROM personaje WHERE id_personaje = ?")
+            PreparedStatement pstInsertar = conn.prepareStatement("DELETE FROM personaje WHERE id_personaje = ?");
+            PreparedStatement  pstSelect_PJPR  = conn.prepareStatement("select profesionpjpr_fk from pj_pr where personajepjpr_fk = ? ;");
+            PreparedStatement pstDelete_PJPR = conn.prepareStatement("delete from pj_pr where personajepjpr_fk = ? ");
+            PreparedStatement pstDelete_Profesion = conn.prepareStatement("delete from profesion where id_profesion = ?")
+          
         ){
             
-            pstInsertar.setInt(1, Integer.parseInt(id));
-            
-            
-            if (pstInsertar.executeUpdate() > 0){
                 
-                System.out.println("\nPersonaje: "+id+" ha sido borrado de la DB\n");
+                JSONArray profesiones = new JSONArray();
                 
-            }else{
+                pstSelect_PJPR.setInt(1, Integer.parseInt(id));
+                ResultSet profesionesNAN = pstSelect_PJPR.executeQuery();
                 
-                System.out.println("\nPERSONAJE: "+id+" no ha sido borrado de la DB\n");
+                while ( profesionesNAN.next()){
+                    profesiones.put(profesionesNAN.getInt(1));
+                }
                 
-            }
+                pstDelete_PJPR.setInt(1, Integer.parseInt(id));
+                
+                pstDelete_PJPR.executeUpdate();
+                
+                for (int i = 0; i < profesiones.length(); i++){
+                    pstDelete_Profesion.setInt(1, profesiones.getInt(i));
+                    pstDelete_Profesion.executeUpdate();
+                }
+                pstInsertar.setInt(1,Integer.parseInt(id));
+                pstInsertar.executeUpdate();
+                
+           
             
             
         

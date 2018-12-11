@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroupSecretaPublica">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="iconImage" type="java.awt.Image" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -203,7 +207,7 @@
                           <Color blue="99" green="99" red="99" type="rgb"/>
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="13" rowCount="0">
+                          <Table columnCount="15" rowCount="0">
                             <Column editable="false" title="ID" type="java.lang.Object"/>
                             <Column editable="false" title="TIPO" type="java.lang.Object"/>
                             <Column editable="false" title="NOMBRE O" type="java.lang.Object"/>
@@ -212,11 +216,13 @@
                             <Column editable="false" title="IDENTIDAD" type="java.lang.Object"/>
                             <Column editable="false" title="BIOGRAFIA" type="java.lang.Object"/>
                             <Column editable="false" title="EDO CIVIL" type="java.lang.Object"/>
-                            <Column editable="true" title="GENERO" type="java.lang.Object"/>
+                            <Column editable="false" title="GENERO" type="java.lang.Object"/>
                             <Column editable="false" title="ALTURA" type="java.lang.Object"/>
                             <Column editable="false" title="PESO" type="java.lang.Object"/>
                             <Column editable="false" title="COLOR OJOS" type="java.lang.Object"/>
                             <Column editable="false" title="COLOR CABELLO" type="java.lang.Object"/>
+                            <Column editable="false" title="PROFESION" type="java.lang.Object"/>
+                            <Column editable="false" title="DESC PROFESION" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -283,7 +289,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnDelPersonaje">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Eliminar"/>
+                        <Property name="text" type="java.lang.String" value="ELIMINAR"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDelPersonajeActionPerformed"/>
@@ -291,7 +297,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnModAlumno">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Modificar"/>
+                        <Property name="text" type="java.lang.String" value="MODIFICAR"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModAlumnoActionPerformed"/>
@@ -301,6 +307,9 @@
                 </Container>
                 <Container class="javax.swing.JPanel" name="panelMod">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                         <TitledBorder title="Modificar"/>
@@ -480,7 +489,16 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnActualizar">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Actualizar"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="cc" green="0" red="99" type="rgb"/>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="ACTUALIZAR"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarActionPerformed"/>
@@ -496,11 +514,17 @@
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="rbSecrP">
                       <Properties>
+                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                          <ComponentRef name="buttonGroupSecretaPublica"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Secreta"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JRadioButton" name="rbPublP">
                       <Properties>
+                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                          <ComponentRef name="buttonGroupSecretaPublica"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Publica"/>
                       </Properties>
                     </Component>
@@ -607,7 +631,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel10">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel10"/>
+                        <Property name="text" type="java.lang.String" value="Biografia"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel11">

@@ -94,6 +94,7 @@ public class Personajes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupSecretaPublica = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -168,11 +169,11 @@ public class Personajes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "TIPO", "NOMBRE O", "NOMBRE R", "APELLIDO REAL", "IDENTIDAD", "BIOGRAFIA", "EDO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO"
+                "ID", "TIPO", "NOMBRE O", "NOMBRE R", "APELLIDO REAL", "IDENTIDAD", "BIOGRAFIA", "EDO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO", "PROFESION", "DESC PROFESION"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -188,14 +189,14 @@ public class Personajes extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(153, 153, 153));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnDelPersonaje.setText("Eliminar");
+        btnDelPersonaje.setText("ELIMINAR");
         btnDelPersonaje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDelPersonajeActionPerformed(evt);
             }
         });
 
-        btnModAlumno.setText("Modificar");
+        btnModAlumno.setText("MODIFICAR");
         btnModAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModAlumnoActionPerformed(evt);
@@ -228,6 +229,7 @@ public class Personajes extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        panelMod.setBackground(new java.awt.Color(204, 204, 204));
         panelMod.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar"));
 
         txtColorOjosP.addActionListener(new java.awt.event.ActionListener() {
@@ -236,15 +238,20 @@ public class Personajes extends javax.swing.JFrame {
             }
         });
 
-        btnActualizar.setText("Actualizar");
+        btnActualizar.setBackground(new java.awt.Color(153, 0, 204));
+        btnActualizar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setText("ACTUALIZAR");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarActionPerformed(evt);
             }
         });
 
+        buttonGroupSecretaPublica.add(rbSecrP);
         rbSecrP.setText("Secreta");
 
+        buttonGroupSecretaPublica.add(rbPublP);
         rbPublP.setText("Publica");
 
         cbSolteriaP.setBackground(new java.awt.Color(153, 153, 153));
@@ -273,7 +280,7 @@ public class Personajes extends javax.swing.JFrame {
 
         jLabel9.setText("Color ojos");
 
-        jLabel10.setText("jLabel10");
+        jLabel10.setText("Biografia");
 
         jLabel11.setText("Color cabello");
 
@@ -658,6 +665,7 @@ public class Personajes extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelarP;
     private javax.swing.JButton btnDelPersonaje;
     private javax.swing.JButton btnModAlumno;
+    private javax.swing.ButtonGroup buttonGroupSecretaPublica;
     private javax.swing.JComboBox<String> cbSexoP;
     private javax.swing.JComboBox<String> cbSolteriaP;
     private javax.swing.JComboBox<String> cbTipoP;

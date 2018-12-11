@@ -115,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setText("PERSONAJES");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("GANADORES");
+        jLabel3.setText("BUSCAR");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("VER EVENTOS");
@@ -138,15 +138,15 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(btnGanadores, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(79, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(116, 116, 116)
                 .addComponent(jLabel5)
-                .addGap(100, 100, 100)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(70, 70, 70)
+                .addGap(73, 73, 73)
                 .addComponent(jLabel2)
-                .addGap(81, 81, 81)
+                .addGap(90, 90, 90)
                 .addComponent(jLabel3)
-                .addGap(90, 90, 90))
+                .addGap(102, 102, 102))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
