@@ -60,7 +60,7 @@ public class DBClass {
                 
             }else {
                 
-                return -1;
+                return 1;
             }
             
         } catch (SQLException ex) {
