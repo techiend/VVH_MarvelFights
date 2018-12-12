@@ -562,19 +562,19 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         personaje.put("descripcionprofesion", txtDescripcionProfesionAdd.getText());
                                                                         
                                                                        // fillTable();
-                                                                    System.out.println("PERSONAJE: "+personaje.toString(1));
-//                                                                    Agregado.AddLugar(personaje);
-                                                                        personajeID = Agregado.AddPersonaje(personaje);
-                                                                    System.out.println("PERSONAJE: "+personaje.toString(1));
-                                                                    
-                                                                    if (personajeID > 0){
-                                                                        ParafernaliaList abrir = new ParafernaliaList(personajeID);
-                                                                        abrir.setVisible(true);
-                                                                        dispose();
-                                                                    }
-                                                                            else{
-                                                                                System.out.println("MOSTRAR ERROR");
-                                                                            }
+                                                                        System.out.println("PERSONAJE: "+personaje.toString(1));
+    //                                                                    Agregado.AddLugar(personaje);
+                                                                            personajeID = Agregado.AddPersonaje(personaje);
+                                                                        System.out.println("PERSONAJE: "+personaje.toString(1));
+
+                                                                        if (personajeID > 0){
+                                                                            ParafernaliaList abrir = new ParafernaliaList(personajeID);
+                                                                            abrir.setVisible(true);
+                                                                            dispose();
+                                                                        }
+                                                                        else{
+                                                                            System.out.println("MOSTRAR ERROR");
+                                                                        }
 
 
                                                           //  fillTable();

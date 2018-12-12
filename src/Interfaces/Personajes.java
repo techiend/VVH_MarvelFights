@@ -169,11 +169,11 @@ public class Personajes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "TIPO", "NOMBRE O", "NOMBRE R", "APELLIDO REAL", "IDENTIDAD", "BIOGRAFIA", "EDO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO", "PROFESION", "DESC PROFESION"
+                "ID", "TIPO", "NOMBRE O", "NOMBRE R", "APELLIDO REAL", "IDENTIDAD", "BIOGRAFIA", "EDO CIVIL", "GENERO", "ALTURA", "PESO", "COLOR OJOS", "COLOR CABELLO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -540,6 +540,12 @@ public class Personajes extends javax.swing.JFrame {
 
         private void fillPanelMod(String id) {
         JSONObject personaje = Agregado.getPersonaje(id);
+        
+        if (personaje.getString("identidad").equals("Secreta")){
+            rbSecrP.setSelected(true);
+        }else{
+            rbPublP.setSelected(true);
+        }
         
         txtIDP.setText(String.valueOf(personaje.getInt("id")));
         txtNOP.setText(personaje.getString("nameo"));

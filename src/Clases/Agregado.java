@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class Agregado {
        
         
-     public static int AddPersonaje(JSONObject personaje){
+    public static int AddPersonaje(JSONObject personaje){
         
         int lugarNac = -1;
         int personajeID = -1;
@@ -186,7 +186,7 @@ public class Agregado {
         return -1;
 }
      
-     public static ArrayList listParafernalia(int personajeID){
+    public static ArrayList listParafernalia(int personajeID){
      
          System.out.println(personajeID);
          ArrayList<String> listaP = new ArrayList();
@@ -242,7 +242,7 @@ public class Agregado {
                 
                 parafernalia.put("id", rsGetParafernalia.getInt(1));
                 parafernalia.put("name", rsGetParafernalia.getString(2));
-                parafernalia.put("tipo", rsGetParafernalia.getString(4));
+                parafernalia.put("tipo", rsGetParafernalia.getString(3));
 
                 listaParafernalia.put(parafernalia);
             }
@@ -257,7 +257,7 @@ public class Agregado {
         
     }
     
-     public static JSONObject getPersonaje(String id){
+    public static JSONObject getPersonaje(String id){
         
         try(
             Connection conn = DBClass.getConn();
@@ -291,8 +291,6 @@ public class Agregado {
                 personaje.put("peso", rsGetPersonaje.getDouble(11));
                 personaje.put("colorOjos", rsGetPersonaje.getString(12));
                 personaje.put("colorCabello", rsGetPersonaje.getString(13));
-                personaje.put("profesion", rsGetPersonaje.getString(14));
-                personaje.put("descripcionprofesion", rsGetPersonaje.getString(15));
                 
 //                System.out.println("ALUMNO: "+alumno.toString());
 
@@ -307,7 +305,7 @@ public class Agregado {
         return null;
     }
      
-     public static JSONArray getPersonaje(){
+    public static JSONArray getPersonaje(){
         JSONArray listaPersonaje = new JSONArray();
         
         try(
@@ -355,7 +353,7 @@ public class Agregado {
         return listaPersonaje;
     }
      
-     public static void DelPersonaje(String id){
+    public static void DelPersonaje(String id){
     
         try(
             Connection conn = DBClass.getConn();
@@ -398,7 +396,7 @@ public class Agregado {
      
      
 
-public static void ModPersonaje(JSONObject personaje){
+    public static void ModPersonaje(JSONObject personaje){
         
         try(
             Connection conn = DBClass.getConn();
@@ -440,9 +438,10 @@ public static void ModPersonaje(JSONObject personaje){
         } catch (SQLException ex) {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }     
+    }
     
-     public static void AddParafernalia(JSONObject parafernalia, int idPersonaje, boolean isPart){
+    
+    public static void AddParafernalia(JSONObject parafernalia, int idPersonaje, boolean isPart){
          
         try(
             Connection conn = DBClass.getConn();
@@ -461,6 +460,7 @@ public static void ModPersonaje(JSONObject personaje){
                 
                 if  (pstInsertarParafernalia.executeUpdate() > 0 ){
                     ResultSet rsParafernalia = pstInsertarParafernalia.getGeneratedKeys();
+                    
                     if (rsParafernalia.next()){
                         pstInsertarPA_PA.setInt(1, Integer.parseInt(parafernalia.getString("id_pa")));
                         pstInsertarPA_PA.setInt(2, rsParafernalia.getInt(1));
