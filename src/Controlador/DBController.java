@@ -32,7 +32,7 @@ public class DBController {
             Connection conn = DBClass.getConn();
             PreparedStatement pstGetPersonajes = conn.prepareStatement(
                     "SELECT p.id_personaje, p.nombreoriginal_personaje, g.nombre_grupoafiliacion "
-                    + "FROM grupo_afiliacion g, hist_per_ga h, personaje p "
+                    + "FROM acc_grupo_afiliacion g, acc_hist_per_ga h, acc_personaje p "
                     + "WHERE g.id_grupoafiliacion = h.grupoafiliacion_fk AND h.estatus_hpg = 'Activo' AND p.id_personaje = h.personaje_fk;")
 //            PreparedStatement pstGetPersonajes = conn.prepareStatement(
 //                    "SELECT p.id_personaje, p.nombreoriginal_personaje, g.nombre_grupoafiliacion "
@@ -62,24 +62,25 @@ public class DBController {
         return listaPersonajes;
     }
     
-    public static boolean estaRelacionado(JSONArray inscritos, int personajeID){
+    public static boolean estaRelacionado(JSONArray inscritos, int personajeID, int numGroup){
         
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstGetPersonajes = conn.prepareStatement("SELECT * FROM relacion_personaje WHERE personaje_fk = ? AND personaje_relacion_fk = ?")
+            PreparedStatement pstGetPersonajes = conn.prepareStatement("SELECT * FROM acc_relacion_personaje WHERE personaje_fk = ? AND personaje_relacion_fk = ?")
         ){
             
             for (int o = 0; o<inscritos.length();o++){
-            
-                pstGetPersonajes.setInt(1, personajeID);
-                pstGetPersonajes.setInt(2, inscritos.getJSONObject(o).getInt("id"));
                 
-                ResultSet rsGetPersonajes = pstGetPersonajes.executeQuery();
+                if (inscritos.getJSONObject(o).getInt("gc") == numGroup){
+                    pstGetPersonajes.setInt(1, personajeID);
+                    pstGetPersonajes.setInt(2, inscritos.getJSONObject(o).getInt("id"));
 
-                if (rsGetPersonajes.next()){
-                    return true;
+                    ResultSet rsGetPersonajes = pstGetPersonajes.executeQuery();
+
+                    if (rsGetPersonajes.next()){
+                        return true;
+                    }
                 }
-            
             }
             
             return false;
@@ -91,17 +92,19 @@ public class DBController {
         return true;
     }
     
-    public static boolean difPowerIndicator(JSONArray inscritos, int personajeID){
+    public static boolean difPowerIndicator(JSONArray inscritos, int personajeID, int numGroup){
         
         for (int o = 0; o<inscritos.length();o++){
             
-            double diferencia = getPowerIndicator(inscritos.getJSONObject(o).getInt("id")) - getPowerIndicator(personajeID);
-            
-            if (diferencia < 0)
-                diferencia = diferencia * (-1);
-            
-            if (diferencia > 1.50){
-                return true;
+            if (inscritos.getJSONObject(o).getInt("gc") == numGroup){
+                double diferencia = getPowerIndicator(inscritos.getJSONObject(o).getInt("id")) - getPowerIndicator(personajeID);
+
+                if (diferencia < 0)
+                    diferencia = diferencia * (-1);
+
+                if (diferencia > 1.50){
+                    return true;
+                }   
             }
 
         }
@@ -116,7 +119,7 @@ public class DBController {
         
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstGetHabilidades = conn.prepareStatement("SELECT nombre_habilidad, valor_habilidad FROM habilidad WHERE personaje_fk = ?")
+            PreparedStatement pstGetHabilidades = conn.prepareStatement("SELECT nombre_habilidad, valor_habilidad FROM acc_habilidad WHERE personaje_fk = ?")
         ){
             
             pstGetHabilidades.setInt(1, personajeID);
