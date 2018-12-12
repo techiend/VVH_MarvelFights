@@ -195,7 +195,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEventoActionPerformed
 
     private void btnVerEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEventoActionPerformed
-        // TODO add your handling code here:
+        VerEvento abrir = new VerEvento();
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnVerEventoActionPerformed
 
     private void btnPersonajesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonajesActionPerformed

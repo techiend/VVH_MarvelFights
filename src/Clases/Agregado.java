@@ -14,7 +14,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -489,4 +493,62 @@ public static void ModPersonaje(JSONObject personaje){
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
+     
+
+     public static JSONArray getEvento() {
+        JSONArray listaEvento = new JSONArray();
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetEventos = conn.prepareStatement("SELECT id_evento \"ID\", nombre_evento \"Nombre evento\","
+                    + " fechainicio_evento \"Fecha inicio\", fechafin_evento \"Fecha fin\", descripcion_evento \"Descripcion\" "
+                    + "FROM acc_evento")
+        ){
+            
+            ResultSet rsGetEventos = pstGetEventos.executeQuery();
+            
+            while (rsGetEventos.next()){    
+                JSONObject evento = new JSONObject();
+                
+                evento.put("id", rsGetEventos.getInt(1));
+                evento.put("nombreevento", rsGetEventos.getString(2));
+                evento.put("fechainicio", rsGetEventos.getString(3));
+                evento.put("fechafin", rsGetEventos.getString(4));
+                evento.put("descripcion", rsGetEventos.getString(5));
+                
+                try {
+            
+                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    String diaActual = dateFormat.format(new Date());
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    Date actual = sdf.parse(diaActual);
+                    Date tfinal = sdf.parse(evento.getString("fechafin"));
+
+                    if (actual.compareTo(tfinal) > 0){
+                        System.out.println("Evento inactivo");
+                        evento.put("status", "INACTIVO");
+                    }else
+                                System.out.println("Evento activo");
+                                evento.put("status", "ACTIVO");
+
+                    System.out.println(actual.compareTo(tfinal));
+                } catch (ParseException ex) {
+                    Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                System.out.println(evento.toString(1));
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+                listaEvento.put(evento);
+            }
+            
+            return listaEvento;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listaEvento;
+    }
 } 
