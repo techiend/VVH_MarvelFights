@@ -101,7 +101,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnPersonajes.setBackground(new java.awt.Color(255, 255, 255));
-        btnPersonajes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Fight1M.png"))); // NOI18N
+        btnPersonajes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/usuario.png"))); // NOI18N
         btnPersonajes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPersonajesActionPerformed(evt);
@@ -109,7 +109,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnGanadores.setBackground(new java.awt.Color(255, 255, 255));
-        btnGanadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/TrofeoM.png"))); // NOI18N
+        btnGanadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8-búsqueda-64.png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("PERSONAJES");
