@@ -8,6 +8,7 @@
  */
 package Controlador;
 
+import Clases.EventoC;
 import DBHelper.DBClass;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,10 +19,6 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- *
- * @author cverd
- */
 public class DBController {
     
     public static JSONArray getPersonajes(){
@@ -159,6 +156,19 @@ public class DBController {
         }
         
         return indicador;
+    }
+    
+    public static void createEvento(EventoC evento){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pst = conn.prepareStatement("INSERT INTO acc_evento VALUES ()")
+        ){
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(DBController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
 }

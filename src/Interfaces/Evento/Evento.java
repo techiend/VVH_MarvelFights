@@ -13,8 +13,15 @@ import Controlador.DBController;
 import Interfaces.Principal;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 /**
  *
  * @author cverd
@@ -27,6 +34,10 @@ public class Evento extends javax.swing.JFrame {
     public Evento() {
         this.setResizable(false);
         initComponents();
+        
+        ((JTextField) dpFechaInicio.getDateEditor()).setEditable(false);
+        ((JTextField) dtFechaFin.getDateEditor()).setEditable(false);
+        
         this.setLocationRelativeTo(null);
         setTitle("Evento");
     }
@@ -91,7 +102,6 @@ public class Evento extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("NOMBRE EVENTO:");
 
-        nombreEvento.setBackground(new java.awt.Color(204, 204, 204));
         nombreEvento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -104,9 +114,11 @@ public class Evento extends javax.swing.JFrame {
 
         dpFechaInicio.setBackground(new java.awt.Color(204, 204, 204));
         dpFechaInicio.setDateFormatString("dd-MM-yyyy");
+        dpFechaInicio.setMinSelectableDate(new Date());
 
         dtFechaFin.setForeground(new java.awt.Color(204, 204, 204));
         dtFechaFin.setDateFormatString("dd-MM-yyyy");
+        dtFechaFin.setMinSelectableDate(new Date());
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -136,10 +148,8 @@ public class Evento extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(dpFechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(dtFechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,18 +248,45 @@ public class Evento extends javax.swing.JFrame {
         
         if(!nombreEvento.getText().isEmpty()){
             if (dpFechaInicio.getDate()!= null){
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String fechaI = sdf.format(dpFechaInicio.getDate());
-                
-                EventoC evento = new EventoC();
-                
-                evento.setNombre(nombreEvento.getText());
-                evento.setFechaInicio(dpFechaInicio.getDate());
-                evento.setDescripccion(txtDescripcion.getText());
-                
-                PersonajeEvento abrir = new PersonajeEvento(evento);
-                abrir.setVisible(true);
-                dispose();
+                if (dtFechaFin.getDate()!= null){
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    long dias = 0;
+
+                    try {
+                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        String fechaI = sdf.format(dpFechaInicio.getDate());
+                        String fechaf = sdf.format(dtFechaFin.getDate());
+
+                        Date inicio = sdf.parse(fechaI);
+                        Date fin = sdf.parse(fechaf);
+
+                        long diferenciaEnms = fin.getTime() - inicio.getTime();
+                        dias = diferenciaEnms / (1000 * 60 * 60 * 24);
+
+
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Evento.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if ((int) dias >= 7 ){
+
+                        EventoC evento = new EventoC();
+
+                        evento.setNombre(nombreEvento.getText());
+                        evento.setFechaInicio(dpFechaInicio.getDate());
+                        evento.setDescripccion(txtDescripcion.getText());
+
+                        PersonajeEvento abrir = new PersonajeEvento(evento);
+                        abrir.setVisible(true);
+                        dispose();
+
+                    }else{
+                        JOptionPane.showMessageDialog(null, "El evento debe durar al menos 7 dias", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                }else{
+                    JOptionPane.showMessageDialog(null, "Fecha final de evento no puede estar vacia", "Error", JOptionPane.ERROR_MESSAGE);
+                } 
             }else{
                 JOptionPane.showMessageDialog(null, "Fecha inicio de evento no puede estar vacia", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -259,6 +296,7 @@ public class Evento extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnContinuarEActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -290,6 +328,7 @@ public class Evento extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Evento().setVisible(true);
+                
             }
         });
     }
