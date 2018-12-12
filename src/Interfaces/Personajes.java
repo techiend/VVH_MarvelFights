@@ -107,6 +107,7 @@ public class Personajes extends javax.swing.JFrame {
         txtIDPersonaje = new javax.swing.JTextField();
         btnDelPersonaje = new javax.swing.JButton();
         btnModAlumno = new javax.swing.JButton();
+        cbTipoMod = new javax.swing.JComboBox<>();
         panelMod = new javax.swing.JPanel();
         txtColorOjosP = new javax.swing.JTextField();
         txtColorCabelloP = new javax.swing.JTextField();
@@ -203,6 +204,8 @@ public class Personajes extends javax.swing.JFrame {
             }
         });
 
+        cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion" }));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -210,11 +213,12 @@ public class Personajes extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnDelPersonaje)
                         .addGap(18, 18, 18)
-                        .addComponent(btnModAlumno)))
+                        .addComponent(btnModAlumno))
+                    .addComponent(cbTipoMod, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -222,7 +226,9 @@ public class Personajes extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbTipoMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelPersonaje)
                     .addComponent(btnModAlumno))
@@ -563,7 +569,26 @@ public class Personajes extends javax.swing.JFrame {
     
     private void btnModAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModAlumnoActionPerformed
         // TODO add your handling code here:
-      fillPanelMod(txtIDPersonaje.getText());
+        
+        if (!txtIDPersonaje.getText().isEmpty() && Integer.parseInt(txtIDPersonaje.getText()) > 0 ){
+            switch(cbTipoMod.getSelectedItem().toString()){
+                case "Personaje": 
+                    fillPanelMod(txtIDPersonaje.getText());
+                    break;
+                case "Alias":
+                    break;
+                case "Parafernalia":
+                    ParafernaliaList abrir = new ParafernaliaList(Integer.parseInt(txtIDPersonaje.getText()));
+                    abrir.setVisible(true);
+                    break;
+                case "Profesion":
+                    break;
+                default: JOptionPane.showMessageDialog(this, "Debe seleccionar que desea modificar", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Debe ingresar un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+          
 
     }//GEN-LAST:event_btnModAlumnoActionPerformed
 
@@ -674,6 +699,7 @@ public class Personajes extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupSecretaPublica;
     private javax.swing.JComboBox<String> cbSexoP;
     private javax.swing.JComboBox<String> cbSolteriaP;
+    private javax.swing.JComboBox<String> cbTipoMod;
     private javax.swing.JComboBox<String> cbTipoP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
