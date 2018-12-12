@@ -88,12 +88,6 @@ public class AddPersonaje extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtProfesionAdd = new javax.swing.JTextArea();
-        jLabel21 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtDescripcionProfesionAdd = new javax.swing.JTextArea();
         btnCancelarAP = new javax.swing.JButton();
         btnAgregarP = new javax.swing.JButton();
 
@@ -231,22 +225,6 @@ public class AddPersonaje extends javax.swing.JFrame {
 
         jLabel19.setText("PAIS");
 
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("PROFESION:");
-
-        txtProfesionAdd.setColumns(20);
-        txtProfesionAdd.setRows(5);
-        jScrollPane2.setViewportView(txtProfesionAdd);
-
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setText("DESCRIPCION PROFESION:");
-
-        txtDescripcionProfesionAdd.setColumns(20);
-        txtDescripcionProfesionAdd.setRows(5);
-        jScrollPane3.setViewportView(txtDescripcionProfesionAdd);
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -267,12 +245,6 @@ public class AddPersonaje extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(rbSecretaAdd)
-                                .addGap(35, 35, 35)
-                                .addComponent(rbPublicaAdd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel20))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -282,16 +254,17 @@ public class AddPersonaje extends javax.swing.JFrame {
                                 .addGap(59, 59, 59)
                                 .addComponent(jLabel6))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(cbSexoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(59, 59, 59))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(cbSolteriaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addComponent(jLabel21))
+                                .addComponent(cbSexoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(202, 202, 202))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(cbSolteriaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(rbSecretaAdd)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(rbPublicaAdd))
                                     .addComponent(txtColorOjosAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -337,10 +310,7 @@ public class AddPersonaje extends javax.swing.JFrame {
                                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(jScrollPane1)
                         .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
@@ -396,19 +366,12 @@ public class AddPersonaje extends javax.swing.JFrame {
                             .addComponent(txtColorCabelloAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(0, 53, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel21)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                                .addGap(79, 79, 79)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(cbTipoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -538,7 +501,6 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                         if (!txtCiudadAdd.getText().isEmpty()){
                                                             if(!txtEstadoAdd.getText().isEmpty()){
                                                                 if (!txtPaisAdd.getText().isEmpty()){
-                                                                    if (!txtProfesionAdd.getText().isEmpty()){
                                                                         
                                                                         //Add personaje
                                                                         personaje.put("tipo", cbTipoAdd.getSelectedItem());
@@ -557,9 +519,6 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         personaje.put("ciudad", txtCiudadAdd.getText());
                                                                         personaje.put("estado", txtEstadoAdd.getText());
                                                                         personaje.put("pais", txtPaisAdd.getText());
-                                                                        //Add profesion
-                                                                        personaje.put("profesion", txtProfesionAdd.getText());
-                                                                        personaje.put("descripcionprofesion", txtDescripcionProfesionAdd.getText());
                                                                         
                                                                        // fillTable();
                                                                         System.out.println("PERSONAJE: "+personaje.toString(1));
@@ -609,8 +568,7 @@ public class AddPersonaje extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "Nombre Real no insetado", "Error", JOptionPane.ERROR_MESSAGE);
             }else
                     JOptionPane.showMessageDialog(this, "Nombre Original no insertado", "Error", JOptionPane.ERROR_MESSAGE);
-        }else 
-            JOptionPane.showMessageDialog(this, "Profesion no insertada", "Error", JOptionPane.ERROR_MESSAGE);
+        
     }//GEN-LAST:event_btnAgregarPActionPerformed
 
     private void txtColorOjosAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColorOjosAddActionPerformed
@@ -683,8 +641,6 @@ public class AddPersonaje extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -696,8 +652,6 @@ public class AddPersonaje extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JRadioButton rbPublicaAdd;
     private javax.swing.JRadioButton rbSecretaAdd;
     private javax.swing.JTextField txtAlturaAdd;
@@ -706,12 +660,10 @@ public class AddPersonaje extends javax.swing.JFrame {
     private javax.swing.JTextField txtCiudadAdd;
     private javax.swing.JTextField txtColorCabelloAdd;
     private javax.swing.JTextField txtColorOjosAdd;
-    private javax.swing.JTextArea txtDescripcionProfesionAdd;
     private javax.swing.JTextField txtEstadoAdd;
     private javax.swing.JTextField txtNombreAdd;
     private javax.swing.JTextField txtNombreRAdd;
     private javax.swing.JTextField txtPaisAdd;
     private javax.swing.JTextField txtPesoAdd;
-    private javax.swing.JTextArea txtProfesionAdd;
     // End of variables declaration//GEN-END:variables
 }
