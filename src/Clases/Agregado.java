@@ -551,4 +551,38 @@ public class Agregado {
         
         return listaEvento;
     }
+     
+     public static void ModParafernalia(JSONObject parafernalia){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE acc_parafernalia SET"
+                    + " tipo_personaje = ?, nombreoriginal_personaje = ?, nombrereal_personaje = ?,"
+                    + " apellidoreal_personaje = ?, identidad_personaje = ?, biografia_personaje = ?,"
+                    + " estadocivil_personaje = ?, genero_personaje = ?, altura_personaje = ?, peso_personaje = ?,"
+                    + " colorojos_personaje = ?, colorpelo_personaje = ? WHERE id_personaje = ?")
+        ){
+            
+            pstInsertar.setString(1, parafernalia.getString("nombre"));
+            pstInsertar.setString(2, parafernalia.getString("altura"));
+            pstInsertar.setString(3, parafernalia.getString("peso"));
+            
+            System.out.println(pstInsertar.toString());
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nALUMNO: "+parafernalia.getString("id")+" ha sido actualizado en la DB\n");
+                
+            }else{
+                
+                System.out.println("\nALUMNO: "+parafernalia.getString("id")+" no ha sido actualizado en la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 } 
