@@ -35,14 +35,14 @@ public class Agregado {
          
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO personaje(id_personaje, nombreoriginal_personaje, nombrereal_personaje, apellidoreal_personaje, identidad_personaje, biografia_personaje, estadocivil_personaje, genero_personaje, altura_personaje, peso_personaje, colorojos_personaje, colorpelo_personaje, lugarNacimiento_fk, tipo_personaje) "
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_personaje(id_personaje, nombreoriginal_personaje, nombrereal_personaje, apellidoreal_personaje, identidad_personaje, biografia_personaje, estadocivil_personaje, genero_personaje, altura_personaje, peso_personaje, colorojos_personaje, colorpelo_personaje, lugarNacimiento_fk, tipo_personaje) "
                     + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement pstInsertarLugar = conn.prepareStatement("INSERT INTO lugar(id_lugar, nombre_lugar, tipo, tipo_greografia, id_lugar_fk) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement pstInsertarProfesion = conn.prepareStatement("INSERT INTO profesion (id_profesion, nombre_profesion, descripcion_profesion) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement psInsertarPJPR = conn.prepareStatement("INSERT INTO pj_pr VALUES (?,?)")
+            PreparedStatement pstInsertarLugar = conn.prepareStatement("INSERT INTO acc_lugar(id_lugar, nombre_lugar, tipo, tipo_greografia, id_lugar_fk) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstInsertarProfesion = conn.prepareStatement("INSERT INTO acc_profesion (id_profesion, nombre_profesion, descripcion_profesion) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement psInsertarPJPR = conn.prepareStatement("INSERT INTO acc_pj_pr VALUES (?,?)")
                 ){
             // INSERTAR PAIS
-            pstInsertarLugar.setInt(1, DBClass.getLastValue("lugar"));
+            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
             pstInsertarLugar.setString(2, personaje.getString("pais"));
             pstInsertarLugar.setString(3, "PAIS");
             pstInsertarLugar.setString(4, "TIERRA");
@@ -55,7 +55,7 @@ public class Agregado {
                     //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
                 
                     // INSERTAR ESTADO
-                    pstInsertarLugar.setInt(1, DBClass.getLastValue("lugar"));
+                    pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
                     pstInsertarLugar.setString(2, personaje.getString("estado"));
                     pstInsertarLugar.setString(3, "ESTADO");
                     pstInsertarLugar.setString(4, "TIERRA");
@@ -68,7 +68,7 @@ public class Agregado {
                             //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
 
                             // INSERTAR ESTADO
-                            pstInsertarLugar.setInt(1, DBClass.getLastValue("lugar"));
+                            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
                             pstInsertarLugar.setString(2, personaje.getString("ciudad"));
                             pstInsertarLugar.setString(3, "CIUDAD");
                             pstInsertarLugar.setString(4, "TIERRA");
@@ -114,7 +114,7 @@ public class Agregado {
             
             if (lugarNac > 0){
                 
-                pstInsertar.setInt(1, DBClass.getLastValue("personaje"));
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_personaje"));
                 pstInsertar.setString(2, personaje.getString("nombre"));
                 pstInsertar.setString(3, personaje.getString("nombreR"));
                 pstInsertar.setString(4, personaje.getString("apellidoR"));
@@ -131,7 +131,7 @@ public class Agregado {
                 
                 
                 //Insertar profesion 
-                pstInsertarProfesion.setInt(1, DBClass.getLastValue("profesion"));
+                pstInsertarProfesion.setInt(1, DBClass.getLastValue("acc_profesion"));
                 pstInsertarProfesion.setString(2, personaje.getString("profesion"));
                 pstInsertarProfesion.setString(3, personaje.getString("descripcionprofesion"));
 
@@ -190,11 +190,11 @@ public class Agregado {
          try(
             Connection conn = DBClass.getConn();
            
-            PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT p.id_parafernalia, p.nombre_parafernalia FROM parafernalia p, p_p pp" +
+            PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT p.id_parafernalia, p.nombre_parafernalia FROM acc_parafernalia p, acc_p_p pp" +
                                     " WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?" +
                                     " UNION" +
-                                    " SELECT p.id_parafernalia, p.nombre_parafernalia FROM parafernalia p" +
-                                    " WHERE p.id_parafernalia IN (SELECT distinct(parafernalia_fk) FROM pa_pa WHERE parafernalia_compuesta_fk in (SELECT p.id_parafernalia FROM parafernalia p, p_p pp WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?))" +
+                                    " SELECT p.id_parafernalia, p.nombre_parafernalia FROM acc_parafernalia p" +
+                                    " WHERE p.id_parafernalia IN (SELECT distinct(parafernalia_fk) FROM acc_pa_pa WHERE parafernalia_compuesta_fk in (SELECT p.id_parafernalia FROM acc_parafernalia p, acc_p_p pp WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?))" +
                                     " ORDER BY id_parafernalia")
         ){
             
@@ -221,11 +221,11 @@ public class Agregado {
         
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT p.* FROM parafernalia p, p_p pp" +
+            PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT p.* FROM acc_parafernalia p, acc_p_p pp" +
                                     " WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?" +
                                     " UNION" +
-                                    " SELECT p.* FROM parafernalia p" +
-                                    " WHERE p.id_parafernalia IN (SELECT distinct(parafernalia_fk) FROM pa_pa WHERE parafernalia_compuesta_fk in (SELECT p.id_parafernalia FROM parafernalia p, p_p pp WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?))" +
+                                    " SELECT p.* FROM acc_parafernalia p" +
+                                    " WHERE p.id_parafernalia IN (SELECT distinct(parafernalia_fk) FROM acc_pa_pa WHERE parafernalia_compuesta_fk in (SELECT p.id_parafernalia FROM acc_parafernalia p, acc_p_p pp WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?))" +
                                     " ORDER BY id_parafernalia")
         ){
             pstGetParafernalia.setInt(1, personajeID);
@@ -263,7 +263,7 @@ public class Agregado {
                     + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
                     + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
                     + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\" "
-                    + "FROM personaje WHERE id_personaje = ?;")
+                    + "FROM acc_personaje WHERE id_personaje = ?;")
                 ){
             
             JSONObject personaje = new JSONObject();
@@ -314,7 +314,7 @@ public class Agregado {
                     + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
                     + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
                     + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\""
-                    + " FROM personaje;")
+                    + " FROM acc_personaje;")
         ){
             
             ResultSet rsGetPersonaje = pstGetAlumnos.executeQuery();
@@ -355,10 +355,10 @@ public class Agregado {
     
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("DELETE FROM personaje WHERE id_personaje = ?");
-            PreparedStatement  pstSelect_PJPR  = conn.prepareStatement("select profesionpjpr_fk from pj_pr where personajepjpr_fk = ? ;");
-            PreparedStatement pstDelete_PJPR = conn.prepareStatement("delete from pj_pr where personajepjpr_fk = ? ");
-            PreparedStatement pstDelete_Profesion = conn.prepareStatement("delete from profesion where id_profesion = ?")
+            PreparedStatement pstInsertar = conn.prepareStatement("DELETE FROM acc_personaje WHERE id_personaje = ?");
+            PreparedStatement  pstSelect_PJPR  = conn.prepareStatement("select profesionpjpr_fk from acc_pj_pr where personajepjpr_fk = ? ;");
+            PreparedStatement pstDelete_PJPR = conn.prepareStatement("delete from acc_pj_pr where personajepjpr_fk = ? ");
+            PreparedStatement pstDelete_Profesion = conn.prepareStatement("delete from acc_profesion where id_profesion = ?")
           
         ){
             
@@ -398,7 +398,7 @@ public static void ModPersonaje(JSONObject personaje){
         
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE personaje SET"
+            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE acc_personaje SET"
                     + " tipo_personaje = ?, nombreoriginal_personaje = ?, nombrereal_personaje = ?,"
                     + " apellidoreal_personaje = ?, identidad_personaje = ?, biografia_personaje = ?,"
                     + " estadocivil_personaje = ?, genero_personaje = ?, altura_personaje = ?, peso_personaje = ?,"
@@ -443,15 +443,15 @@ public static void ModPersonaje(JSONObject personaje){
         try(
             Connection conn = DBClass.getConn();
             
-            PreparedStatement pstInsertarParafernalia = conn.prepareStatement("INSERT INTO parafernalia (id_parafernalia, nombre_parafernalia, tipo_parafernalia)"
+            PreparedStatement pstInsertarParafernalia = conn.prepareStatement("INSERT INTO acc_parafernalia (id_parafernalia, nombre_parafernalia, tipo_parafernalia)"
                     + "VALUES (?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement pstInsertarPA_PA = conn.prepareStatement("INSERT INTO pa_pa VALUES (?,?)");
-            PreparedStatement pstInsertarP_P = conn.prepareStatement("INSERT INTO p_p VALUES (?,?,?,?)")
+            PreparedStatement pstInsertarPA_PA = conn.prepareStatement("INSERT INTO acc_pa_pa VALUES (?,?)");
+            PreparedStatement pstInsertarP_P = conn.prepareStatement("INSERT INTO acc_p_p VALUES (?,?,?,?)")
         ){
             
             if (isPart){
                 
-                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("parafernalia"));
+                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia"));
                 pstInsertarParafernalia.setString(2, parafernalia.getString("name"));
                 pstInsertarParafernalia.setString(3, parafernalia.getString("tipo"));
                 
@@ -467,7 +467,7 @@ public static void ModPersonaje(JSONObject personaje){
                 
             }else{
             
-                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("parafernalia"));
+                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia"));
                 pstInsertarParafernalia.setString(2, parafernalia.getString("name"));
                 pstInsertarParafernalia.setString(3, parafernalia.getString("tipo"));
                 
