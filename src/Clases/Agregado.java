@@ -686,4 +686,73 @@ public class Agregado {
         }
     }
  
+public static int AddAlias(JSONObject alias){
+        
+        
+         
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_alias(id_alias, nombre_alias, descripcion_alias, personaje_fk ) "
+                    + "VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS)
+                ){
+            
+            ResultSet aliasRST = pstInsertar.getGeneratedKeys();
+            
+            if (aliasRST.next()){
+               
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_alias","id_alias"));
+                pstInsertar.setString(2, alias.getString("nombrealias"));
+                pstInsertar.setString(3, alias.getString("descripcion"));
+                pstInsertar.setInt(4, aliasRST.getInt(4));
+            
+           }
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nALIAS: "+alias.getInt("id_alias")+" ha sido agregado a la DB\n");
+                
+            }else{
+                
+                System.out.println("\nALIAS: "+alias.getString("nombre")+" no ha sido agregado a la DB\n");
+                
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        return -1;
+    }
+
+ public static JSONArray getAlias(){
+     JSONArray listaAlias = new JSONArray();
+
+     try(
+         Connection conn = DBClass.getConn();
+         PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT nombre_parafernalia from acc_parafernalia;")
+     ){
+
+         ResultSet rsGetParafernalia = pstGetParafernalia.executeQuery();
+
+         while (rsGetParafernalia.next()){
+             JSONObject parafernalia = new JSONObject();
+
+             parafernalia.put("nombre", rsGetParafernalia.getInt(1));
+
+
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+             listaAlias.put(parafernalia);
+         }
+
+         return listaAlias;
+
+     } catch (SQLException ex) {
+         Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+     }
+
+     return listaAlias;
+ }
+
 } 

@@ -205,6 +205,11 @@ public class Personajes extends javax.swing.JFrame {
         });
 
         cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion" }));
+        cbTipoMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTipoModActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -573,6 +578,8 @@ public class Personajes extends javax.swing.JFrame {
                     fillPanelMod(txtIDPersonaje.getText());
                     break;
                 case "Alias":
+                    AddAlias abrir = new AddAlias(Integer.parseInt(txtIDPersonaje.getText()));
+                    abrir.setVisible(true);
                     break;
                 case "Parafernalia":
                     ParafernaliaList abrir = new ParafernaliaList(Integer.parseInt(txtIDPersonaje.getText()));
@@ -650,6 +657,10 @@ public class Personajes extends javax.swing.JFrame {
     private void txtColorOjosPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtColorOjosPActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtColorOjosPActionPerformed
+
+    private void cbTipoModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoModActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbTipoModActionPerformed
 
     /**
      * @param args the command line arguments

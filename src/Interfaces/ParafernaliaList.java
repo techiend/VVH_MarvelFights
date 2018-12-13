@@ -79,8 +79,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
         cbParafernalia.setEnabled(false);
     
     }
-    
-    public void emptyTable(){
+        public void emptyTable(){
         DefaultTableModel model = (DefaultTableModel) tableParafernalia.getModel();
         
         int filas = tableParafernalia.getRowCount();
@@ -88,6 +87,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
             model.removeRow(0);
         }
     }
+
    
     public void fillTable(){
         emptyTable();
@@ -640,7 +640,9 @@ public class ParafernaliaList extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasPLActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        AddAlias abrir = new AddAlias(3);
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnModParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModParafernaliaActionPerformed
