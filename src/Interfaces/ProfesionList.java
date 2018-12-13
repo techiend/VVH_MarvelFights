@@ -9,6 +9,9 @@
 package Interfaces;
 
 import Clases.Agregado;
+import Clases.ProfesionC;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -34,32 +37,37 @@ public class ProfesionList extends javax.swing.JFrame {
         initComponents();
        
         fillTable();
-       
-        fillcbParafernalia();
+        
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        setTitle("Agregar parafernalia");
+        setTitle("Agregar profesion");
         
+        tableProfesion.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tableProfesion.getModel();    
+        
+              int fila = tableProfesion.rowAtPoint(e.getPoint());
+              int columna = tableProfesion.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  txtIDProfesion.setText(Integer.toString(id));
+                
+              }
+           }
+        });
     }
 
-    private void fillcbParafernalia(){
-        cbParafernalia.removeAllItems();
-        System.out.println("entro");
-        ArrayList<String> lista = Agregado.listParafernalia(personajeID);
-        
-        cbParafernalia.addItem("--------------------");
-        for (int i = 0; i < lista.size(); i++){
-            cbParafernalia.addItem(lista.get(i));
-        }
-        
-        cbParafernalia.setEnabled(false);
-    
-    }
     
     public void emptyTable(){
-        DefaultTableModel model = (DefaultTableModel) tableParafernalia.getModel();
+        DefaultTableModel model = (DefaultTableModel) tableProfesion.getModel();
         
-        int filas = tableParafernalia.getRowCount();
+        int filas = tableProfesion.getRowCount();
         for (int i = 1; i <= filas; i++){
             model.removeRow(0);
         }
@@ -68,13 +76,13 @@ public class ProfesionList extends javax.swing.JFrame {
     public void fillTable(){
         emptyTable();
         
-        JSONArray listaParafernalia = Agregado.getParafernalia(personajeID);
-        DefaultTableModel model = (DefaultTableModel) tableParafernalia.getModel();        
+        JSONArray listaProfesion = ProfesionC.getProfesiones(personajeID);
+        DefaultTableModel model = (DefaultTableModel) tableProfesion.getModel();        
         
-        for (int i = 0; i<listaParafernalia.length(); i++){
-            JSONObject parafernalia = listaParafernalia.getJSONObject(i);
+        for (int i = 0; i<listaProfesion.length(); i++){
+            JSONObject profesion = listaProfesion.getJSONObject(i);
             
-            model.addRow(new Object[]{parafernalia.getInt("id"),parafernalia.getString("name"), parafernalia.getString("tipo")});
+            model.addRow(new Object[]{profesion.getInt("id"),profesion.getString("name"), profesion.getString("desc")});
         }
         
     }
@@ -93,35 +101,28 @@ public class ProfesionList extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableParafernalia = new javax.swing.JTable();
+        tableProfesion = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        btnAddParafernalia = new javax.swing.JButton();
-        cbTipoP = new javax.swing.JComboBox<>();
-        checkIsParte = new javax.swing.JCheckBox();
-        jLabel4 = new javax.swing.JLabel();
-        txtNombreParafernalia = new javax.swing.JTextField();
+        btnAddProfesion = new javax.swing.JButton();
+        txtNameProfesion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        cbParafernalia = new javax.swing.JComboBox<>();
-        txtAltura = new javax.swing.JTextField();
-        txtPeso = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtDescProfesion = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
-        txtIDParafernalia = new javax.swing.JTextField();
-        btnDelParafernalia = new javax.swing.JButton();
-        btnModParafernalia = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        btnAddParafernalia1 = new javax.swing.JButton();
-        cbTipoP_m = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
-        txtNombreParafernalia_m = new javax.swing.JTextField();
+        txtIDProfesion = new javax.swing.JTextField();
+        btnDelProfesion = new javax.swing.JButton();
+        btnModProfesion = new javax.swing.JButton();
+        panelModProfesion = new javax.swing.JPanel();
+        btnUpdateProfesion = new javax.swing.JButton();
+        txtNameProfesion_m = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtAltura_m = new javax.swing.JTextField();
-        txtPeso_m = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDescProfesion_m = new javax.swing.JTextArea();
+        txtIDProfesion_m = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         btnAtrasPL = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -137,7 +138,7 @@ public class ProfesionList extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(221, 221, 221)
+                .addGap(309, 309, 309)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -148,7 +149,7 @@ public class ProfesionList extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
 
-        tableParafernalia.setModel(new javax.swing.table.DefaultTableModel(
+        tableProfesion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -171,59 +172,39 @@ public class ProfesionList extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tableParafernalia);
-        if (tableParafernalia.getColumnModel().getColumnCount() > 0) {
-            tableParafernalia.getColumnModel().getColumn(0).setMinWidth(40);
-            tableParafernalia.getColumnModel().getColumn(0).setPreferredWidth(40);
-            tableParafernalia.getColumnModel().getColumn(0).setMaxWidth(40);
-            tableParafernalia.getColumnModel().getColumn(1).setPreferredWidth(10);
-            tableParafernalia.getColumnModel().getColumn(2).setPreferredWidth(5);
+        jScrollPane1.setViewportView(tableProfesion);
+        if (tableProfesion.getColumnModel().getColumnCount() > 0) {
+            tableProfesion.getColumnModel().getColumn(0).setMinWidth(40);
+            tableProfesion.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tableProfesion.getColumnModel().getColumn(0).setMaxWidth(40);
+            tableProfesion.getColumnModel().getColumn(1).setPreferredWidth(10);
+            tableProfesion.getColumnModel().getColumn(2).setPreferredWidth(5);
         }
 
         jPanel4.setBackground(new java.awt.Color(153, 153, 153));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Agregar"));
 
-        btnAddParafernalia.setBackground(new java.awt.Color(0, 153, 51));
-        btnAddParafernalia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAddParafernalia.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddParafernalia.setText("AGREGAR");
-        btnAddParafernalia.addActionListener(new java.awt.event.ActionListener() {
+        btnAddProfesion.setBackground(new java.awt.Color(0, 153, 51));
+        btnAddProfesion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAddProfesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddProfesion.setText("AGREGAR");
+        btnAddProfesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddParafernaliaActionPerformed(evt);
+                btnAddProfesionActionPerformed(evt);
             }
         });
-
-        cbTipoP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Armadura", "Arma", "Otro" }));
-
-        checkIsParte.setBackground(new java.awt.Color(153, 153, 153));
-        checkIsParte.setText("Parte");
-        checkIsParte.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                checkIsParteStateChanged(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("TIPO:");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("NOMBRE:");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("COMPONENTE DE:");
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("DESCRIPCION:");
 
-        cbParafernalia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("ALTURA:");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("PESO:");
+        txtDescProfesion.setColumns(20);
+        txtDescProfesion.setRows(5);
+        jScrollPane2.setViewportView(txtDescProfesion);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -231,69 +212,52 @@ public class ProfesionList extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cbParafernalia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(cbTipoP, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                        .addComponent(checkIsParte))
-                    .addComponent(txtNombreParafernalia))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAddParafernalia))
-                    .addComponent(jLabel6))
-                .addGap(10, 10, 10))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddProfesion))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNameProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreParafernalia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkIsParte)
-                    .addComponent(cbTipoP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddParafernalia)
-                    .addComponent(cbParafernalia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAddProfesion)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNameProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(153, 153, 153));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnDelParafernalia.setText("ELIMINAR");
-        btnDelParafernalia.addActionListener(new java.awt.event.ActionListener() {
+        txtIDProfesion.setEditable(false);
+
+        btnDelProfesion.setText("ELIMINAR");
+        btnDelProfesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDelParafernaliaActionPerformed(evt);
+                btnDelProfesionActionPerformed(evt);
             }
         });
 
-        btnModParafernalia.setText("MODIFICAR");
-        btnModParafernalia.addActionListener(new java.awt.event.ActionListener() {
+        btnModProfesion.setText("MODIFICAR");
+        btnModProfesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModParafernaliaActionPerformed(evt);
+                btnModProfesionActionPerformed(evt);
             }
         });
 
@@ -303,11 +267,11 @@ public class ProfesionList extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtIDParafernalia, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtIDProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnModParafernalia)
+                .addComponent(btnModProfesion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelParafernalia)
+                .addComponent(btnDelProfesion)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -315,86 +279,88 @@ public class ProfesionList extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtIDParafernalia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModParafernalia)
-                    .addComponent(btnDelParafernalia))
+                    .addComponent(txtIDProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModProfesion)
+                    .addComponent(btnDelProfesion))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel6.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar"));
+        panelModProfesion.setBackground(new java.awt.Color(153, 153, 153));
+        panelModProfesion.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar"));
 
-        btnAddParafernalia1.setBackground(new java.awt.Color(0, 153, 51));
-        btnAddParafernalia1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAddParafernalia1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddParafernalia1.setText("ACTUALIZAR");
-        btnAddParafernalia1.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdateProfesion.setBackground(new java.awt.Color(0, 153, 51));
+        btnUpdateProfesion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnUpdateProfesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdateProfesion.setText("ACTUALIZAR");
+        btnUpdateProfesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddParafernalia1ActionPerformed(evt);
+                btnUpdateProfesionActionPerformed(evt);
             }
         });
-
-        cbTipoP_m.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Armadura", "Arma", "Otro" }));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("TIPO:");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("NOMBRE:");
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("DESCRIPCION:");
+
+        txtDescProfesion_m.setColumns(20);
+        txtDescProfesion_m.setRows(5);
+        jScrollPane3.setViewportView(txtDescProfesion_m);
+
+        txtIDProfesion_m.setEditable(false);
+
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("ALTURA:");
+        jLabel10.setText("ID:");
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("PESO:");
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelModProfesionLayout = new javax.swing.GroupLayout(panelModProfesion);
+        panelModProfesion.setLayout(panelModProfesionLayout);
+        panelModProfesionLayout.setHorizontalGroup(
+            panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelModProfesionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7)
-                    .addComponent(cbTipoP_m, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtPeso_m, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtAltura_m, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnAddParafernalia1))
-                    .addComponent(jLabel11))
-                .addGap(10, 10, 10))
+                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelModProfesionLayout.createSequentialGroup()
+                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(txtNameProfesion_m, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnUpdateProfesion)
+                            .addComponent(jLabel10)
+                            .addComponent(txtIDProfesion_m, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6))
+                    .addGroup(panelModProfesionLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        panelModProfesionLayout.setVerticalGroup(
+            panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelModProfesionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAltura_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbTipoP_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPeso_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(btnAddParafernalia1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelModProfesionLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIDProfesion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdateProfesion))
+                    .addGroup(panelModProfesionLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNameProfesion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -406,11 +372,9 @@ public class ProfesionList extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelModProfesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -424,19 +388,14 @@ public class ProfesionList extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .addComponent(panelModProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(0, 153, 51));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("SIGUIENTE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        btnNext.setBackground(new java.awt.Color(0, 153, 51));
+        btnNext.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnNext.setForeground(new java.awt.Color(255, 255, 255));
+        btnNext.setText("SIGUIENTE");
 
         btnAtrasPL.setBackground(new java.awt.Color(153, 0, 0));
         btnAtrasPL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -458,8 +417,8 @@ public class ProfesionList extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnAtrasPL)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNext)))
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -468,12 +427,12 @@ public class ProfesionList extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAtrasPL)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18))
+                    .addComponent(btnNext)
+                    .addComponent(btnAtrasPL))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -484,82 +443,32 @@ public class ProfesionList extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void checkIsParteStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkIsParteStateChanged
-        // TODO add your handling code here:
-        
-        if (!isPart){
-            isPart = true;
-            cbParafernalia.setEnabled(true);    
-            txtAltura.setEnabled(false);
-            txtPeso.setEnabled(false);
-        }
-        else{
+    private void btnAddProfesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProfesionActionPerformed
+        if (!txtNameProfesion.getText().isEmpty()){
+            JSONObject profesion = new JSONObject();
             
-            isPart = false;
-            cbParafernalia.setEnabled(false);
-            txtAltura.setEnabled(true);
-            txtPeso.setEnabled(true);
-        }
-        
-        
-    }//GEN-LAST:event_checkIsParteStateChanged
-
-    private void btnAddParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParafernaliaActionPerformed
-        // TODO add your handling code here:
-        JSONObject parafernalia = new JSONObject();
-        
-        if (!txtNombreParafernalia.getText().isEmpty()){
-            if(checkIsParte.isSelected()){
-                if(cbParafernalia.getSelectedIndex()>0){
-                    parafernalia.put("name",txtNombreParafernalia.getText());
-                    parafernalia.put("tipo", cbTipoP.getSelectedItem().toString());
-                    
-                    String[] infoParafernalia = cbParafernalia.getSelectedItem().toString().split("\\.");
-                    
-                    parafernalia.put("id_pa", infoParafernalia[0]);
-                    
-                    Agregado.AddParafernalia(parafernalia, personajeID, true);
-                   
-                    fillTable();
-                    fillcbParafernalia();
-                }
-                else{
-                    JOptionPane.showMessageDialog(this, "Debes seleccionar una parafernalia", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-            else{
-                if (!txtPeso.getText().isEmpty()){
-                    if (!txtAltura.getText().isEmpty()){
-                        parafernalia.put("name",txtNombreParafernalia.getText());
-                        parafernalia.put("tipo", cbTipoP.getSelectedItem().toString());
-                        parafernalia.put("peso",txtPeso.getText());
-                        parafernalia.put("altura",txtAltura.getText());
-                        
-                        
-                        Agregado.AddParafernalia(parafernalia, personajeID, false);
-                   
-                        fillTable();
-                        fillcbParafernalia();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(this, "Altura no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else{
-                    JOptionPane.showMessageDialog(this, "Peso no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            profesion.put("id_p", personajeID);
+            profesion.put("name", txtNameProfesion.getText());
+            profesion.put("desc", (txtDescProfesion.getText().isEmpty()) ? "" : txtDescProfesion.getText());
+            
+            ProfesionC.addProfesion(profesion);
+            fillTable();
+            txtNameProfesion.setText("");
+            txtDescProfesion.setText("");
+            
         }
         else{
-            JOptionPane.showMessageDialog(this, "Nombre no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Nombre profesion debe estar lleno", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnAddParafernaliaActionPerformed
+    }//GEN-LAST:event_btnAddProfesionActionPerformed
 
     private void btnAtrasPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPLActionPerformed
         // TODO add your handling code here:
@@ -568,23 +477,41 @@ public class ProfesionList extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnAtrasPLActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnModProfesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModProfesionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+        if (!txtIDProfesion.getText().isEmpty() && Integer.parseInt(txtIDProfesion.getText()) > 0){
+            
+            JSONObject profesion = ProfesionC.getProfesion(Integer.parseInt(txtIDProfesion.getText()));
+            
+            txtIDProfesion_m.setText(Integer.toString(profesion.getInt("id")));
+            txtNameProfesion_m.setText(profesion.getString("name"));
+            txtDescProfesion_m.setText(profesion.getString("desc"));
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Introducte un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnModProfesionActionPerformed
 
-    private void btnDelParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelParafernaliaActionPerformed
+    private void btnDelProfesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelProfesionActionPerformed
         // TODO add your handling code here:
-        Agregado.DelPersonaje(txtIDParafernalia.getText());
-        fillTable();
-    }//GEN-LAST:event_btnDelParafernaliaActionPerformed
+        
+        if (!txtIDProfesion.getText().isEmpty() && Integer.parseInt(txtIDProfesion.getText()) > 0){
+            
+            ProfesionC.delProfesion(Integer.parseInt(txtIDProfesion.getText()));
+            fillTable();
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Introducte un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnDelProfesionActionPerformed
 
-    private void btnModParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModParafernaliaActionPerformed
+    private void btnUpdateProfesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfesionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnModParafernaliaActionPerformed
-
-    private void btnAddParafernalia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParafernalia1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddParafernalia1ActionPerformed
+    }//GEN-LAST:event_btnUpdateProfesionActionPerformed
   /**
      * @param args the command line arguments
      */
@@ -621,40 +548,33 @@ public class ProfesionList extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddParafernalia;
-    private javax.swing.JButton btnAddParafernalia1;
+    private javax.swing.JButton btnAddProfesion;
     private javax.swing.JButton btnAtrasPL;
-    private javax.swing.JButton btnDelParafernalia;
-    private javax.swing.JButton btnModParafernalia;
-    private javax.swing.JComboBox<String> cbParafernalia;
-    private javax.swing.JComboBox<String> cbTipoP;
-    private javax.swing.JComboBox<String> cbTipoP_m;
-    private javax.swing.JCheckBox checkIsParte;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnDelProfesion;
+    private javax.swing.JButton btnModProfesion;
+    private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnUpdateProfesion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tableParafernalia;
-    private javax.swing.JTextField txtAltura;
-    private javax.swing.JTextField txtAltura_m;
-    private javax.swing.JTextField txtIDParafernalia;
-    private javax.swing.JTextField txtNombreParafernalia;
-    private javax.swing.JTextField txtNombreParafernalia_m;
-    private javax.swing.JTextField txtPeso;
-    private javax.swing.JTextField txtPeso_m;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JPanel panelModProfesion;
+    private javax.swing.JTable tableProfesion;
+    private javax.swing.JTextArea txtDescProfesion;
+    private javax.swing.JTextArea txtDescProfesion_m;
+    private javax.swing.JTextField txtIDProfesion;
+    private javax.swing.JTextField txtIDProfesion_m;
+    private javax.swing.JTextField txtNameProfesion;
+    private javax.swing.JTextField txtNameProfesion_m;
     // End of variables declaration//GEN-END:variables
 }
