@@ -578,8 +578,8 @@ public class Personajes extends javax.swing.JFrame {
                     fillPanelMod(txtIDPersonaje.getText());
                     break;
                 case "Alias":
-                    AddAlias abrir = new AddAlias(Integer.parseInt(txtIDPersonaje.getText()));
-                    abrir.setVisible(true);
+                    AddAlias open = new AddAlias(Integer.parseInt(txtIDPersonaje.getText()));
+                    open.setVisible(true);
                     break;
                 case "Parafernalia":
                     ParafernaliaList abrir = new ParafernaliaList(Integer.parseInt(txtIDPersonaje.getText()));

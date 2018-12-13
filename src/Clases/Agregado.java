@@ -704,7 +704,6 @@ public static int AddAlias(JSONObject alias){
                 pstInsertar.setString(2, alias.getString("nombrealias"));
                 pstInsertar.setString(3, alias.getString("descripcion"));
                 pstInsertar.setInt(4, aliasRST.getInt(4));
-            
            }
             
             if (pstInsertar.executeUpdate() > 0){
