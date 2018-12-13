@@ -9,6 +9,8 @@
 package Interfaces;
 
 import Clases.Agregado;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -33,6 +35,9 @@ public class ParafernaliaList extends javax.swing.JFrame {
         
         initComponents();
        
+        txtAltura_m.setEditable(false);
+        txtPeso_m.setEditable(false);
+        
         fillTable();
        
         fillcbParafernalia();
@@ -40,6 +45,25 @@ public class ParafernaliaList extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setTitle("Agregar parafernalia");
         
+          tableParafernalia.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tableParafernalia.getModel();    
+        
+              int fila = tableParafernalia.rowAtPoint(e.getPoint());
+              int columna = tableParafernalia.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  txtIDParafernalia.setText(Integer.toString(id));
+                
+              }
+           }
+        });
     }
 
     private void fillcbParafernalia(){
@@ -74,9 +98,37 @@ public class ParafernaliaList extends javax.swing.JFrame {
         for (int i = 0; i<listaParafernalia.length(); i++){
             JSONObject parafernalia = listaParafernalia.getJSONObject(i);
             
-            model.addRow(new Object[]{parafernalia.getInt("id"),parafernalia.getString("name"), parafernalia.getString("tipo")});
+            if (parafernalia.getBoolean("esPP")){
+//                System.out.println("SOY PP");
+                model.addRow(new Object[]{parafernalia.getInt("id"),parafernalia.getString("name"), parafernalia.getString("tipo"),parafernalia.getDouble("peso"),parafernalia.getDouble("altura")});
+            }
+            else{
+//                System.out.println("NO SOY PP");
+                model.addRow(new Object[]{parafernalia.getInt("id"),parafernalia.getString("name"), parafernalia.getString("tipo"),"",""});
+            }
         }
         
+    }
+    
+    private void fillPanelMod(String id) {
+        JSONObject parafernalia = Agregado.getParafernaliaMod(id);
+       
+        if (parafernalia.getBoolean("esPP")){
+            txtAltura_m.setEditable(true);
+            txtPeso_m.setEditable(true);
+            
+            txtID_m.setText(id);
+            txtNombreParafernalia_m.setText(parafernalia.getString("nombre"));
+            txtAltura_m.setText(Double.toString(parafernalia.getDouble("altura")));
+            txtPeso_m.setText(Double.toString(parafernalia.getDouble("peso")));
+        }
+        else{
+            txtID_m.setText(id);
+            txtAltura_m.setEditable(false);
+            txtPeso_m.setEditable(false);
+            
+            txtNombreParafernalia_m.setText(parafernalia.getString("nombre"));
+        }
     }
     
     /**
@@ -121,6 +173,8 @@ public class ParafernaliaList extends javax.swing.JFrame {
         txtPeso_m = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        txtID_m = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         btnAtrasPL = new javax.swing.JButton();
 
@@ -153,14 +207,14 @@ public class ParafernaliaList extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Tipo"
+                "ID", "Nombre", "Tipo", "Kg", "Mts"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -178,6 +232,8 @@ public class ParafernaliaList extends javax.swing.JFrame {
             tableParafernalia.getColumnModel().getColumn(0).setMaxWidth(40);
             tableParafernalia.getColumnModel().getColumn(1).setPreferredWidth(10);
             tableParafernalia.getColumnModel().getColumn(2).setPreferredWidth(5);
+            tableParafernalia.getColumnModel().getColumn(3).setPreferredWidth(6);
+            tableParafernalia.getColumnModel().getColumn(4).setPreferredWidth(6);
         }
 
         jPanel4.setBackground(new java.awt.Color(153, 153, 153));
@@ -283,6 +339,8 @@ public class ParafernaliaList extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(153, 153, 153));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        txtIDParafernalia.setEditable(false);
+
         btnDelParafernalia.setText("ELIMINAR");
         btnDelParafernalia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,6 +410,12 @@ public class ParafernaliaList extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("PESO:");
 
+        txtID_m.setEditable(false);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("ID:");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -362,7 +426,9 @@ public class ParafernaliaList extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel7)
                     .addComponent(cbTipoP_m, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtID_m, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
@@ -392,8 +458,13 @@ public class ParafernaliaList extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbTipoP_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPeso_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(btnAddParafernalia1)
+                .addGap(14, 14, 14)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAddParafernalia1)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtID_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -572,19 +643,70 @@ public class ParafernaliaList extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void btnDelParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelParafernaliaActionPerformed
-        // TODO add your handling code here:
-        Agregado.DelPersonaje(txtIDParafernalia.getText());
-        fillTable();
-    }//GEN-LAST:event_btnDelParafernaliaActionPerformed
-
     private void btnModParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModParafernaliaActionPerformed
         // TODO add your handling code here:
+        
+        if (!txtIDParafernalia.getText().isEmpty() && Integer.parseInt(txtIDParafernalia.getText()) > 0 ){
+            fillPanelMod(txtIDParafernalia.getText());
+        }
     }//GEN-LAST:event_btnModParafernaliaActionPerformed
 
     private void btnAddParafernalia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParafernalia1ActionPerformed
         // TODO add your handling code here:
+        
+        JSONObject personaje = new JSONObject();
+
+        if (!txtNombreParafernalia_m.getText().isEmpty()){
+            
+            if (txtAltura_m.isEditable()){
+                
+                if(!txtAltura_m.getText().isEmpty()){
+                    if(!txtPeso_m.getText().isEmpty()){
+
+                        personaje.put("esPP", true);
+                        personaje.put("nombre", txtNombreParafernalia_m.getText());
+                        personaje.put("tipo", cbTipoP_m.getSelectedItem());
+                        personaje.put("altura", txtAltura_m.getText());
+                        personaje.put("peso", txtPeso_m.getText());
+                        personaje.put("id", Integer.parseInt(txtID_m.getText()));
+
+                        Agregado.ModParafernalia(personaje);
+
+                        fillTable();
+                        txtIDParafernalia.setText("");
+                        
+                    }else 
+                        JOptionPane.showMessageDialog(this, "Peso no insertado", "Error", JOptionPane.ERROR_MESSAGE);
+                }else
+                    JOptionPane.showMessageDialog(this, "Altura no insertada", "Error", JOptionPane.ERROR_MESSAGE);
+                
+            }
+            else{
+                personaje.put("esPP", false);
+                personaje.put("nombre", txtNombreParafernalia_m.getText());
+                personaje.put("tipo", cbTipoP_m.getSelectedItem());
+                personaje.put("id", Integer.parseInt(txtID_m.getText()));
+
+                Agregado.ModParafernalia(personaje);
+
+                fillTable();
+                txtIDParafernalia.setText("");
+            }
+            
+            
+        }else
+            JOptionPane.showMessageDialog(this, "Nombre no seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+            
     }//GEN-LAST:event_btnAddParafernalia1ActionPerformed
+
+    private void btnDelParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelParafernaliaActionPerformed
+        // TODO add your handling code here:
+        
+        if (!txtIDParafernalia.getText().isEmpty() && Integer.parseInt(txtIDParafernalia.getText()) > 0 ){
+            Agregado.DelParafernalia(txtIDParafernalia.getText());
+            fillTable();
+        }
+    }//GEN-LAST:event_btnDelParafernaliaActionPerformed
   /**
      * @param args the command line arguments
      */
@@ -615,7 +737,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ParafernaliaList(6).setVisible(true);
+                new ParafernaliaList(2).setVisible(true);
             }
         });
     }
@@ -634,6 +756,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -652,6 +775,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
     private javax.swing.JTextField txtAltura;
     private javax.swing.JTextField txtAltura_m;
     private javax.swing.JTextField txtIDParafernalia;
+    private javax.swing.JTextField txtID_m;
     private javax.swing.JTextField txtNombreParafernalia;
     private javax.swing.JTextField txtNombreParafernalia_m;
     private javax.swing.JTextField txtPeso;

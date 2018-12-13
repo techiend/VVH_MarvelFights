@@ -45,13 +45,13 @@ public class DBClass {
         return db.getConnection();
     }
     
-    public static int getLastValue(String tabla){
+    public static int getLastValue(String tabla, String id){
     
         try(
             Connection conn = getConn();
         ){
               
-            PreparedStatement pst = conn.prepareStatement("SELECT count(*)  FROM "+tabla);
+            PreparedStatement pst = conn.prepareStatement("SELECT "+id+" FROM "+tabla+" order by "+id+" desc limit 1;");
             ResultSet rsGetID = pst.executeQuery();
              
             if (rsGetID.next()){

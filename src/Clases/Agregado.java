@@ -46,7 +46,7 @@ public class Agregado {
             PreparedStatement psInsertarPJPR = conn.prepareStatement("INSERT INTO acc_pj_pr VALUES (?,?)")
                 ){
             // INSERTAR PAIS
-            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
+            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar","id_lugar"));
             pstInsertarLugar.setString(2, personaje.getString("pais"));
             pstInsertarLugar.setString(3, "PAIS");
             pstInsertarLugar.setString(4, "TIERRA");
@@ -59,7 +59,7 @@ public class Agregado {
                     //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
                 
                     // INSERTAR ESTADO
-                    pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
+                    pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar","id_lugar"));
                     pstInsertarLugar.setString(2, personaje.getString("estado"));
                     pstInsertarLugar.setString(3, "ESTADO");
                     pstInsertarLugar.setString(4, "TIERRA");
@@ -72,7 +72,7 @@ public class Agregado {
                             //System.out.println("PERSONAJE: "+personaje.getString("nombre")+" ha sido agregado a la DB\n");
 
                             // INSERTAR ESTADO
-                            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar"));
+                            pstInsertarLugar.setInt(1, DBClass.getLastValue("acc_lugar","id_lugar"));
                             pstInsertarLugar.setString(2, personaje.getString("ciudad"));
                             pstInsertarLugar.setString(3, "CIUDAD");
                             pstInsertarLugar.setString(4, "TIERRA");
@@ -118,7 +118,7 @@ public class Agregado {
             
             if (lugarNac > 0){
                 
-                pstInsertar.setInt(1, DBClass.getLastValue("acc_personaje"));
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_personaje","id_personaje"));
                 pstInsertar.setString(2, personaje.getString("nombre"));
                 pstInsertar.setString(3, personaje.getString("nombreR"));
                 pstInsertar.setString(4, personaje.getString("apellidoR"));
@@ -210,7 +210,8 @@ public class Agregado {
                                     " UNION" +
                                     " SELECT p.* FROM acc_parafernalia p" +
                                     " WHERE p.id_parafernalia IN (SELECT distinct(parafernalia_fk) FROM acc_pa_pa WHERE parafernalia_compuesta_fk in (SELECT p.id_parafernalia FROM acc_parafernalia p, acc_p_p pp WHERE p.id_parafernalia = pp.parafernalia_fk AND pp.personaje_fk = ?))" +
-                                    " ORDER BY id_parafernalia")
+                                    " ORDER BY id_parafernalia");
+            PreparedStatement pstGetpp = conn.prepareStatement("SELECT alturametros_pp, pesokg_pp FROM acc_p_p WHERE parafernalia_fk = ?")
         ){
             pstGetParafernalia.setInt(1, personajeID);
             pstGetParafernalia.setInt(2, personajeID);
@@ -220,10 +221,29 @@ public class Agregado {
             while (rsGetParafernalia.next()){
                 JSONObject parafernalia = new JSONObject();
                 
-                parafernalia.put("id", rsGetParafernalia.getInt(1));
+                int parafernaliaID = rsGetParafernalia.getInt(1);
+                
+                parafernalia.put("id", parafernaliaID);
                 parafernalia.put("name", rsGetParafernalia.getString(2));
                 parafernalia.put("tipo", rsGetParafernalia.getString(3));
+                
+                pstGetpp.setInt(1, parafernaliaID);
+                
+                ResultSet rstGetpp = pstGetpp.executeQuery();
+                
+                if (rstGetpp.next()){
+//                    System.out.println("Entre?");
+                    parafernalia.put("esPP", true);
+                    parafernalia.put("altura", rstGetpp.getDouble(1));
+                    parafernalia.put("peso", rstGetpp.getDouble(2));
+                }
+                else{
+//                    System.out.println("No, no entraste");
+                    parafernalia.put("esPP", false);
+                }
 
+//                System.out.println("PARA: "+parafernalia.toString(1));
+                
                 listaParafernalia.put(parafernalia);
             }
             
@@ -431,7 +451,7 @@ public class Agregado {
             
             if (isPart){
                 
-                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia"));
+                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia","id_parafernalia"));
                 pstInsertarParafernalia.setString(2, parafernalia.getString("name"));
                 pstInsertarParafernalia.setString(3, parafernalia.getString("tipo"));
                 
@@ -448,7 +468,7 @@ public class Agregado {
                 
             }else{
             
-                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia"));
+                pstInsertarParafernalia.setInt(1, DBClass.getLastValue("acc_parafernalia","id_parafernalia"));
                 pstInsertarParafernalia.setString(2, parafernalia.getString("name"));
                 pstInsertarParafernalia.setString(3, parafernalia.getString("tipo"));
                 
@@ -527,31 +547,109 @@ public class Agregado {
         
         return listaEvento;
     }
-     
+    
+    public static JSONArray getParafernalia(){
+     JSONArray listaParafernalia = new JSONArray();
+
+     try(
+         Connection conn = DBClass.getConn();
+         PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT nombre_parafernalia from acc_parafernalia;")
+     ){
+
+         ResultSet rsGetParafernalia = pstGetParafernalia.executeQuery();
+
+         while (rsGetParafernalia.next()){
+             JSONObject parafernalia = new JSONObject();
+
+             parafernalia.put("nombre", rsGetParafernalia.getInt(1));
+
+
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+             listaParafernalia.put(parafernalia);
+         }
+
+         return listaParafernalia;
+
+     } catch (SQLException ex) {
+         Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+     }
+
+     return listaParafernalia;
+ }
+
+    public static JSONObject getParafernaliaMod(String id){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetParafernalia = conn.prepareStatement("select nombre_parafernalia, tipo_parafernalia from acc_parafernalia where id_parafernalia = ?;");
+                PreparedStatement pstGetPP = conn.prepareStatement("select * from acc_p_p where parafernalia_fk = ?;")
+                ){
+            
+            JSONObject parafernalia = new JSONObject();
+            
+            pstGetParafernalia.setInt(1, Integer.valueOf(id));
+            
+            ResultSet rsGetParafernalia = pstGetParafernalia.executeQuery();
+            
+            if (rsGetParafernalia.next()){
+                
+                parafernalia.put("nombre", rsGetParafernalia.getString(1));
+                parafernalia.put("tipo", rsGetParafernalia.getString(2));
+                
+                pstGetPP.setInt(1, Integer.valueOf(id));
+                
+                ResultSet rsPP = pstGetPP.executeQuery();
+                
+                if (rsPP.next()){
+                    parafernalia.put("esPP", true);
+                    parafernalia.put("altura", rsPP.getDouble(3));
+                    parafernalia.put("peso", rsPP.getDouble(4));
+                    
+                }
+                else{
+                    parafernalia.put("esPP", false);
+                }
+            }
+            
+            return parafernalia;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+       
     public static void ModParafernalia(JSONObject parafernalia){
         
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE acc_parafernalia SET"
-                    + " tipo_personaje = ?, nombreoriginal_personaje = ?, nombrereal_personaje = ?,"
-                    + " apellidoreal_personaje = ?, identidad_personaje = ?, biografia_personaje = ?,"
-                    + " estadocivil_personaje = ?, genero_personaje = ?, altura_personaje = ?, peso_personaje = ?,"
-                    + " colorojos_personaje = ?, colorpelo_personaje = ? WHERE id_personaje = ?")
+            PreparedStatement pstUpdate = conn.prepareStatement("UPDATE acc_parafernalia SET nombre_parafernalia = ?, tipo_parafernalia = ? WHERE id_parafernalia = ?");
+            PreparedStatement pstUpdatePP = conn.prepareStatement("UPDATE acc_p_p SET alturametros_pp = ?, pesokg_pp = ? WHERE parafernalia_fk = ?")
         ){
             
-            pstInsertar.setString(1, parafernalia.getString("nombre"));
-            pstInsertar.setString(2, parafernalia.getString("altura"));
-            pstInsertar.setString(3, parafernalia.getString("peso"));
+            pstUpdate.setString(1, parafernalia.getString("nombre"));
+            pstUpdate.setString(2, parafernalia.getString("tipo"));
+            pstUpdate.setInt(3, parafernalia.getInt("id"));
             
-            System.out.println(pstInsertar.toString());
+            System.out.println(pstUpdate.toString());
             
-            if (pstInsertar.executeUpdate() > 0){
+            if (pstUpdate.executeUpdate() > 0){
                 
-                System.out.println("\nALUMNO: "+parafernalia.getString("id")+" ha sido actualizado en la DB\n");
+                if (parafernalia.getBoolean("esPP")){
+                    pstUpdatePP.setDouble(1, Double.parseDouble(parafernalia.getString("altura")));
+                    pstUpdatePP.setDouble(2, Double.parseDouble(parafernalia.getString("peso")));
+                    pstUpdatePP.setInt(3, parafernalia.getInt("id"));
+                    
+                    pstUpdatePP.executeUpdate();
+                }
+                
+                System.out.println("\nParafernalia: "+parafernalia.getString("nombre")+" ha sido actualizado en la DB\n");
                 
             }else{
                 
-                System.out.println("\nALUMNO: "+parafernalia.getString("id")+" no ha sido actualizado en la DB\n");
+                System.out.println("\nParafernalia: "+parafernalia.getString("nombre")+" no ha sido actualizado en la DB\n");
                 
             }
             
@@ -561,4 +659,31 @@ public class Agregado {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void DelParafernalia(String id){
+    
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstDelPAPA = conn.prepareStatement("DELETE FROM acc_pa_pa WHERE parafernalia_compuesta_fk = ?");
+            PreparedStatement pstDelPP = conn.prepareStatement("DELETE FROM acc_p_p WHERE parafernalia_fk = ?");
+            PreparedStatement pstDelP = conn.prepareStatement("DELETE FROM acc_parafernalia WHERE id_parafernalia = ?")
+            
+        ){          
+            // Eliminar la relacion entre Parafernalia y Parafernalia
+            pstDelPAPA.setInt(1, Integer.parseInt(id));
+            pstDelPAPA.executeUpdate();
+            
+            // Eliminar la relacion entre Parafernalia y Personaje
+            pstDelPP.setInt(1, Integer.parseInt(id));
+            pstDelPP.executeUpdate();
+            
+            // Eliminar Parafernalia
+            pstDelP.setInt(1, Integer.parseInt(id));
+            pstDelP.executeUpdate();
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+ 
 } 
