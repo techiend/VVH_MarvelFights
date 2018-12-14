@@ -18,7 +18,9 @@ public class PruebaSQL {
     
         /*
         *
-        *   Prueba de como hacer la conexion con la DB y como realizar una consulta simple
+        *   Prueba de como hacer la conexion con la DB y como realizar una consulta simple 
+        *
+        *   Branch - Developer
         *
         */
     
@@ -26,25 +28,17 @@ public class PruebaSQL {
         
         try(
             Connection conn = DBClass.getConn();
-                
             // En caso de necesitar llenar algun campo con informacion especifica colocamos '?'
-            PreparedStatement pst = conn.prepareStatement("SELECT * FROM usuario WHERE apellido = ? or nombre = ?;");
+            PreparedStatement pst = conn.prepareStatement("SELECT * from lugar");
         ){
             
-            // Al colocar '?' leugo simplemente especificamos que va en cada uno de ellos
-            pst.setString(1, "Varisco");
-            pst.setString(2, "Carlos");
+          
+            
             // Pedimos ejecutar el query..
             ResultSet rst = pst.executeQuery();
             
             // Ciclo mientras exista algo en la respuesta de la consulta
             while (rst.next()){
-                
-                // Por cada una de las filas que retorna el SELECT utilizamos la informacion como nos plazca
-                System.out.println("\nUsuario #:"+rst.getInt("id")+"");
-                System.out.println("Nombre y Apellido: "+rst.getString("nombre")+" "+rst.getString("apellido"));
-                System.out.println("Telefono: "+rst.getString("telefono"));
-                System.out.println("Profesion: "+rst.getString("profesion"));
             }
             
             // Cerramos la conexion para no desperdiciar recursos
