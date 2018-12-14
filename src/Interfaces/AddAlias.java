@@ -11,6 +11,8 @@ package Interfaces;
 import Clases.Agregado;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
@@ -22,14 +24,38 @@ import org.json.JSONObject;
  */
 public class AddAlias extends javax.swing.JFrame {
 
+    private int personajeID;
+    
     /**
      * Creates new form AddAlias
      */
-    public AddAlias(int id_alias) {
+    public AddAlias(int id_personaje) {
+        this.personajeID = id_personaje;
         this.setResizable(false);
         initComponents();
+        fillTable();
         this.setLocationRelativeTo(null);
         setTitle("Agregar Alias");
+        
+        tableAlias.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tableAlias.getModel();    
+        
+              int fila = tableAlias.rowAtPoint(e.getPoint());
+              int columna = tableAlias.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println(id);
+                  txtIDAlias.setText(Integer.toString(id));
+                
+              }
+           }
+        });
     }
     
     public Image getIconImage(){
@@ -37,27 +63,38 @@ public class AddAlias extends javax.swing.JFrame {
         return retValue;
     }
     
-        public void emptyTable(){
+           
+    
+    public void emptyTable(){
         DefaultTableModel model = (DefaultTableModel) tableAlias.getModel();
-        
+
         int filas = tableAlias.getRowCount();
         for (int i = 1; i <= filas; i++){
             model.removeRow(0);
         }
     }
     
-     public void fillTable(){
+    public void fillTable(){
         emptyTable();
         
-        JSONArray listaAlias = Agregado.getAlias();
+        JSONArray listaAlias = Agregado.getAliasList(personajeID);
         DefaultTableModel model = (DefaultTableModel) tableAlias.getModel();        
         
         for (int i = 0; i<listaAlias.length(); i++){
-            JSONObject parafernalia = listaAlias.getJSONObject(i);
+            JSONObject alias = listaAlias.getJSONObject(i);
             
-                model.addRow(new Object[]{parafernalia.getInt("id_alias"),parafernalia.getString("nombrealias"), parafernalia.getString("descripcion")});
+                model.addRow(new Object[]{alias.getInt("id"),alias.getString("nombrealias"), alias.getString("descripcion")});
         }
      }
+     
+     private void fillPanelModAlias(String id) {
+        JSONObject alias = Agregado.getAlias(id);
+        
+        txtIDAlias_m.setText(id);
+        txtAlias_m.setText(alias.getString("nombrealias"));
+        txtDescripcion_m.setText(alias.getString("descripcion"));
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,16 +113,25 @@ public class AddAlias extends javax.swing.JFrame {
         txtAlias = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAlias = new javax.swing.JTable();
-        btnAgregar = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        btnAddParafernalia1 = new javax.swing.JButton();
-        txtNombreParafernalia_m = new javax.swing.JTextField();
+        btnActualizarAlias = new javax.swing.JButton();
+        txtAlias_m = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescripcion_m = new javax.swing.JTextArea();
         jLabel9 = new javax.swing.JLabel();
-        btnAtrasAddAlias = new javax.swing.JButton();
+        txtIDAlias_m = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
+        btnAgregar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        txtIDAlias = new javax.swing.JTextField();
+        btnMod = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         btnContinuarAddAlias = new javax.swing.JButton();
+        btnAtrasAddAlias = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,7 +146,7 @@ public class AddAlias extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(204, 204, 204)
+                .addGap(307, 307, 307)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -136,6 +182,88 @@ public class AddAlias extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableAlias);
 
+        jPanel6.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar"));
+
+        btnActualizarAlias.setBackground(new java.awt.Color(153, 0, 204));
+        btnActualizarAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnActualizarAlias.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizarAlias.setText("ACTUALIZAR");
+        btnActualizarAlias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarAliasActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("NOMBRE:");
+
+        txtDescripcion_m.setColumns(20);
+        txtDescripcion_m.setRows(5);
+        jScrollPane2.setViewportView(txtDescripcion_m);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("DESCRIPCION");
+
+        txtIDAlias_m.setEditable(false);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("ID:");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addGap(216, 216, 216))
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(txtAlias_m, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(57, 57, 57))
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(150, 150, 150)))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(txtIDAlias_m, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizarAlias, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtAlias_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtIDAlias_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnActualizarAlias)
+                .addGap(33, 33, 33))
+        );
+
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane3.setViewportView(txtDescripcion);
+
         btnAgregar.setBackground(new java.awt.Color(0, 153, 51));
         btnAgregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
@@ -146,66 +274,49 @@ public class AddAlias extends javax.swing.JFrame {
             }
         });
 
-        jPanel6.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Modificar"));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("DESCRIPCION");
 
-        btnAddParafernalia1.setBackground(new java.awt.Color(153, 0, 204));
-        btnAddParafernalia1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAddParafernalia1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddParafernalia1.setText("ACTUALIZAR");
-        btnAddParafernalia1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel4.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        btnMod.setText("MODIFICAR");
+        btnMod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddParafernalia1ActionPerformed(evt);
+                btnModActionPerformed(evt);
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("NOMBRE:");
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("DESCRIPCION");
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(btnAddParafernalia1))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
-                        .addGap(0, 11, Short.MAX_VALUE))))
+                .addComponent(txtIDAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnMod)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar)
+                .addContainerGap())
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombreParafernalia_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAddParafernalia1)
-                .addGap(21, 21, 21))
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIDAlias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMod)
+                    .addComponent(btnEliminar))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -217,39 +328,60 @@ public class AddAlias extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnAgregar)
-                        .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnAgregar))))
+                        .addGap(0, 14, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(43, 43, 43))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(133, 133, 133))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
         );
-
-        btnAtrasAddAlias.setBackground(new java.awt.Color(153, 0, 0));
-        btnAtrasAddAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAtrasAddAlias.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtrasAddAlias.setText("ATRAS");
 
         btnContinuarAddAlias.setBackground(new java.awt.Color(0, 153, 51));
         btnContinuarAddAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnContinuarAddAlias.setForeground(new java.awt.Color(255, 255, 255));
         btnContinuarAddAlias.setText("CONTINUAR");
+
+        btnAtrasAddAlias.setBackground(new java.awt.Color(153, 0, 0));
+        btnAtrasAddAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAtrasAddAlias.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtrasAddAlias.setText("ATRAS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -260,12 +392,12 @@ public class AddAlias extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAtrasAddAlias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnContinuarAddAlias))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnContinuarAddAlias)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -273,12 +405,12 @@ public class AddAlias extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAtrasAddAlias)
-                    .addComponent(btnContinuarAddAlias))
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnContinuarAddAlias)
+                    .addComponent(btnAtrasAddAlias))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -289,7 +421,9 @@ public class AddAlias extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -300,8 +434,10 @@ public class AddAlias extends javax.swing.JFrame {
         
         if (!txtAlias.getText().isEmpty()){
                     alias.put("nombrealias", txtAlias.getText());
+                    alias.put("descripcion", txtDescripcion.getText());
+                 
                     
-                    Agregado.AddAlias(alias);
+                    Agregado.AddAlias(alias, personajeID);
                    
                     fillTable();
                     //fillcbParafernalia();
@@ -311,51 +447,36 @@ public class AddAlias extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void btnAddParafernalia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddParafernalia1ActionPerformed
+    private void btnActualizarAliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAliasActionPerformed
+   JSONObject alias = new JSONObject();
+        
+        if (!txtAlias_m.getText().isEmpty()){
+                            alias.put("nombrealias", txtAlias_m.getText());
+                            alias.put("descripcion", (!txtDescripcion_m.getText().isEmpty()) ? txtDescripcion_m.getText() : "");
+
+//                                System.out.println("ALUMNO: "+alumno.toString(1));
+                            Agregado.ModAlias(alias, Integer.parseInt(txtIDAlias_m.getText()));
+
+                            fillTable();
+                            txtIDAlias.setText("");
+                        }else 
+            JOptionPane.showMessageDialog(this, "Debe ingresar un alias", "Error", JOptionPane.ERROR_MESSAGE);
+        
+                    
+               
+    }//GEN-LAST:event_btnActualizarAliasActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        Agregado.DelAlias(txtIDAlias.getText());
+        fillTable();
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
-        JSONObject personaje = new JSONObject();
-
-        if (!txtNombreParafernalia_m.getText().isEmpty()){
-
-            if (txtAltura_m.isEditable()){
-
-                if(!txtAltura_m.getText().isEmpty()){
-                    if(!txtPeso_m.getText().isEmpty()){
-
-                        personaje.put("esPP", true);
-                        personaje.put("nombre", txtNombreParafernalia_m.getText());
-                        personaje.put("tipo", cbTipoP_m.getSelectedItem());
-                        personaje.put("altura", txtAltura_m.getText());
-                        personaje.put("peso", txtPeso_m.getText());
-                        personaje.put("id", Integer.parseInt(txtID_m.getText()));
-
-                        Agregado.ModParafernalia(personaje);
-
-                        fillTable();
-                        txtIDParafernalia.setText("");
-
-                    }else
-                    JOptionPane.showMessageDialog(this, "Peso no insertado", "Error", JOptionPane.ERROR_MESSAGE);
-                }else
-                JOptionPane.showMessageDialog(this, "Altura no insertada", "Error", JOptionPane.ERROR_MESSAGE);
-
-            }
-            else{
-                personaje.put("esPP", false);
-                personaje.put("nombre", txtNombreParafernalia_m.getText());
-                personaje.put("tipo", cbTipoP_m.getSelectedItem());
-                personaje.put("id", Integer.parseInt(txtID_m.getText()));
-
-                Agregado.ModParafernalia(personaje);
-
-                fillTable();
-                txtIDParafernalia.setText("");
-            }
-
-        }else
-        JOptionPane.showMessageDialog(this, "Nombre no seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
-    }//GEN-LAST:event_btnAddParafernalia1ActionPerformed
+    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
+        // TODO add your handling code here:
+        fillPanelModAlias(txtIDAlias.getText());
+         
+    }//GEN-LAST:event_btnModActionPerformed
 
     /**
      * @param args the command line arguments
@@ -393,23 +514,32 @@ public class AddAlias extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddParafernalia1;
+    private javax.swing.JButton btnActualizarAlias;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtrasAddAlias;
     private javax.swing.JButton btnContinuarAddAlias;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnMod;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tableAlias;
     private javax.swing.JTextField txtAlias;
-    private javax.swing.JTextField txtNombreParafernalia_m;
+    private javax.swing.JTextField txtAlias_m;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextArea txtDescripcion_m;
+    private javax.swing.JTextField txtIDAlias;
+    private javax.swing.JTextField txtIDAlias_m;
     // End of variables declaration//GEN-END:variables
 }

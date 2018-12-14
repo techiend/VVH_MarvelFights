@@ -686,63 +686,61 @@ public class Agregado {
         }
     }
  
-public static int AddAlias(JSONObject alias){
-        
-        
-         
+    public static void AddAlias(JSONObject alias, int personajeID){
+    
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_alias(id_alias, nombre_alias, descripcion_alias, personaje_fk ) "
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_alias "
                     + "VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS)
                 ){
             
-            ResultSet aliasRST = pstInsertar.getGeneratedKeys();
-            
-            if (aliasRST.next()){
+           
                
                 pstInsertar.setInt(1, DBClass.getLastValue("acc_alias","id_alias"));
                 pstInsertar.setString(2, alias.getString("nombrealias"));
-                pstInsertar.setString(3, alias.getString("descripcion"));
-                pstInsertar.setInt(4, aliasRST.getInt(4));
-           }
-            
-            if (pstInsertar.executeUpdate() > 0){
+                pstInsertar.setString(3, alias.getString("descripcion")); // Donde mandas este campo? nunca
                 
-                System.out.println("\nALIAS: "+alias.getInt("id_alias")+" ha sido agregado a la DB\n");
                 
-            }else{
+                if (alias.getString("descripcion").equals(""))
+                    pstInsertar.setNull(3, 0);
+                else
+                    pstInsertar.setString(3, alias.getString("descripcion"));
                 
-                System.out.println("\nALIAS: "+alias.getString("nombre")+" no ha sido agregado a la DB\n");
-                
-            }
+                pstInsertar.setInt(4, personajeID);
+           
+                if (pstInsertar.executeUpdate() > 0){
+                    System.out.println("Inserto el Alias");
+                }else{
+                    System.out.println("No inserto el Alias");
+                }
             
             
         } catch (SQLException ex) {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-        return -1;
     }
 
- public static JSONArray getAlias(){
+    public static JSONArray getAliasList(int personajeID){
      JSONArray listaAlias = new JSONArray();
 
      try(
          Connection conn = DBClass.getConn();
-         PreparedStatement pstGetParafernalia = conn.prepareStatement("SELECT nombre_parafernalia from acc_parafernalia;")
+         PreparedStatement pstGetAlias = conn.prepareStatement("SELECT id_alias, nombre_alias, descripcion_alias from acc_alias WHERE personaje_fk = ?;")
      ){
 
-         ResultSet rsGetParafernalia = pstGetParafernalia.executeQuery();
+         pstGetAlias.setInt(1, personajeID);
+         
+         ResultSet rsGetAlias = pstGetAlias.executeQuery();
 
-         while (rsGetParafernalia.next()){
-             JSONObject parafernalia = new JSONObject();
+         while (rsGetAlias.next()){
+             JSONObject alias = new JSONObject();
+             
+             alias.put("id",rsGetAlias.getInt(1) );
+             alias.put("nombrealias", rsGetAlias.getString(2));
+             alias.put("descripcion", (rsGetAlias.getString(3) == null) ? "" : rsGetAlias.getString(3));
 
-             parafernalia.put("nombre", rsGetParafernalia.getInt(1));
-
-
-//                System.out.println("ALUMNO: "+alumno.toString());
-
-             listaAlias.put(parafernalia);
+             listaAlias.put(alias);
          }
 
          return listaAlias;
@@ -753,5 +751,89 @@ public static int AddAlias(JSONObject alias){
 
      return listaAlias;
  }
-
+ 
+    public static JSONObject getAlias(String id){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetAlias = conn.prepareStatement("SELECT id_alias, nombre_alias, descripcion_alias FROM acc_alias WHERE id_Alias= ?;")
+                ){
+            
+            JSONObject alias = new JSONObject();
+            
+            pstGetAlias.setInt(1, Integer.valueOf(id));
+            
+            ResultSet rsGetAlias = pstGetAlias.executeQuery();
+            
+            if (rsGetAlias.next()){
+                
+                alias.put("id", rsGetAlias.getInt(1));
+                alias.put("nombrealias", rsGetAlias.getString(2));
+                alias.put("descripcion", (rsGetAlias.getString(3) == null) ? "" : rsGetAlias.getString(3));
+            }
+            
+            return alias;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    public static void DelAlias(String id){
+    
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstDelete = conn.prepareStatement("DELETE FROM acc_alias WHERE id_alias = ?")
+        ){
+            
+            pstDelete.setInt(1, Integer.parseInt(id));
+            
+            
+            if (pstDelete.executeUpdate() > 0){
+                
+                System.out.println("\nAlias: "+id+" ha sido borrado de la DB\n");
+                
+            }else{
+                
+                System.out.println("\nAlias: "+id+" no ha sido borrado de la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void ModAlias(JSONObject alias, int aliasID){
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("UPDATE acc_alias SET nombre_alias = ?, descripcion_alias = ? WHERE id_alias = ?")
+        ){
+            
+            pstInsertar.setString(1, alias.getString("nombrealias"));
+            pstInsertar.setString(2, alias.getString("descripcion"));
+            pstInsertar.setInt(3, aliasID); 
+            
+            
+            if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nALIAS: "+alias.getString("nombrealias")+" ha sido actualizado en la DB\n"); // aquii te va a fallar por copiarlo sin pensar 
+                
+            }else{
+                
+                System.out.println("\nALIAS: "+alias.getString("nombrealias")+" no ha sido actualizado en la DB\n");
+                
+            }
+            
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 } 
