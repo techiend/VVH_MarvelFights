@@ -154,4 +154,37 @@ public class ProfesionC {
         
         
     }
+    
+    public static void modProfesion(JSONObject profesion, int profesionID){
+        
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstModProfesion = conn.prepareStatement("UPDATE acc_profesion SET nombre_profesion = ?, descripcion_profesion = ? WHERE id_profesion = ? ");
+        ){
+            
+            pstModProfesion.setString(1, profesion.getString("name"));
+            
+            if (profesion.getString("desc").equals(""))
+                pstModProfesion.setNull(2, 0);
+            else
+                pstModProfesion.setString(2, profesion.getString("desc"));
+            
+            pstModProfesion.setInt(3, profesionID);
+            
+            if (pstModProfesion.executeUpdate() > 0){
+                System.out.println("Inserto la profesion");
+                
+            }
+            else{
+                System.out.println("No inserto la profesion");
+            }
+            
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
 }

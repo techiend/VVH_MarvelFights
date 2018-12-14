@@ -487,6 +487,8 @@ public class ProfesionList extends javax.swing.JFrame {
             txtIDProfesion_m.setText(Integer.toString(profesion.getInt("id")));
             txtNameProfesion_m.setText(profesion.getString("name"));
             txtDescProfesion_m.setText(profesion.getString("desc"));
+            
+            txtIDProfesion.setText("");
         }
         else{
             JOptionPane.showMessageDialog(this, "Introducte un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
@@ -502,6 +504,7 @@ public class ProfesionList extends javax.swing.JFrame {
             ProfesionC.delProfesion(Integer.parseInt(txtIDProfesion.getText()));
             fillTable();
             
+            txtIDProfesion.setText("");
         }
         else{
             JOptionPane.showMessageDialog(this, "Introducte un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
@@ -511,6 +514,31 @@ public class ProfesionList extends javax.swing.JFrame {
 
     private void btnUpdateProfesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProfesionActionPerformed
         // TODO add your handling code here:
+
+        if(!txtIDProfesion_m.getText().isEmpty()){
+            if(!txtNameProfesion_m.getText().isEmpty()){
+                
+                JSONObject profesion = new JSONObject();
+                
+                profesion.put("name", txtNameProfesion_m.getText());
+                profesion.put("desc", txtDescProfesion_m.getText());
+                        
+                ProfesionC.modProfesion(profesion, Integer.parseInt(txtIDProfesion_m.getText()));
+                fillTable();
+                
+                txtIDProfesion_m.setText("");
+                txtNameProfesion_m.setText("");
+                txtDescProfesion_m.setText("");
+                
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Debes de seleccionar un ID valido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnUpdateProfesionActionPerformed
   /**
      * @param args the command line arguments
