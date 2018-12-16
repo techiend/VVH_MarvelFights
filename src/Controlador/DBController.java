@@ -11,9 +11,14 @@ package Controlador;
 import Clases.EventoC;
 import DBHelper.DBClass;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
@@ -158,17 +163,78 @@ public class DBController {
         return indicador;
     }
     
-    public static void createEvento(EventoC evento){
-        
+    public static int createEvento(EventoC evento){
+        int idEvento = 0;
         try(
             Connection conn = DBClass.getConn();
-            PreparedStatement pst = conn.prepareStatement("INSERT INTO acc_evento VALUES ()")
+            PreparedStatement pstCreateEvento = conn.prepareStatement("INSERT INTO acc_evento VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstGetHPGGA = conn.prepareStatement("SELECT id_hpg hpg, grupoAfiliacion_fk ga FROM acc_hist_per_ga WHERE personaje_fk = ? AND estatus_hpg = 'Activo'");
+            PreparedStatement pstCreateInscrito = conn.prepareStatement("INSERT INTO acc_inscrito VALUES (?, ?, 0, false, ?, ?, ?)")
         ){
+            
+            pstCreateEvento.setInt(1, DBClass.getLastValue("acc_evento", "id_evento"));
+            pstCreateEvento.setString(2, evento.getNombre());
+            
+            java.sql.Date fechaI = new java.sql.Date(evento.getFechaInicio().getTime()); 
+            java.sql.Date fechaF = new java.sql.Date(evento.getFechaFin().getTime()); 
+
+            pstCreateEvento.setDate(3, fechaI);
+            pstCreateEvento.setDate(4, fechaF);
+            
+            if (evento.getDescripccion().trim().equals(""))
+                pstCreateEvento.setNull(5, 0);
+            else
+                pstCreateEvento.setString(5, evento.getDescripccion());
+            
+            pstCreateEvento.executeUpdate();
+            
+            ResultSet rstEvento = pstCreateEvento.getGeneratedKeys();
+            
+            if (rstEvento.next()){
+                idEvento = rstEvento.getInt(1);
+                
+                JSONArray inscritos = evento.getGrupos();
+                
+                for (int i = 0; i < inscritos.length(); i++){
+                    
+                    int idPersonaje = inscritos.getJSONObject(i).getInt("id");
+                    int numGroup = inscritos.getJSONObject(i).getInt("gc");
+                    
+                    pstGetHPGGA.setInt(1, idPersonaje);
+                    
+                    ResultSet rstHPGGA = pstGetHPGGA.executeQuery();
+                    
+                    if (rstHPGGA.next()){
+                        int idHPG = rstHPGGA.getInt(1);
+                        int idGrupo = rstHPGGA.getInt(2);
+                        
+                        pstCreateInscrito.setInt(1, DBClass.getLastValue("acc_inscrito", "id_inscrito"));
+                        pstCreateInscrito.setInt(2, numGroup);
+                        pstCreateInscrito.setInt(3, idEvento);
+                        pstCreateInscrito.setInt(4, idHPG);
+                        pstCreateInscrito.setInt(5, idGrupo);
+                        
+                        pstCreateInscrito.executeUpdate();
+                        
+                    }
+                    else{
+                        return -3; // No posee grupo de afiliacion
+                    }
+                }
+                
+                return 0;
+                
+                
+            }
+            else {
+                return -2; // Error al crear evento
+            }
         
         } catch (SQLException ex) {
             Logger.getLogger(DBController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        return -1;
     }
     
 }

@@ -524,9 +524,10 @@ public class Agregado {
                     if (actual.compareTo(tfinal) > 0){
                         System.out.println("Evento inactivo");
                         evento.put("status", "INACTIVO");
-                    }else
-                                System.out.println("Evento activo");
-                                evento.put("status", "ACTIVO");
+                    }else{
+                        System.out.println("Evento activo");
+                        evento.put("status", "ACTIVO");
+                    }
 
                     System.out.println(actual.compareTo(tfinal));
                 } catch (ParseException ex) {

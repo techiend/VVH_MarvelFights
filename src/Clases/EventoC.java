@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class EventoC{
     public String nombre;
     public Date fechaInicio;
-    public String fechaFin;
+    public Date fechaFin;
     public String descripccion = "";
     public JSONArray inscritos;
     public JSONArray grupos;
@@ -56,11 +56,11 @@ public class EventoC{
         this.descripccion = descripccion;
     }
 
-    public String getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 

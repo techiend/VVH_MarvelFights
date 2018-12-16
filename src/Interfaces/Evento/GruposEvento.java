@@ -161,16 +161,16 @@ public class GruposEvento extends javax.swing.JFrame {
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addGap(300, 300, 300)
+                .addGap(274, 274, 274)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -463,6 +463,22 @@ public class GruposEvento extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if (listaPersonajeInscri.length() == 0){
+            evento.setGrupos(grupos);
+
+            switch(DBController.createEvento(evento)){
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Nada salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case -2:
+                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case -3:
+                    JOptionPane.showMessageDialog(null, "TODOS los personajes deben de tener grupo de afiliacion", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+                
             System.out.println("PERMITIR INSERT DE EVENTO e INSCRITOS");
         }else{
             JOptionPane.showMessageDialog(null, "Debes armar grupos con TODOS los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
