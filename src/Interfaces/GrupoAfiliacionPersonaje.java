@@ -28,20 +28,26 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
 
     private int personajeID;
     private boolean isPart = false;
+    private boolean isNext = false;
     
     /**
      * Creates new form ParafernaliaList
      */
-    public GrupoAfiliacionPersonaje(int idPersonaje) {
-        this.personajeID = idPersonaje;
+    public GrupoAfiliacionPersonaje(int id_personaje, boolean isNext) {
+        this.personajeID = id_personaje;
+        this.isNext = isNext;
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        setTitle("Unirse a grupo de afiliacion");
         
         initComponents();
+        
+        if (!isNext){
+            btnNext.setVisible(false);
+        }
        
         fillTable();
         
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-        setTitle("Unirse a grupo de afiliacion");
         
         tableGrupoAfiliacion.addMouseListener(new MouseAdapter() 
         {
@@ -110,7 +116,7 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
         btnNext = new javax.swing.JButton();
         btnAtrasPL = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -245,11 +251,16 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
         btnNext.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnNext.setForeground(new java.awt.Color(255, 255, 255));
         btnNext.setText("SIGUIENTE");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
         btnAtrasPL.setBackground(new java.awt.Color(153, 0, 0));
         btnAtrasPL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAtrasPL.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtrasPL.setText("ATRAS");
+        btnAtrasPL.setText("CANCELAR");
         btnAtrasPL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtrasPLActionPerformed(evt);
@@ -302,9 +313,22 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
 
     private void btnAtrasPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPLActionPerformed
         // TODO add your handling code here:
-        AddPersonaje abrir = new AddPersonaje();
-        abrir.setVisible(true);
-        dispose();
+        int decision = 0;
+        
+        if (isNext){
+            String [] botones = { "Continuar", "Cancelar"};
+            decision = JOptionPane.showOptionDialog (null, "¿Estas seguro que deseas cancelar? Deberas llenar esta informacion luego", "¡CUIDADO!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null/*icono*/, botones, botones[0]);
+             
+            if (decision == 1){
+                Personajes abrir = new Personajes();
+                abrir.setVisible(true);
+                dispose();
+            }
+        }
+        else{
+            dispose();
+        }
+        
     }//GEN-LAST:event_btnAtrasPLActionPerformed
 
     private void btnCreateGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateGrupoActionPerformed
@@ -319,7 +343,20 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (!txtIDGrupoAfiliacion.getText().isEmpty()){
         
-            GrupoAfiliacionC.joinGrupoAfiliacion(Integer.parseInt(txtIDGrupoAfiliacion.getText()), personajeID, false);
+            int response = GrupoAfiliacionC.joinGrupoAfiliacion(Integer.parseInt(txtIDGrupoAfiliacion.getText()), personajeID, false);
+            
+            switch(response){
+            
+                case 0:
+                    JOptionPane.showMessageDialog(this, "Se ha unido satisfactoriamente", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(this, "Personaje ya se encuentra en este Grupo", "Warning", JOptionPane.WARNING_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(this, "Error al unirse al grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
         }
             
     }//GEN-LAST:event_btnJoinActionPerformed
@@ -329,6 +366,10 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
         
         fillTable();
     }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNextActionPerformed
   /**
      * @param args the command line arguments
      */
@@ -359,7 +400,7 @@ public class GrupoAfiliacionPersonaje extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GrupoAfiliacionPersonaje(6).setVisible(true);
+                new GrupoAfiliacionPersonaje(6, false).setVisible(true);
             }
         });
     }

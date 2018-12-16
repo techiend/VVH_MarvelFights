@@ -137,7 +137,7 @@ public class Personajes extends javax.swing.JFrame {
         btnCancelarP = new javax.swing.JButton();
         btnAgregarPersonaje = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
 
         jPanel1.setBackground(new java.awt.Color(34, 38, 42));
@@ -204,7 +204,7 @@ public class Personajes extends javax.swing.JFrame {
             }
         });
 
-        cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion" }));
+        cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion", "Grupo de afiliacion", "Habilidades", "Poder" }));
         cbTipoMod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTipoModActionPerformed(evt);
@@ -222,8 +222,9 @@ public class Personajes extends javax.swing.JFrame {
                         .addComponent(btnDelPersonaje)
                         .addGap(18, 18, 18)
                         .addComponent(btnModAlumno))
-                    .addComponent(cbTipoMod, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIDPersonaje, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbTipoMod, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtIDPersonaje, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -451,7 +452,7 @@ public class Personajes extends javax.swing.JFrame {
         btnCancelarP.setBackground(new java.awt.Color(153, 0, 0));
         btnCancelarP.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancelarP.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelarP.setText("CANCELAR");
+        btnCancelarP.setText("ATRAS");
         btnCancelarP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarPActionPerformed(evt);
@@ -573,19 +574,32 @@ public class Personajes extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if (!txtIDPersonaje.getText().isEmpty() && Integer.parseInt(txtIDPersonaje.getText()) > 0 ){
+            //Habilidades, Poder
             switch(cbTipoMod.getSelectedItem().toString()){
                 case "Personaje": 
                     fillPanelMod(txtIDPersonaje.getText());
                     break;
                 case "Alias":
-                     AddAlias open = new AddAlias(Integer.parseInt(txtIDPersonaje.getText()));
-                    open.setVisible(true);
+                    AddAlias abrirAlias = new AddAlias(Integer.parseInt(txtIDPersonaje.getText()), false);
+                    abrirAlias.setVisible(true);
                     break;
                 case "Parafernalia":
-                    ParafernaliaList abrir = new ParafernaliaList(Integer.parseInt(txtIDPersonaje.getText()));
-                    abrir.setVisible(true);
+                    ParafernaliaList abrirParafernalia = new ParafernaliaList(Integer.parseInt(txtIDPersonaje.getText()),false);
+                    abrirParafernalia.setVisible(true);
                     break;
                 case "Profesion":
+                    ProfesionList abrirProfesion = new ProfesionList(Integer.parseInt(txtIDPersonaje.getText()),false);
+                    abrirProfesion.setVisible(true);
+                    break;
+                case "Grupo de afiliacion":
+                    GrupoAfiliacionPersonaje abrirGrupo = new GrupoAfiliacionPersonaje(Integer.parseInt(txtIDPersonaje.getText()),false);
+                    abrirGrupo.setVisible(true);
+                    break;
+                case "Habilidades":
+                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+                    break;
+                case "Poder":
+                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
                     break;
                 default: JOptionPane.showMessageDialog(this, "Debe seleccionar que desea modificar", "Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -26,26 +26,33 @@ public class ParafernaliaList extends javax.swing.JFrame {
 
     private int personajeID;
     private boolean isPart = false;
+    private boolean isNext = false;
     
     /**
      * Creates new form ParafernaliaList
      */
-    public ParafernaliaList(int id_pj) {
-        this.personajeID = id_pj;
+    public ParafernaliaList(int id_personaje, boolean isNext) {
+        this.personajeID = id_personaje;
+        this.isNext = isNext;
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        setTitle("Agregar parafernalia");
+        
         
         initComponents();
        
+        if (!isNext){
+            btnNext.setVisible(false);
+        }
+                
         txtAltura_m.setEditable(false);
         txtPeso_m.setEditable(false);
         
         fillTable();
        
         fillcbParafernalia();
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-        setTitle("Agregar parafernalia");
         
-          tableParafernalia.addMouseListener(new MouseAdapter() 
+        tableParafernalia.addMouseListener(new MouseAdapter() 
         {
            public void mouseClicked(MouseEvent e) 
            {
@@ -175,10 +182,10 @@ public class ParafernaliaList extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtID_m = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         btnAtrasPL = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -499,20 +506,20 @@ public class ParafernaliaList extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(0, 153, 51));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("SIGUIENTE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnNext.setBackground(new java.awt.Color(0, 153, 51));
+        btnNext.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnNext.setForeground(new java.awt.Color(255, 255, 255));
+        btnNext.setText("SIGUIENTE");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnNextActionPerformed(evt);
             }
         });
 
         btnAtrasPL.setBackground(new java.awt.Color(153, 0, 0));
         btnAtrasPL.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAtrasPL.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtrasPL.setText("ATRAS");
+        btnAtrasPL.setText("CANCELAR");
         btnAtrasPL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtrasPLActionPerformed(evt);
@@ -530,7 +537,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnAtrasPL)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(btnNext)))
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -543,7 +550,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAtrasPL)
-                    .addComponent(jButton2))
+                    .addComponent(btnNext))
                 .addGap(18, 18, 18))
         );
 
@@ -634,16 +641,29 @@ public class ParafernaliaList extends javax.swing.JFrame {
 
     private void btnAtrasPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPLActionPerformed
         // TODO add your handling code here:
-        AddPersonaje abrir = new AddPersonaje();
-        abrir.setVisible(true);
-        dispose();
+        int decision = 0;
+        
+        if (isNext){
+            String [] botones = { "Continuar", "Cancelar"};
+            decision = JOptionPane.showOptionDialog (null, "¿Estas seguro que deseas cancelar? Deberas llenar esta informacion luego", "¡CUIDADO!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null/*icono*/, botones, botones[0]);
+             
+            if (decision == 1){
+                Personajes abrir = new Personajes();
+                abrir.setVisible(true);
+                dispose();
+            }
+        }
+        else{
+            dispose();
+        }
+        
     }//GEN-LAST:event_btnAtrasPLActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        AddAlias abrir = new AddAlias(3);
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        AddAlias abrir = new AddAlias(personajeID, true);
         abrir.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnModParafernaliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModParafernaliaActionPerformed
         // TODO add your handling code here:
@@ -739,7 +759,7 @@ public class ParafernaliaList extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ParafernaliaList(2).setVisible(true);
+                new ParafernaliaList(2, false).setVisible(true);
             }
         });
     }
@@ -750,11 +770,11 @@ public class ParafernaliaList extends javax.swing.JFrame {
     private javax.swing.JButton btnAtrasPL;
     private javax.swing.JButton btnDelParafernalia;
     private javax.swing.JButton btnModParafernalia;
+    private javax.swing.JButton btnNext;
     private javax.swing.JComboBox<String> cbParafernalia;
     private javax.swing.JComboBox<String> cbTipoP;
     private javax.swing.JComboBox<String> cbTipoP_m;
     private javax.swing.JCheckBox checkIsParte;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

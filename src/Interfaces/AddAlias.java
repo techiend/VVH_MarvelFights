@@ -25,17 +25,25 @@ import org.json.JSONObject;
 public class AddAlias extends javax.swing.JFrame {
 
     private int personajeID;
+    private boolean isNext = false;
     
     /**
      * Creates new form AddAlias
      */
-    public AddAlias(int id_personaje) {
+    public AddAlias(int id_personaje, boolean isNext) {
         this.personajeID = id_personaje;
-        this.setResizable(false);
-        initComponents();
-        fillTable();
+        this.isNext = isNext;
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         setTitle("Agregar Alias");
+        
+        initComponents();
+        
+        if (!isNext){
+            btnNext.setVisible(false);
+        }
+        
+        fillTable();
         
         tableAlias.addMouseListener(new MouseAdapter() 
         {
@@ -130,10 +138,10 @@ public class AddAlias extends javax.swing.JFrame {
         txtIDAlias = new javax.swing.JTextField();
         btnMod = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnContinuarAddAlias = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         btnAtrasAddAlias = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -373,15 +381,25 @@ public class AddAlias extends javax.swing.JFrame {
                         .addGap(29, 29, 29))))
         );
 
-        btnContinuarAddAlias.setBackground(new java.awt.Color(0, 153, 51));
-        btnContinuarAddAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnContinuarAddAlias.setForeground(new java.awt.Color(255, 255, 255));
-        btnContinuarAddAlias.setText("CONTINUAR");
+        btnNext.setBackground(new java.awt.Color(0, 153, 51));
+        btnNext.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnNext.setForeground(new java.awt.Color(255, 255, 255));
+        btnNext.setText("CONTINUAR");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
         btnAtrasAddAlias.setBackground(new java.awt.Color(153, 0, 0));
         btnAtrasAddAlias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAtrasAddAlias.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtrasAddAlias.setText("ATRAS");
+        btnAtrasAddAlias.setText("CANCELAR");
+        btnAtrasAddAlias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasAddAliasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -397,7 +415,7 @@ public class AddAlias extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAtrasAddAlias)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnContinuarAddAlias)))
+                        .addComponent(btnNext)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -408,7 +426,7 @@ public class AddAlias extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnContinuarAddAlias)
+                    .addComponent(btnNext)
                     .addComponent(btnAtrasAddAlias))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -478,6 +496,32 @@ public class AddAlias extends javax.swing.JFrame {
          
     }//GEN-LAST:event_btnModActionPerformed
 
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        // TODO add your handling code here:
+        ProfesionList abrir = new ProfesionList(personajeID, true);
+        abrir.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnAtrasAddAliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasAddAliasActionPerformed
+        // TODO add your handling code here:
+        int decision = 0;
+        
+        if (isNext){
+            String [] botones = { "Continuar", "Cancelar"};
+             decision = JOptionPane.showOptionDialog (null, "¿Estas seguro que deseas cancelar? Deberas llenar esta informacion luego", "¡CUIDADO!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null/*icono*/, botones, botones[0]);
+
+            if (decision == 1){
+                Personajes abrir = new Personajes();
+                abrir.setVisible(true);
+                dispose();
+            }
+        }
+        else{
+            dispose();
+        }
+    }//GEN-LAST:event_btnAtrasAddAliasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -508,7 +552,7 @@ public class AddAlias extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddAlias(2).setVisible(true);
+                new AddAlias(2, false).setVisible(true);
             }
         });
     }
@@ -517,9 +561,9 @@ public class AddAlias extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizarAlias;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtrasAddAlias;
-    private javax.swing.JButton btnContinuarAddAlias;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMod;
+    private javax.swing.JButton btnNext;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
