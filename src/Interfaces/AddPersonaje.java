@@ -91,7 +91,7 @@ public class AddPersonaje extends javax.swing.JFrame {
         btnCancelarAP = new javax.swing.JButton();
         btnAgregarP = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconImage(getIconImage());
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -247,20 +247,20 @@ public class AddPersonaje extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombreAdd)
-                                    .addComponent(txtNombreRAdd)
-                                    .addComponent(txtApellidoAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
-                                .addGap(59, 59, 59)
-                                .addComponent(jLabel6))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(cbSexoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(202, 202, 202))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(cbSolteriaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtNombreAdd)
+                                            .addComponent(txtNombreRAdd)
+                                            .addComponent(txtApellidoAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                                        .addGap(59, 59, 59)
+                                        .addComponent(jLabel6))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addComponent(cbSexoAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(202, 202, 202))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbSolteriaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(rbSecretaAdd)
                                         .addGap(35, 35, 35)
@@ -527,7 +527,7 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         System.out.println("PERSONAJE: "+personaje.toString(1));
 
                                                                         if (personajeID > 0){
-                                                                            ParafernaliaList abrir = new ParafernaliaList(personajeID);
+                                                                            ParafernaliaList abrir = new ParafernaliaList(personajeID, true);
                                                                             abrir.setVisible(true);
                                                                             dispose();
                                                                         }

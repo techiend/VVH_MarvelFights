@@ -11,6 +11,7 @@ package Interfaces;
 import Interfaces.Evento.Evento;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 /**
  *
  * @author cverd
@@ -110,6 +111,11 @@ public class Principal extends javax.swing.JFrame {
 
         btnGanadores.setBackground(new java.awt.Color(255, 255, 255));
         btnGanadores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8-búsqueda-64.png"))); // NOI18N
+        btnGanadores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGanadoresActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("PERSONAJES");
@@ -206,6 +212,11 @@ public class Principal extends javax.swing.JFrame {
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnPersonajesActionPerformed
+
+    private void btnGanadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGanadoresActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_btnGanadoresActionPerformed
 
     /**
      * @param args the command line arguments

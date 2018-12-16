@@ -26,7 +26,8 @@ import org.json.JSONObject;
  */
 public class GrupoAfiliacionList extends javax.swing.JFrame {
 
-    private boolean isPart = false;
+    private int baseO;
+    private boolean isMudanza = false;
     
     /**
      * Creates new form ParafernaliaList
@@ -82,7 +83,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         for (int i = 0; i<listaGrupoAfiliacion.length(); i++){
             JSONObject grupoAfiliacion = listaGrupoAfiliacion.getJSONObject(i);
             
-            model.addRow(new Object[]{grupoAfiliacion.getInt("id"),grupoAfiliacion.getString("name"), grupoAfiliacion.getString("desc"), grupoAfiliacion.getInt("ipa"), grupoAfiliacion.getString("base"), grupoAfiliacion.getString("dir")});
+            model.addRow(new Object[]{grupoAfiliacion.getInt("id"),grupoAfiliacion.getString("name"), grupoAfiliacion.getString("desc"), grupoAfiliacion.getDouble("ipa"), grupoAfiliacion.getString("base"), grupoAfiliacion.getString("dir")});
         }
         
     }
@@ -135,7 +136,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         txtDescGrupoAfiliacion_m = new javax.swing.JTextArea();
         txtIDGrupoAfiliacion_m = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtIPA = new javax.swing.JTextField();
+        txtIPA_m = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtEstado_m = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
@@ -144,13 +145,16 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         txtPais_m = new javax.swing.JTextField();
         txtCiudad_m = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        txtBaseOperaciones1 = new javax.swing.JTextField();
+        txtBaseOperaciones_m = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescBaseOperaciones_m = new javax.swing.JTextArea();
+        isMoving = new javax.swing.JCheckBox();
+        jLabel20 = new javax.swing.JLabel();
+        txtIDBase_m = new javax.swing.JTextField();
         btnAtrasPL = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -214,6 +218,11 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         btnAddGrupoAfiliacion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAddGrupoAfiliacion.setForeground(new java.awt.Color(255, 255, 255));
         btnAddGrupoAfiliacion.setText("AGREGAR");
+        btnAddGrupoAfiliacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddGrupoAfiliacionActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -338,8 +347,18 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         txtIDGrupoAfiliacion.setEditable(false);
 
         btnDelGrupoAfiliacion.setText("ELIMINAR");
+        btnDelGrupoAfiliacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelGrupoAfiliacionActionPerformed(evt);
+            }
+        });
 
         btnModGrupoAfiliacion.setText("MODIFICAR");
+        btnModGrupoAfiliacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModGrupoAfiliacionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -374,6 +393,11 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         btnUpdateGrupoAfiliacion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnUpdateGrupoAfiliacion.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateGrupoAfiliacion.setText("ACTUALIZAR");
+        btnUpdateGrupoAfiliacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateGrupoAfiliacionActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -391,13 +415,15 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("ID:");
+        jLabel10.setText("ID GRUPO:");
 
-        txtIPA.setEditable(false);
+        txtIPA_m.setEditable(false);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Ind. Poder Aumentado:");
+
+        txtEstado_m.setEditable(false);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
@@ -411,6 +437,10 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("CIUDAD:");
 
+        txtPais_m.setEditable(false);
+
+        txtCiudad_m.setEditable(false);
+
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("BASE DE OPERACIONES:");
@@ -419,9 +449,22 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("DESCRIPCION BASE DE OPERACIONES:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane5.setViewportView(jTextArea1);
+        txtDescBaseOperaciones_m.setColumns(20);
+        txtDescBaseOperaciones_m.setRows(5);
+        jScrollPane5.setViewportView(txtDescBaseOperaciones_m);
+
+        isMoving.setText("Mudar");
+        isMoving.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isMovingActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("ID BASE:");
+
+        txtIDBase_m.setEditable(false);
 
         javax.swing.GroupLayout panelModProfesionLayout = new javax.swing.GroupLayout(panelModProfesion);
         panelModProfesion.setLayout(panelModProfesionLayout);
@@ -438,90 +481,99 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel18))
+                            .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
                                 .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(jLabel18))
-                                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel19)
-                                            .addComponent(txtBaseOperaciones1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel14))))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelModProfesionLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                        .addComponent(txtCiudad_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel15)
-                                            .addComponent(txtEstado_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(txtPais_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(101, 101, 101))))
+                                    .addComponent(jLabel19)
+                                    .addComponent(txtBaseOperaciones_m, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(panelModProfesionLayout.createSequentialGroup()
                         .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnUpdateGrupoAfiliacion)
-                            .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtIPA, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel11))
-                                .addGap(18, 18, 18)
-                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtIPA_m, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelModProfesionLayout.createSequentialGroup()
+                                    .addComponent(jLabel20)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtIDBase_m, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelModProfesionLayout.createSequentialGroup()
                                     .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(txtIDGrupoAfiliacion_m, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(79, 79, 79)
+                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel13)
+                                .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                    .addComponent(txtCiudad_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel15)
+                                        .addComponent(txtEstado_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                    .addComponent(txtPais_m, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(isMoving))))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         panelModProfesionLayout.setVerticalGroup(
             panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelModProfesionLayout.createSequentialGroup()
+                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel18))
+                .addGap(5, 5, 5)
+                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNameGrupoAfiliacion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBaseOperaciones_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
                 .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelModProfesionLayout.createSequentialGroup()
-                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel18))
-                        .addGap(5, 5, 5)
-                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNameGrupoAfiliacion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtBaseOperaciones1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)
-                        .addComponent(jLabel12))
-                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel19)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel15))
+                        .addComponent(jLabel12)
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIPA_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtIDGrupoAfiliacion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20)
+                            .addComponent(txtIDBase_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(btnUpdateGrupoAfiliacion))
+                    .addGroup(panelModProfesionLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
                         .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                .addComponent(txtIPA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnUpdateGrupoAfiliacion))
-                            .addGroup(panelModProfesionLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
+                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel15))
+                                .addGap(32, 32, 32)
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPais_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(panelModProfesionLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtIDGrupoAfiliacion_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCiudad_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEstado_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtPais_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(isMoving)))
+                            .addGroup(panelModProfesionLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(panelModProfesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtCiudad_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEstado_m, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -536,8 +588,8 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelModProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelModProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(20, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -547,17 +599,14 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 194, Short.MAX_VALUE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelModProfesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelModProfesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -590,7 +639,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnAtrasPL)
                 .addContainerGap())
@@ -604,7 +653,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -612,10 +661,241 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
 
     private void btnAtrasPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasPLActionPerformed
         // TODO add your handling code here:
-        AddPersonaje abrir = new AddPersonaje();
-        abrir.setVisible(true);
+        
         dispose();
     }//GEN-LAST:event_btnAtrasPLActionPerformed
+
+    private void btnAddGrupoAfiliacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddGrupoAfiliacionActionPerformed
+        // TODO add your handling code here:
+        
+        
+        if (!txtNameGrupoAfiliacion.getText().isEmpty()){
+            if (!txtBaseOperaciones.getText().isEmpty()){
+                if (!txtCiudad.getText().isEmpty()){
+                    if (!txtEstado.getText().isEmpty()){
+                        if (!txtPais.getText().isEmpty()){
+                            
+                            JSONObject grupo = new JSONObject();
+                            JSONObject base = new JSONObject();
+                            JSONObject dir = new JSONObject();
+                            
+                            grupo.put("name", txtNameGrupoAfiliacion.getText());
+                            grupo.put("desc", (txtDescGrupoAfiliacion.getText().isEmpty()) ? "" : txtDescGrupoAfiliacion.getText());
+                            
+                            base.put("name", txtBaseOperaciones.getText());
+                            base.put("desc", (txtDescBaseOperaciones.getText().isEmpty()) ? "" : txtDescBaseOperaciones.getText());
+                            
+                            dir.put("ciudad", txtCiudad.getText());
+                            dir.put("estado", txtEstado.getText());
+                            dir.put("pais", txtPais.getText());
+                            
+                            int idBase = GrupoAfiliacionC.createBaseOperaciones(base, dir);
+                            int idGrupo = GrupoAfiliacionC.createGrupoAfiliacion(grupo);
+                            
+                            if (idGrupo > 0){
+                                if (idBase > 0){
+                                    if (GrupoAfiliacionC.createGaBo(idGrupo, idBase) == 0){
+                                        
+                                        txtNameGrupoAfiliacion.setText("");
+                                        txtDescGrupoAfiliacion.setText("");
+                                        txtBaseOperaciones.setText("");
+                                        txtDescBaseOperaciones.setText("");
+                                        txtCiudad.setText("");
+                                        txtEstado.setText("");
+                                        txtPais.setText("");
+                                        
+                                        fillTable();
+
+                                    }
+                                    else{
+                                        GrupoAfiliacionC.deleteGrupoBase(idGrupo, idBase, false);
+                                        JOptionPane.showMessageDialog(this, "Error al unir la Base y el Grupo, por integridad se han borrado ambos", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
+                                else{
+                                    JOptionPane.showMessageDialog(this, "Error al crear la base", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(this, "Error al crear el grupo", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(this, "Pais no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Estado no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Ciudad no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Nombre de la base no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Nombre del grupo no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAddGrupoAfiliacionActionPerformed
+
+    private void btnDelGrupoAfiliacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelGrupoAfiliacionActionPerformed
+        // TODO add your handling code here:
+        
+        if (!txtIDGrupoAfiliacion.getText().isEmpty()){
+            if(GrupoAfiliacionC.deleteGBAll(Integer.parseInt(txtIDGrupoAfiliacion.getText())) == 0){
+                fillTable();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Error al tratar de eliminar el Grupo y su Base", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un grupo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnDelGrupoAfiliacionActionPerformed
+
+    private void btnModGrupoAfiliacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModGrupoAfiliacionActionPerformed
+        // TODO add your handling code here:
+        
+        JSONObject info = GrupoAfiliacionC.getGrupoAfiliacion(Integer.parseInt(txtIDGrupoAfiliacion.getText()));
+        
+        txtNameGrupoAfiliacion_m.setText(info.getString("name_grupo"));
+        txtDescGrupoAfiliacion_m.setText(info.getString("desc_grupo"));
+        txtBaseOperaciones_m.setText(info.getString("base_base"));
+        txtDescBaseOperaciones_m.setText(info.getString("desc_base"));
+        
+        txtIPA_m.setText(Double.toString(info.getDouble("ipa_grupo")));
+        
+        txtIDGrupoAfiliacion_m.setText(Integer.toString(info.getInt("id_grupo")));
+        txtIDBase_m.setText(Integer.toString(info.getInt("id_base")));
+        
+    }//GEN-LAST:event_btnModGrupoAfiliacionActionPerformed
+
+    private void isMovingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isMovingActionPerformed
+        // TODO add your handling code here:
+        
+        if (isMudanza){
+            isMudanza = false;
+            
+            txtCiudad_m.setText("");
+            txtEstado_m.setText("");
+            txtPais_m.setText("");
+            
+            txtCiudad_m.setEditable(false);
+            txtEstado_m.setEditable(false);
+            txtPais_m.setEditable(false);
+            
+        }else{
+            isMudanza = true;
+            
+            txtCiudad_m.setEditable(true);
+            txtEstado_m.setEditable(true);
+            txtPais_m.setEditable(true);
+            
+        }
+        
+    }//GEN-LAST:event_isMovingActionPerformed
+
+    private void btnUpdateGrupoAfiliacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateGrupoAfiliacionActionPerformed
+        // TODO add your handling code here:
+        
+        JSONObject info = new JSONObject();
+        
+        if (!txtNameGrupoAfiliacion_m.getText().isEmpty()){
+            if (!txtBaseOperaciones_m.getText().isEmpty()){
+                
+                if (isMoving.isSelected()){
+                    
+                    if (!txtCiudad_m.getText().isEmpty()){
+                        if (!txtEstado_m.getText().isEmpty()){
+                            if (!txtPais_m.getText().isEmpty()){
+
+                                
+                                info.put("isMoving", true);
+                                
+                                info.put("ciudad",txtCiudad_m.getText());
+                                info.put("estado",txtEstado_m.getText());
+                                info.put("pais",txtPais_m.getText()); 
+
+                                info.put("name_grupo", txtNameGrupoAfiliacion_m.getText());
+                                info.put("desc_grupo", txtDescGrupoAfiliacion_m.getText());
+                                info.put("name_base", txtBaseOperaciones_m.getText());
+                                info.put("desc_base", txtDescBaseOperaciones_m.getText());
+
+                                info.put("id_grupo", txtIDGrupoAfiliacion_m.getText());
+                                info.put("id_base", txtIDBase_m.getText());
+
+                                
+                                
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(this, "Pais no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(this, "Estado no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "Ciudad no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    
+                    info.put("isMoving", false);
+
+                    info.put("name_grupo", txtNameGrupoAfiliacion_m.getText());
+                    info.put("desc_grupo", txtDescGrupoAfiliacion_m.getText());
+                    info.put("name_base", txtBaseOperaciones_m.getText());
+                    info.put("desc_base", txtDescBaseOperaciones_m.getText());
+
+                    info.put("id_grupo", txtIDGrupoAfiliacion_m.getText());
+                    info.put("id_base", txtIDBase_m.getText());
+                }
+        
+                switch (GrupoAfiliacionC.updateGBAll(info)){
+                    case 0:
+                        fillTable();
+                        txtNameGrupoAfiliacion_m.setText("");
+                        txtDescGrupoAfiliacion_m.setText("");
+                        txtBaseOperaciones_m.setText("");
+                        txtDescBaseOperaciones_m.setText("");
+                        txtIPA_m.setText("");
+                        txtIDGrupoAfiliacion_m.setText("");
+                        txtIDBase_m.setText("");
+                        txtCiudad_m.setText("");
+                        txtEstado_m.setText("");
+                        txtPais_m.setText("");
+                        isMoving.setSelected(false);
+                        break;
+                    case -1:
+                        JOptionPane.showMessageDialog(this, "Error al insertar la direccion", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case -2:
+                        JOptionPane.showMessageDialog(this, "Error al actualizar el grupo de afiliacion", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case -3:
+                        JOptionPane.showMessageDialog(this, "Error al actualizar la base de operaciones", "Error", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(this, "Error al realizar update", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Nombre de la base no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Nombre del grupo no puede estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnUpdateGrupoAfiliacionActionPerformed
   /**
      * @param args the command line arguments
      */
@@ -659,6 +939,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdateGrupoAfiliacion;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JCheckBox isMoving;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -671,6 +952,7 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -686,21 +968,22 @@ public class GrupoAfiliacionList extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel panelModProfesion;
     private javax.swing.JTable tableGrupoAfiliacion;
     private javax.swing.JTextField txtBaseOperaciones;
-    private javax.swing.JTextField txtBaseOperaciones1;
+    private javax.swing.JTextField txtBaseOperaciones_m;
     private javax.swing.JTextField txtCiudad;
     private javax.swing.JTextField txtCiudad_m;
     private javax.swing.JTextArea txtDescBaseOperaciones;
+    private javax.swing.JTextArea txtDescBaseOperaciones_m;
     private javax.swing.JTextArea txtDescGrupoAfiliacion;
     private javax.swing.JTextArea txtDescGrupoAfiliacion_m;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtEstado_m;
+    private javax.swing.JTextField txtIDBase_m;
     private javax.swing.JTextField txtIDGrupoAfiliacion;
     private javax.swing.JTextField txtIDGrupoAfiliacion_m;
-    private javax.swing.JTextField txtIPA;
+    private javax.swing.JTextField txtIPA_m;
     private javax.swing.JTextField txtNameGrupoAfiliacion;
     private javax.swing.JTextField txtNameGrupoAfiliacion_m;
     private javax.swing.JTextField txtPais;
