@@ -204,7 +204,7 @@ public class Personajes extends javax.swing.JFrame {
             }
         });
 
-        cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion", "Grupo de afiliacion", "Habilidades", "Poder" }));
+        cbTipoMod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------", "Personaje", "Alias", "Parafernalia", "Profesion", "Grupo de afiliacion", "Habilidades", "Poder", "Personaje no combate" }));
         cbTipoMod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTipoModActionPerformed(evt);
@@ -596,10 +596,19 @@ public class Personajes extends javax.swing.JFrame {
                     abrirGrupo.setVisible(true);
                     break;
                 case "Habilidades":
-                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+                    AddHabilidad abrirHabilidad = new AddHabilidad(Integer.parseInt(txtIDPersonaje.getText()), false);
+                    abrirHabilidad.setVisible(true);
+//                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
                     break;
                 case "Poder":
-                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+                    AddPoder abrirPoder = new AddPoder(Integer.parseInt(txtIDPersonaje.getText()), false);
+                    abrirPoder.setVisible(true);
+//                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+                    break;
+                case "Personaje no combate":
+                    AddPersonajeNC abrirPNC = new AddPersonajeNC(Integer.parseInt(txtIDPersonaje.getText()), false);
+                    abrirPNC.setVisible(true);
+//                    JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
                     break;
                 default: JOptionPane.showMessageDialog(this, "Debe seleccionar que desea modificar", "Error", JOptionPane.ERROR_MESSAGE);
             }

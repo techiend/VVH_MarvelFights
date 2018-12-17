@@ -384,7 +384,9 @@ public class AddHabilidad extends javax.swing.JFrame {
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
         
-        
+        GrupoAfiliacionPersonaje abrir = new GrupoAfiliacionPersonaje(personajeID, true);
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnNextActionPerformed
 
     /**

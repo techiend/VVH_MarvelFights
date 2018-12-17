@@ -756,7 +756,7 @@ model.addRow(new Object[]{personaje.getInt("id"), personaje.getString("nameo"), 
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        ProfesionList abrir = new ProfesionList(personajeID, true);
+        Principal abrir = new Principal();
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnNextActionPerformed
