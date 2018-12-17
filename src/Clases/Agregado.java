@@ -839,7 +839,7 @@ public class Agregado {
         }
     }
   
-      public static void AddHabilidad(JSONObject habilidades, int personajeID){
+    public static void AddHabilidad(JSONObject habilidades, int personajeID){
     
         try(
             Connection conn = DBClass.getConn();
@@ -895,21 +895,41 @@ public class Agregado {
                 
                 pstInsertar.executeUpdate();
                 
-                if (pstInsertar.executeUpdate() > 0){
-                
-                System.out.println("\nAlias: "+personajeID+" ha sido insertado en la DB\n");
-                
-            }else{
-                
-                System.out.println("\nAlias: "+personajeID+" no ha sido insertado en la DB\n");
-                
-            }
-                
                 
         } catch (SQLException ex) {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
+  
+    public static JSONObject getHabilidad(int personajeID){
+    
+        JSONObject habilidad = new JSONObject();
+        
+        try(
+        
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGet = conn.prepareStatement("SELECT nombre_habilidad, valor_habilidad FROM acc_habilidad WHERE personaje_fk = ?")
+                
+        ){
+            
+            pstGet.setInt(1, personajeID);
+                
+            ResultSet rsGet = pstGet.executeQuery();
+            
+            while (rsGet.next()){
+                habilidad.put(rsGet.getString(1), rsGet.getInt(2));
+            }
+                
+            return habilidad;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return habilidad;
+    
+    }
+      
 
 } 
