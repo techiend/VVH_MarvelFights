@@ -10,6 +10,7 @@ package Interfaces.Evento;
 
 import Clases.EventoC;
 import Controlador.DBController;
+import Interfaces.Evento.Combate.Combate;
 import Interfaces.Principal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -465,9 +466,11 @@ public class GruposEvento extends javax.swing.JFrame {
         if (listaPersonajeInscri.length() == 0){
             evento.setGrupos(grupos);
 
-            switch(DBController.createEvento(evento)){
-                case 0:
-                    JOptionPane.showMessageDialog(null, "Nada salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+            int idEvento = DBController.createEvento(evento);
+            
+            switch(idEvento){
+                case -1:
+                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
                     break;
                 case -2:
                     JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
@@ -476,10 +479,27 @@ public class GruposEvento extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "TODOS los personajes deben de tener grupo de afiliacion", "Error", JOptionPane.ERROR_MESSAGE);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
+//                    JOptionPane.showMessageDialog(null, "Nada salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+                    evento.setIdEvento(idEvento);
+                    
+                    JSONArray inscritos = evento.getGrupos();
+                    
+//                    for (int i = 0; i < inscritos.length(); i++){
+//                        JSONObject pj = inscritos.getJSONObject(i);
+//                        
+//                        System.out.println("PERSONAJE INSCRITO: "+pj.toString(1));
+//                    }
+                    
+                    DBController.createPeleasEtapa1(evento);
+                    
+                    Combate abrir = new Combate(evento, 1);
+                    abrir.setVisible(true);
+                    dispose();
+                    
+                    
+                    break;
             }
-                
-            System.out.println("PERMITIR INSERT DE EVENTO e INSCRITOS");
+            
         }else{
             JOptionPane.showMessageDialog(null, "Debes armar grupos con TODOS los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
         }

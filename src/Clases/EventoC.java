@@ -21,6 +21,15 @@ public class EventoC{
     public JSONArray inscritos;
     public JSONArray grupos;
     public int numGroups = 0;
+    public int idEvento = 0;
+
+    public int getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
+    }
 
     public EventoC() {
         this.inscritos = new JSONArray();
@@ -42,6 +51,14 @@ public class EventoC{
 
     public Date getFechaInicio() {
         return fechaInicio;
+    }
+
+    public int getNumGroups() {
+        return numGroups;
+    }
+
+    public void setNumGroups(int numGroups) {
+        this.numGroups = numGroups;
     }
 
     public void setFechaInicio(Date fechaInicio) {
