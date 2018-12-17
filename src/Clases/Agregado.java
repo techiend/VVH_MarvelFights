@@ -9,6 +9,7 @@
 package Clases;
 
 import DBHelper.DBClass;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -837,4 +838,78 @@ public class Agregado {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+  
+      public static void AddHabilidad(JSONObject habilidades, int personajeID){
+    
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_habilidad "
+                    + "VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS)
+                ){
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Inteligencia");
+                pstInsertar.setInt(3, habilidades.getInt("Inteligencia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+                
+                
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Fuerza");
+                pstInsertar.setInt(3, habilidades.getInt("Fuerza"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Velocidad");
+                pstInsertar.setInt(3, habilidades.getInt("Velocidad"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Resistencia");
+                pstInsertar.setInt(3, habilidades.getInt("Resistencia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Proyeccion de energia");
+                pstInsertar.setInt(3, habilidades.getInt("Proyeccion de energia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Habilidades de combate");
+                pstInsertar.setInt(3, habilidades.getInt("Habilidades de combate"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+                
+                if (pstInsertar.executeUpdate() > 0){
+                
+                System.out.println("\nAlias: "+personajeID+" ha sido insertado en la DB\n");
+                
+            }else{
+                
+                System.out.println("\nAlias: "+personajeID+" no ha sido insertado en la DB\n");
+                
+            }
+                
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+
 } 
