@@ -527,7 +527,7 @@ public class AddPersonaje extends javax.swing.JFrame {
                                                                         System.out.println("PERSONAJE: "+personaje.toString(1));
 
                                                                         if (personajeID > 0){
-                                                                            ParafernaliaList abrir = new ParafernaliaList(personajeID, true);
+                                                                            AddHabilidad abrir = new AddHabilidad(personajeID, true);
                                                                             abrir.setVisible(true);
                                                                             dispose();
                                                                         }

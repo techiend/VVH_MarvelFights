@@ -9,6 +9,7 @@
 package Clases;
 
 import DBHelper.DBClass;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -524,9 +525,10 @@ public class Agregado {
                     if (actual.compareTo(tfinal) > 0){
                         System.out.println("Evento inactivo");
                         evento.put("status", "INACTIVO");
-                    }else
-                                System.out.println("Evento activo");
-                                evento.put("status", "ACTIVO");
+                    }else{
+                        System.out.println("Evento activo");
+                        evento.put("status", "ACTIVO");
+                    }
 
                     System.out.println(actual.compareTo(tfinal));
                 } catch (ParseException ex) {
@@ -836,4 +838,98 @@ public class Agregado {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+  
+    public static void AddHabilidad(JSONObject habilidades, int personajeID){
+    
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstInsertar = conn.prepareStatement("INSERT INTO acc_habilidad "
+                    + "VALUES (?,?,?,?);", Statement.RETURN_GENERATED_KEYS)
+                ){
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Inteligencia");
+                pstInsertar.setInt(3, habilidades.getInt("Inteligencia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+                
+                
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Fuerza");
+                pstInsertar.setInt(3, habilidades.getInt("Fuerza"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Velocidad");
+                pstInsertar.setInt(3, habilidades.getInt("Velocidad"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Resistencia");
+                pstInsertar.setInt(3, habilidades.getInt("Resistencia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Proyeccion de energia");
+                pstInsertar.setInt(3, habilidades.getInt("Proyeccion de energia"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+            
+            
+                pstInsertar.setInt(1, DBClass.getLastValue("acc_habilidad","id_habilidad"));
+                pstInsertar.setString(2, "Habilidades de combate");
+                pstInsertar.setInt(3, habilidades.getInt("Habilidades de combate"));
+                pstInsertar.setInt(4, personajeID);       
+                
+                pstInsertar.executeUpdate();
+                
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+  
+    public static JSONObject getHabilidad(int personajeID){
+    
+        JSONObject habilidad = new JSONObject();
+        
+        try(
+        
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGet = conn.prepareStatement("SELECT nombre_habilidad, valor_habilidad FROM acc_habilidad WHERE personaje_fk = ?")
+                
+        ){
+            
+            pstGet.setInt(1, personajeID);
+                
+            ResultSet rsGet = pstGet.executeQuery();
+            
+            while (rsGet.next()){
+                habilidad.put(rsGet.getString(1), rsGet.getInt(2));
+            }
+                
+            return habilidad;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return habilidad;
+    
+    }
+      
+
 } 

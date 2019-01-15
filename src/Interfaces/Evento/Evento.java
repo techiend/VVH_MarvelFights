@@ -253,7 +253,6 @@ public class Evento extends javax.swing.JFrame {
                     long dias = 0;
 
                     try {
-                        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                         String fechaI = sdf.format(dpFechaInicio.getDate());
                         String fechaf = sdf.format(dtFechaFin.getDate());
 
@@ -274,6 +273,7 @@ public class Evento extends javax.swing.JFrame {
 
                         evento.setNombre(nombreEvento.getText());
                         evento.setFechaInicio(dpFechaInicio.getDate());
+                        evento.setFechaFin(dtFechaFin.getDate());
                         evento.setDescripccion(txtDescripcion.getText());
 
                         PersonajeEvento abrir = new PersonajeEvento(evento);

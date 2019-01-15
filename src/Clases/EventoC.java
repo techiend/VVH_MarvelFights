@@ -16,11 +16,20 @@ import org.json.JSONObject;
 public class EventoC{
     public String nombre;
     public Date fechaInicio;
-    public String fechaFin;
+    public Date fechaFin;
     public String descripccion = "";
     public JSONArray inscritos;
     public JSONArray grupos;
     public int numGroups = 0;
+    public int idEvento = 0;
+
+    public int getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
+    }
 
     public EventoC() {
         this.inscritos = new JSONArray();
@@ -44,6 +53,14 @@ public class EventoC{
         return fechaInicio;
     }
 
+    public int getNumGroups() {
+        return numGroups;
+    }
+
+    public void setNumGroups(int numGroups) {
+        this.numGroups = numGroups;
+    }
+
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
@@ -56,11 +73,11 @@ public class EventoC{
         this.descripccion = descripccion;
     }
 
-    public String getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 

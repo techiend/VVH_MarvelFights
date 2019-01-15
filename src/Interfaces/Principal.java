@@ -215,7 +215,11 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnGanadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGanadoresActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+//        JOptionPane.showMessageDialog(this, "Aun no implementado", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        BusquedaCategoria abrir = new BusquedaCategoria();
+        abrir.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnGanadoresActionPerformed
 
     /**

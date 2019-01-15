@@ -10,6 +10,7 @@ package Interfaces.Evento;
 
 import Clases.EventoC;
 import Controlador.DBController;
+import Interfaces.Evento.Combate.Combate;
 import Interfaces.Principal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -161,16 +162,16 @@ public class GruposEvento extends javax.swing.JFrame {
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addGap(300, 300, 300)
+                .addGap(274, 274, 274)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -463,7 +464,42 @@ public class GruposEvento extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if (listaPersonajeInscri.length() == 0){
-            System.out.println("PERMITIR INSERT DE EVENTO e INSCRITOS");
+            evento.setGrupos(grupos);
+
+            int idEvento = DBController.createEvento(evento);
+            
+            switch(idEvento){
+                case -1:
+                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case -2:
+                    JOptionPane.showMessageDialog(null, "Error al crear evento", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case -3:
+                    JOptionPane.showMessageDialog(null, "TODOS los personajes deben de tener grupo de afiliacion", "Error", JOptionPane.ERROR_MESSAGE);
+                    break;
+                default:
+//                    JOptionPane.showMessageDialog(null, "Nada salio mal", "Error", JOptionPane.ERROR_MESSAGE);
+                    evento.setIdEvento(idEvento);
+                    
+                    JSONArray inscritos = evento.getGrupos();
+                    
+//                    for (int i = 0; i < inscritos.length(); i++){
+//                        JSONObject pj = inscritos.getJSONObject(i);
+//                        
+//                        System.out.println("PERSONAJE INSCRITO: "+pj.toString(1));
+//                    }
+                    
+                    DBController.createPeleasEtapa1(evento);
+                    
+                    Combate abrir = new Combate(evento, 1);
+                    abrir.setVisible(true);
+                    dispose();
+                    
+                    
+                    break;
+            }
+            
         }else{
             JOptionPane.showMessageDialog(null, "Debes armar grupos con TODOS los inscritos", "Error", JOptionPane.ERROR_MESSAGE);
         }
