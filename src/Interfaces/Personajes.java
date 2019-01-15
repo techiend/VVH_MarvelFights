@@ -80,7 +80,7 @@ public class Personajes extends javax.swing.JFrame {
         for (int i = 0; i<listaPersonaje.length(); i++){
             JSONObject personaje = listaPersonaje.getJSONObject(i);
             
-            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("tipo"), personaje.getString("nameo"), personaje.getString("namer"), personaje.getString("lname"), personaje.getString("identidad"), personaje.getString("biografia"), personaje.getString("estadocivil"), personaje.getString("genero"), personaje.getInt("altura"), personaje.getInt("peso"), personaje.getString("colorojos"), personaje.getString("colorpelo")});
+            model.addRow(new Object[]{personaje.getInt("id"),personaje.getString("tipo"), personaje.getString("nameo"), personaje.getString("namer"), personaje.has("lname")?personaje.getString("lname"):"", personaje.getString("identidad"), personaje.getString("biografia"), personaje.getString("estadocivil"), personaje.getString("genero"), personaje.getInt("altura"), personaje.getInt("peso"), personaje.getString("colorojos"), personaje.getString("colorpelo")});
         }
         
     }
