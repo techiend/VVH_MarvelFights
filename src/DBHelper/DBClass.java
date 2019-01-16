@@ -33,7 +33,7 @@ public class DBClass {
         props.setProperty("dataSource.user", "grupo2"); // Usuario de la DB
         props.setProperty("dataSource.password", "123456"); // Contrasena de la DB
         props.setProperty("dataSource.databaseName", "grupo2"); // Nombre de la DB creada
-        props.setProperty("maximumPoolSize", "2");
+        props.setProperty("maximumPoolSize", "3");
         props.put("dataSource.logWriter", new PrintWriter(System.out));
         
         HikariConfig config = new HikariConfig(props);

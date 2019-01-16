@@ -229,7 +229,8 @@ public class CombateC {
             PreparedStatement pstGetHabs = conn.prepareStatement("SELECT nombre_habilidad, valor_habilidad FROM acc_habilidad WHERE personaje_fk = ?");
             PreparedStatement pstUpdHabs = conn.prepareStatement("UPDATE acc_habilidad SET valor_habilidad = (SELECT valor_habilidad FROM acc_habilidad WHERE personaje_fk = ? AND nombre_habilidad = ?) + 1 WHERE personaje_fk = ? AND nombre_habilidad = ?");
             PreparedStatement pstAllPers = conn.prepareStatement("SELECT personaje_fk, count(*) FROM acc_hist_per_ga WHERE estatus_hpg = 'Activo' AND grupoafiliacion_fk = ? GROUP BY personaje_fk");
-            PreparedStatement pstUpdGrup = conn.prepareStatement("UPDATE acc_grupo_afiliacion SET indicadordepoderaumentado_grupoafiliacion = ? WHERE id_grupoafiliacion = ?")
+            PreparedStatement pstUpdGrup = conn.prepareStatement("UPDATE acc_grupo_afiliacion SET indicadordepoderaumentado_grupoafiliacion = ? WHERE id_grupoafiliacion = ?");
+            PreparedStatement pstSetWinn = conn.prepareStatement("UPDATE acc_inscrito SET campeon_inscrito = true WHERE id_inscrito = ?")
         ){
                     
             pstGetInfo.setInt(1, idInscrito);
@@ -281,6 +282,9 @@ public class CombateC {
                     pstUpdGrup.executeUpdate();
                     
                 }
+                
+                pstSetWinn.setInt(1, idInscrito);
+                pstSetWinn.executeUpdate();
                 
             }
             

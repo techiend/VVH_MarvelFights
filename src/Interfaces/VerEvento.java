@@ -9,6 +9,10 @@
 package Interfaces;
 
 import Clases.Agregado;
+import ReportsC.Resultado_Evento;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +23,8 @@ import org.json.JSONObject;
  */
 public class VerEvento extends javax.swing.JFrame {
 
+    private int eventoID = 0;
+    
     /**
      * Creates new form VerEvento
      */
@@ -30,6 +36,26 @@ public class VerEvento extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         setTitle("Ver Eventos");
+        
+        tableVerEvento.addMouseListener(new MouseAdapter() 
+        {
+           public void mouseClicked(MouseEvent e) 
+           {
+               
+            DefaultTableModel model = (DefaultTableModel) tableVerEvento.getModel();    
+        
+              int fila = tableVerEvento.rowAtPoint(e.getPoint());
+              int columna = tableVerEvento.columnAtPoint(e.getPoint());
+              if ((fila > -1) && (columna > -1)){
+                  
+                  int id = (int) model.getValueAt(fila, 0);
+                  
+                  System.out.println("EventoID = "+id);
+                  eventoID = id;
+                
+              }
+           }
+        });
     }
     
     public void emptyTable(){
@@ -71,6 +97,7 @@ public class VerEvento extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableVerEvento = new javax.swing.JTable();
         btnAtrasVerEvento = new javax.swing.JButton();
+        btnReporteEvento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,6 +172,16 @@ public class VerEvento extends javax.swing.JFrame {
             }
         });
 
+        btnReporteEvento.setBackground(new java.awt.Color(0, 153, 153));
+        btnReporteEvento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnReporteEvento.setForeground(new java.awt.Color(255, 255, 255));
+        btnReporteEvento.setText("VER REPORTE");
+        btnReporteEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteEventoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -156,7 +193,8 @@ public class VerEvento extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAtrasVerEvento)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReporteEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,8 +204,10 @@ public class VerEvento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAtrasVerEvento)
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAtrasVerEvento)
+                    .addComponent(btnReporteEvento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -189,6 +229,20 @@ public class VerEvento extends javax.swing.JFrame {
         abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnAtrasVerEventoActionPerformed
+
+    private void btnReporteEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteEventoActionPerformed
+        // TODO add your handling code here:
+        
+        if (eventoID > 0){
+        
+            Resultado_Evento abrir = new Resultado_Evento(eventoID);
+            abrir.setVisible(true);
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Evento en la tabla.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnReporteEventoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,7 +280,9 @@ public class VerEvento extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarPersonaje;
     private javax.swing.JButton btnAtrasVerEvento;
+    private javax.swing.JButton btnReporteEvento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
