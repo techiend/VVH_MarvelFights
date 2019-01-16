@@ -8,6 +8,10 @@
  */
 package Interfaces;
 
+import Clases.Ficha_Personaje;
+import Clases.GA_MasGanadores;
+import java.util.ArrayList;
+
 /**
  *
  * @author aless
@@ -18,7 +22,24 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
      * Creates new form GrupoDAfiliacion_MasGanadores
      */
     public GrupoDAfiliacion_MasGanadores() {
+        this.setResizable(false);
         initComponents();
+        this.setLocationRelativeTo(null);
+        setTitle("Grupo de afiliacion");
+        fillComboGA();
+    }
+    
+    
+    private void fillComboGA(){
+        ArrayList<String> listaGruposAfiliacion = GA_MasGanadores.getGrupoA();
+        
+        cbGrupoAfiliacion.removeAllItems();
+        cbGrupoAfiliacion.addItem("----------");
+        
+        for (int i = 0; i < listaGruposAfiliacion.size(); i++){
+            cbGrupoAfiliacion.addItem(listaGruposAfiliacion.get(i));
+        }
+    
     }
 
     /**
@@ -38,7 +59,8 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbGrupoAfiliacion = new javax.swing.JComboBox<>();
+        btnBuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,7 +116,9 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("GANADORES");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------------------" }));
+        cbGrupoAfiliacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "----------------------" }));
+
+        btnBuscar.setText("BUSCAR");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -108,7 +132,9 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cbGrupoAfiliacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(btnBuscar)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -118,7 +144,9 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbGrupoAfiliacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(9, 9, 9)
@@ -206,8 +234,9 @@ public class GrupoDAfiliacion_MasGanadores extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JComboBox<String> cbGrupoAfiliacion;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
