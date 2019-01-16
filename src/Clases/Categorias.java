@@ -474,6 +474,103 @@ public class Categorias {
         } catch (SQLException ex) {
             Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }            
+    }
+    
+     public static JSONArray getPersonaje(){
+        JSONArray listaPersonaje = new JSONArray();
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetAlumnos = conn.prepareStatement("SELECT id_personaje \"ID\", tipo_personaje \"Tipo Personaje\", "
+                    + "nombreoriginal_personaje \"Nombre Original\", nombrereal_personaje \"Nombre Real]\", "
+                    + "apellidoreal_personaje \"Apellido Real\", identidad_personaje \"Identidad\", "
+                    + "biografia_personaje \"Biografia\", estadocivil_personaje \"Estado Civil\" , genero_personaje \"Genero\","
+                    + "altura_personaje \"Altura\", peso_personaje \"Peso\", "
+                    + "colorojos_personaje \"Color ojos\",colorpelo_personaje \"Color cabello\",lugarnacimiento_fk \"Lugar Nacimiento\""
+                    + " FROM acc_personaje;")
+        ){
+            
+            ResultSet rsGetPersonaje = pstGetAlumnos.executeQuery();
+            
+            while (rsGetPersonaje.next()){
+                JSONObject personaje = new JSONObject();
+                
+                personaje.put("id", rsGetPersonaje.getInt(1));
+                personaje.put("tipo", rsGetPersonaje.getString(2));
+                personaje.put("nameo", rsGetPersonaje.getString(3));
+                personaje.put("namer", rsGetPersonaje.getString(4));
+                personaje.put("lname", (rsGetPersonaje.getString(5) == null) ? "" : rsGetPersonaje.getString(5));
+               //personaje.put("lname", rsGetPersonaje.getString(5));
+                personaje.put("identidad", rsGetPersonaje.getString(6));
+                personaje.put("biografia", rsGetPersonaje.getString(7));
+                personaje.put("estadocivil", rsGetPersonaje.getString(8));
+                personaje.put("genero", rsGetPersonaje.getString(9));
+                personaje.put("altura", rsGetPersonaje.getInt(10));
+                personaje.put("peso", rsGetPersonaje.getInt(11));
+                personaje.put("colorojos", rsGetPersonaje.getString(12));
+                personaje.put("colorpelo", rsGetPersonaje.getString(13));
+                personaje.put("lugarnacimiento", rsGetPersonaje.getInt(14));
+                
+                
+//                System.out.println("ALUMNO: "+alumno.toString());
+
+                listaPersonaje.put(personaje);
+            }
+            
+            return listaPersonaje;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listaPersonaje;
+    }
+     
+     ///////////////////////////////////////////////////////////////////////////
+     
+         public static JSONObject getGrupoAfiliacion(int grupo){
+        
+        JSONObject grupoInfo = new JSONObject();
+        
+        try(
+            Connection conn = DBClass.getConn();
+            PreparedStatement pstGetGA = conn.prepareStatement("SELECT ga.id_grupoafiliacion, ga.nombre_grupoafiliacion, ga.descripcion_grupoafiliacion, coalesce(ga.indicadordepoderaumentado_grupoafiliacion, 0) ipa, " +
+                    "base.id_boperaciones, base.nombre_BOperaciones, base.descripcion_boperaciones, a.nombre_lugar, b.nombre_lugar " +
+                    "FROM acc_grupo_afiliacion ga, acc_base_operaciones base, acc_ga_bo gabo, acc_lugar a, acc_lugar b " +
+                    "WHERE ga.id_grupoafiliacion = ? AND ga.id_grupoafiliacion = gabo.grupoAfiliacion AND base.id_BOperaciones = gabo.baseOperaciones AND a.id_lugar = coalesce(base.lugar_bops, 0) AND a.id_lugar_fk = b.id_lugar")
+        ){
+            
+            pstGetGA.setInt(1, grupo);
+            ResultSet rsGetGA = pstGetGA.executeQuery();
+            
+            if (rsGetGA.next()){
+                
+                grupoInfo.put("id_grupo", rsGetGA.getInt(1));
+                grupoInfo.put("name_grupo", rsGetGA.getString(2));
+                grupoInfo.put("desc_grupo", (rsGetGA.getString(3) == null) ? "":rsGetGA.getString(3));
+                grupoInfo.put("ipa_grupo", rsGetGA.getInt(4));
+                
+                grupoInfo.put("id_base", rsGetGA.getInt(5));
+                grupoInfo.put("base_base", rsGetGA.getString(6));
+                grupoInfo.put("desc_base", rsGetGA.getString(7));
+               // grupoInfo.put("ciudad_base", rsGetGA.getString(8));
+                grupoInfo.put("ciudad_base", (rsGetGA.getString(8) == null) ? "":rsGetGA.getString(8));
+                grupoInfo.put("estado_base", (rsGetGA.getString(9) == null) ? "":rsGetGA.getString(9));
+                //grupoInfo.put("estado_base", rsGetGA.getString(9));
+                //grupoInfo.put("pais_base", rsGetGA.getString(10));
+
+            }
+            
+            return grupoInfo;
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Agregado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return grupoInfo;
+    }
+         
+         /////////////////////////////////////////////////////////////////////////
+     
             
 }
