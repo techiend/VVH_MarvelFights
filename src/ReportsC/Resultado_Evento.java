@@ -767,8 +767,6 @@ public class Resultado_Evento extends javax.swing.JFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        Principal abrir = new Principal();
-        abrir.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
