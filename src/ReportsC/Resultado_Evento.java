@@ -804,7 +804,7 @@ public class Resultado_Evento extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Resultado_Evento(1).setVisible(true);
+                new Resultado_Evento(3).setVisible(true);
                 
             }
         });
